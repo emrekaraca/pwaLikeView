@@ -84,7 +84,6 @@
 
 <script>
     import Config from './../interface_config.json'
-    //import d3 from 'd3'
     import c3 from 'c3'
     let chart
     export default {
