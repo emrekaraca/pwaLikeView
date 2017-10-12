@@ -83,6 +83,7 @@
 </style>
 
 <script>
+    import Config from './../interface_config.json'
     //import d3 from 'd3'
     import c3 from 'c3'
     let chart
@@ -116,7 +117,7 @@
                     mode: 'cors'
                 };
                 //fetch('http://localhost:3000/api/getvoteswings', myInit)
-                fetch('https://predictionsapi.herokuapp.com/api/getvoteswings', myInit)
+                fetch(Config.apiUrl + 'api/getvoteswings', myInit)
                 .then((response) => {
                     return response.json();
                 })

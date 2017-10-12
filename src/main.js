@@ -6,6 +6,7 @@ import $ from 'jquery'
 import 'materialize-css'
 import materializeCss from 'materialize-css/dist/css/materialize.min.css'
 import materialIcons from './styles/materialIcons.css'
+let interfaceConfig = require('./interface_config.json')
 
 export const eventBus = new Vue();
 

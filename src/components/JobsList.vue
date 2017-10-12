@@ -81,7 +81,7 @@
 </style>
 
 <script>
-
+  import Config from './../interface_config.json'
   import { eventBus } from './../main';
 
   export default {
@@ -139,7 +139,7 @@
             let myInit = { 
                 mode: 'cors'
             };
-            fetch('https://predictionsapi.herokuapp.com/api/getjobslist/' + this.coll, myInit)
+            fetch(Config.apiUrl + 'api/getjobslist/' + this.coll, myInit)
             .then((response) => {
                 return response.json();
             })
@@ -161,10 +161,10 @@
                 mode: 'cors'
             };            
             console.log("deleting ", job);
-            fetch('https://predictionsapi.herokuapp.com/api/deletejob/' + this.coll + '/' + job, myInit)
+            fetch(Config.apiUrl + 'api/deletejob/' + this.coll + '/' + job, myInit)
             .then((response) => {
                 console.log(response)
-                return fetch('https://predictionsapi.herokuapp.com/api/getjobslist/' + this.coll, myInit)
+                return fetch(Config.apiUrl + 'api/getjobslist/' + this.coll, myInit)
             })        
             .then((response) => {
                 return response.json();

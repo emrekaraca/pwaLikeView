@@ -366,6 +366,7 @@
 <script>
 import { eventBus } from './../main';
 import JobsList from './JobsList.vue'
+import Config from './../interface_config.json'
 import c3 from 'c3'
 
 
@@ -515,11 +516,11 @@ export default {
                 else if (this.country == 'de')
                     queryString += '&pol=de'
             }
-            console.log('https://predictionsapi.herokuapp.com/api/getresult/' + this.coll + queryString)
+            console.log(Config.apiUrl + 'api/getresult/' + this.coll + queryString)
             let myInit = { 
                 mode: 'cors'
             };            
-            fetch('https://predictionsapi.herokuapp.com/api/getresult/' + this.coll + queryString, myInit)
+            fetch(Config.apiUrl + 'api/getresult/' + this.coll + queryString, myInit)
             .then((response) => {
                 console.log("result returned")
                 return response.json();
@@ -830,7 +831,7 @@ export default {
             let myInit = { 
                 mode: 'cors'
             };            
-            fetch('https://predictionsapi.herokuapp.com/api/getjobinfo/' + this.coll + '/' + this.selectedJob, myInit) /* Fetching Available settings and setting-values for selected job */
+            fetch(Config.apiUrl + 'api/getjobinfo/' + this.coll + '/' + this.selectedJob, myInit) /* Fetching Available settings and setting-values for selected job */
             .then((response) => {
                 return response.json();
             })

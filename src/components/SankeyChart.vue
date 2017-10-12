@@ -130,6 +130,7 @@
 </style>
 
 <script>
+    import Config from './../interface_config.json'
     import * as d3 from 'd3'
     d3.sankey = require("d3-sankey").sankey
     d3.sankeyLinkHorizontal = require("d3-sankey").sankeyLinkHorizontal
@@ -191,7 +192,7 @@
                     mode: 'cors'
                 };
                 //fetch('http://localhost:3000/api/getvoteswings', myInit)
-                fetch('https://predictionsapi.herokuapp.com/api/getvoteswings', myInit)
+                fetch(Config.apiUrl + 'api/getvoteswings', myInit)
                 .then((response) => {
                     return response.json();
                 })
