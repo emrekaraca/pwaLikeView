@@ -32,9 +32,20 @@ export default {
       options: Config.activeModules
     }
   },
+  computed: {
+    menuWidth: function () {
+        if (window.innerWidth < 500) {
+            return window.innerWidth
+        } else {
+            return 500
+        }
+    }    
+  },
   mounted() {
         $(".button-collapse").sideNav({
-          closeOnClick: true
+          closeOnClick: true,
+          draggable: true,
+          menuWidth: this.menuWidth
         });
   },
   methods: {

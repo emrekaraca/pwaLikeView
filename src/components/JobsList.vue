@@ -94,6 +94,13 @@
         }
     },
     computed:  {
+        menuWidth: function () {
+            if (window.innerWidth < 500) {
+                return window.innerWidth
+            } else {
+                return 500
+            }
+        },
         predictionJobs2: function() {return this.predictionJobs},
         deleteClass: function() {
             if (this.deleteActive) {
@@ -180,7 +187,7 @@
     },
     mounted() {
         $(".button-collapse2").sideNav({
-            menuWidth: 450,
+            menuWidth: this.menuWidth,
             closeOnClick: true
         });
         $(".button-collapse2").sideNav('show')
