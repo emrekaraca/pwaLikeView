@@ -1,0 +1,179 @@
+{
+  "country": {
+    "de": {
+      "parties": [
+        {
+          "name": "CDU", 
+          "longName": "Christlich Demokratische Union Deutschlands",
+          "color": "#000000",
+          "logoSmall": "./de/CDU-small.png",
+          "logoBig": "./de/CDU-big.png"
+        }, 
+        {
+          "name": "SPD",
+          "longName": "Sozialdemokratische Partei Deutschlands",
+          "color": "#e60000",
+          "logoSmall": "./de/SPD-small.png",
+          "logoBig": "./de/SPD-big.png"
+        }, 
+        {
+          "name": "Linke",
+          "longName": "die Linke",
+          "color": "#660066",
+          "logoSmall": "./de/Linke-small.png",
+          "logoBig": "./de/Linke-big.png"
+        }, 
+        {
+          "name": "Gruene",
+          "longName": "Bündis90/Die Grünen",
+          "color": "#339933",
+          "logoSmall": "./de/Gruene-small.png",
+          "logoBig": "./de/Gruene-big.png"
+        }, 
+        {
+          "name": "FDP",
+          "longName": "Freie Demokratische Partei Deutschlands",
+          "color": "#ffff00",
+          "logoSmall": "./de/FDP-small.png",
+          "logoBig": "./de/FDP-big.png"
+        }, 
+        {
+          "name": "AfD",
+          "longName": "Alternative für Deutschland",
+          "color": "#0099ff",
+          "logoSmall": "./de/AfD-small.png",
+          "logoBig": "./de/AfD-big.png"
+        }
+      ],
+      "electionResults": {
+        "2013": {
+          "date": "2013-09-22",
+          "CDU": 41.5,
+          "SPD": 25.7,
+          "Linke": 8.6,
+          "Gruene": 8.4,
+          "FDP": 4.8,
+          "AfD": 4.7
+        },
+        "2017": {
+          "date": "2017-09-24",
+          "CDU": 33,
+          "SPD": 20.5,
+          "Linke": 9.2,
+          "Gruene": 8.9,
+          "FDP": 10.7,
+          "AfD": 12.6
+        }
+      },
+      "threshold": "0.05"    
+    },
+    "dk": {
+      "parties": [
+        {
+          "name": "A",
+          "longName": "Socialdemokratiet",
+          "color": "#e32f3b",
+          "logoSmall": "./dk/A-small.png",
+          "logoBig": "./dk/A-big.png"
+        },
+        {
+          "name": "AA",
+          "longName": "Âlternativet",
+          "color": "#5aff5a",
+          "logoSmall": "./dk/AA-small.png",
+          "logoBig": "./dk/AA-big.png"
+        },
+        {
+          "name": "B",
+          "longName": "Det Radikale Venstre",
+          "color": "#e52b91",
+          "logoSmall": "./dk/B-small.png",
+          "logoBig": "./dk/B-big.png"
+        },
+        {
+          "name": "C",
+          "longName": "Det Konservative Folkeparti",
+          "color": "#0f854b",
+          "logoSmall": "./dk/C-small.png",
+          "logoBig": "./dk/C-big.png"
+        },
+        {
+          "name": "D",
+          "longName": "Nye Borgerlige",
+          "color": "#2a4952",
+          "logoSmall": "./dk/D-small.png",
+          "logoBig": "./dk/D-big.png"
+        },
+        {
+          "name": "F",
+          "longName": "Socialistisk Folkeparti",
+          "color": "#9c1d2a",
+          "logoSmall": "./dk/F-small.png",
+          "logoBig": "./dk/F-big.png"
+        },
+        {
+          "name": "I",
+          "longName": "Liberal Alliance",
+          "color": "#ef8535",
+          "logoSmall": "./dk/I-small.png",
+          "logoBig": "./dk/I-big.png"
+        },
+        {
+          "name": "K",
+          "longName": "Kristdemokraterne",
+          "color": "#f0ac55",
+          "logoSmall": "./dk/K-small.png",
+          "logoBig": "./dk/K-big.png"
+        },
+        {
+          "name": "O",
+          "longName": "Danske Folkeparti",
+          "color": "#005078",
+          "logoSmall": "./dk/O-small.png",
+          "logoBig": "./dk/O-big.png"
+        },
+        {
+          "name": "OE",
+          "longName": "Enhedslisten",
+          "color": "#731525",
+          "logoSmall": "./dk/OE-small.png",
+          "logoBig": "./dk/OE-big.png"
+        },
+        {
+          "name": "V",
+          "longName": "Venstre",
+          "color": "#0f84bb",
+          "logoSmall": "./dk/V-small.png",
+          "logoBig": "./dk/V-big.png"
+        }
+      ],
+      "electionResults": {
+        "2011": {
+          "date": "2011-09-15",
+          "A": 24.8,
+          "B": 9.5,
+          "C": 4.9,
+          "F": 9.2,
+          "I": 5.0,
+          "K": 0.8,
+          "O": 12.3,
+          "OE": 6.7,
+          "V": 26.7
+        },
+        "2015": {
+          "date": "2015-06-18",
+          "A": 26.3,
+          "AA": 4.8,
+          "B": 4.6,
+          "C": 3.4,
+          "I": 7.5,
+          "F": 4.2,
+          "O": 21.1,
+          "OE": 7.8,
+          "V": 19.5
+        }
+      },
+      "threshold": 0.02
+    }
+  }
+}
