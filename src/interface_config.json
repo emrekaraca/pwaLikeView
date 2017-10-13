@@ -1,5 +1,5 @@
 {
-  "apiUrl": "https://predictionsapi.herokuapp.com/",
+  "apiUrl": "https://likeviewapi.herokuapp.com/",
   "homeDescription": ["This interface displays a number of data visualizations from AT-Election-Prediction-analyses. Click one of the options to see more."],
   "themeColor": "grey",
   "logo": {
@@ -20,7 +20,7 @@
         "fileName": "Multichart",
         "link": "/multichart"
       },
-      "show": true,
+      "show": false,
       "name": "Multichart",
       "description": "See all exposure charts on one page."
     },
@@ -29,7 +29,7 @@
         "fileName": "Timeseries",
         "link": "/timeseries"
       },        
-      "show": true,
+      "show": false,
       "name": "Timeseries",
       "description": "This timeseries-chart shows for each Danish party how the likes of all users that predominantly like this party are distributed over all parties over time."
     },
@@ -38,7 +38,7 @@
         "fileName": "PieChart",
         "link": "/pie"
       },
-      "show": true,
+      "show": false,
       "name": "Pie Chart",
       "description": "This pie-chart shows for each Danish party how the likes of all users that predominantly like this party are distributed over all parties aggregated over one or multiple weeks (you can set the timeframe with the sliders)."
     },
@@ -47,7 +47,7 @@
         "fileName": "ChordChart",
         "link": "/chord"
       },        
-      "show": true,
+      "show": false,
       "name": "Chord Chart",
       "description": "This chord-chart shows the likes of all users that predominantly like one party are distributed over all parties aggregated over one or multiple weeks (you can set the timeframe with the sliders). The color of a chord between two parties indicates that the surplus of likes goes towards that party with the same color."
     },
@@ -56,7 +56,7 @@
         "fileName": "SankeyChart",
         "link": "/sankey"
       },
-      "show": true,
+      "show": false,
       "name": "Sankey Chart",
       "description": "This sankey-chart shows for each Danish party how the likes of all users that predominantly like this party are distributed over all parties aggregated over one or multiple weeks (you can set the timeframe with the sliders)."
     },
@@ -65,7 +65,7 @@
         "fileName": "FlowChart",
         "link": "/flow"
       },
-      "show": true,
+      "show": false,
       "name": "Flow Chart",
       "description": "This simple Like-Flow visualization simply shows the net-flow of likes between one party and the others."
     },
@@ -74,7 +74,7 @@
         "fileName": "WaffleChart",
         "link": "/waffle"
       },        
-      "show": true,
+      "show": false,
       "name": "Waffle Chart",
       "description": "Waffle chart representation of where a party's users' likes go to."
     }

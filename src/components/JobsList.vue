@@ -1,15 +1,12 @@
 <template id="">
     <div class="main container" >
-        <div class="right-align" style="margin-top: -30px; margin-right: -20px">
-            <a href="#" data-activates="slide-out" :class="themeColor" class="button-collapse2 btn-large btn-floating waves-effect waves-light darken-1"><i class="material-icons">timeline</i></a>
-        </div>
 
         <div class="row" style="margin-top: -15px">
                 
                 <ul id="slide-out" class="side-nav">
                     <div class="center-align listHeader">
                         <h5>Select Country</h5>
-                        <button class="btn btn-flat waves-effect waves-light" v-bind:class="deClass" @click="changeCountry('de')">DE</button>
+                        <button class="btn disabled" v-bind:class="deClass" @click="changeCountry('de')">DE</button>
                         <button class="btn btn-flat waves-effect waves-light" v-bind:class="dkClass" @click="changeCountry('dk')">DK</button>
                         <button :class="themeColor" class="btn disabled">NO</button>
                         <button :class="themeColor" class="btn disabled">NZ</button>
@@ -90,7 +87,7 @@
             loading: true,
             predictionJobs: [],
             deleteActive: false,
-            selectedCountry: 'de',
+            selectedCountry: 'dk',
             themeColor: Config.themeColor
         }
     },
@@ -115,7 +112,7 @@
                 return 'jobs'
             }
             else if (this.selectedCountry == 'dk') {
-                return 'danishresults'
+                return 'dk-predictions'
             }
         },
         deClass: function() {

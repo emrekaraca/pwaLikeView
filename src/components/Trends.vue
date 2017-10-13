@@ -16,10 +16,11 @@
             <div class="col s12">
 
                 <!-- ZoomOut Button for the graph -->
-                <div class="right-align" style="margin-top: -40px; margin-right: 50px">
-                    <a :class="themeColor" class="btn-large btn-floating waves-effect waves-light darken-1" onclick="$('#infomodal').modal('open');"><i class="material-icons">info_outline</i></a>
-                    <a :class="themeColor" @click="zoomOut()" class="btn-large btn-floating waves-effect waves-light darken-1"><i class="material-icons">zoom_out</i></a>
-                    <a :class="themeColor" @click="toggleSettings()" class="btn-large btn-floating waves-effect waves-light darken-1"><i class="material-icons">settings</i></a>
+                <div class="right-align" style="margin-top: -40px; margin-right: 10px">
+                    <a :class="themeColor" class="btn btn-floating waves-effect waves-light" onclick="$('#infomodal').modal('open')"><i class="material-icons">info_outline</i></a>
+                    <a :class="themeColor" @click="zoomOut()" class="btn btn-floating waves-effect waves-light"><i class="material-icons">zoom_out</i></a>
+                    <a :class="themeColor" @click="toggleSettings()" class="btn btn-floating waves-effect waves-light"><i class="material-icons">settings</i></a>
+                    <a data-activates="slide-out" :class="themeColor" class="button-collapse2 btn btn-floating waves-effect waves-light"><i class="material-icons">timeline</i></a>                    
                 </div>
                 
                 <!-- Chart Container // Contains Loading-Spinner, which is replaced when the chart is generated -->
@@ -368,10 +369,8 @@ import { eventBus } from './../main';
 import JobsList from './JobsList.vue'
 import Config from './../interface_config.json'
 import c3 from 'c3'
-
-
-
 let chart; /* Defining chart in component scope, in order to be able to load new data after chart-generation */
+
 
 export default {
     components: {
@@ -845,10 +844,10 @@ export default {
                 for (let setting in self.settings) {
                     self.$set(self.selectedSettings, setting, self.settings[setting][0])
                 }
+                $('.modal').modal();
                 self.fetchGraph()
             })
         });
-        $('.modal').modal();
     },
     watch: {
         selectedSettings: {
@@ -872,42 +871,42 @@ export default {
         },
         classElec1: function() {
             if (this.showElec1) {
-                return this.themeColor + ' lighten-1'
+                return this.themeColor
             }
             else {
-                return 'grey'
+                return 'grey lighten-1'
             } 
         },
         classElec2: function() {
             if (this.showElec2) {
-                return this.themeColor + ' lighten-1'
+                return this.themeColor
             }
             else {
-                return 'grey'
+                return 'grey lighten-1'
             } 
         },
         classPredictions: function() {
             if (this.showingPredictions) {
-                return this.themeColor + ' lighten-1'
+                return this.themeColor
             }
             else {
-                return 'grey'
+                return 'grey lighten-1'
             } 
         },
         classPolls: function() {
             if (this.showingPolls) {
-                return this.themeColor + ' lighten-1'
+                return this.themeColor
             }
             else {
-                return 'grey'
+                return 'grey lighten-1'
             } 
         },
         classLabels: function() {
             if (this.showLabels) {
-                return this.themeColor + ' lighten-1'
+                return this.themeColor
             }
             else {
-                return 'grey'
+                return 'grey lighten-1'
             } 
         },
         electionLines: function() {

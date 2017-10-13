@@ -116,7 +116,6 @@
                 let myInit = { 
                     mode: 'cors'
                 };
-                //fetch('http://localhost:3000/api/getvoteswings', myInit)
                 fetch(Config.apiUrl + 'api/getvoteswings', myInit)
                 .then((response) => {
                     return response.json();
