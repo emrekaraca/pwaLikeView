@@ -6,7 +6,6 @@
         <div class="col s12">
           <div :class="themeColor" class="card darken-1">
             <div class="card-content white-text">
-              <span class="card-title">Home</span>
               <p v-for="sentence in homeDescription">{{sentence}}</p>
             </div>
           </div>

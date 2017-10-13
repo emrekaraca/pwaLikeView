@@ -56,7 +56,7 @@
         "fileName": "SankeyChart",
         "link": "/sankey"
       },
-      "show": false,
+      "show": true,
       "name": "Sankey Chart",
       "description": "This sankey-chart shows for each Danish party how the likes of all users that predominantly like this party are distributed over all parties aggregated over one or multiple weeks (you can set the timeframe with the sliders)."
     },
