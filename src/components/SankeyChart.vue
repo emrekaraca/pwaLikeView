@@ -2,7 +2,7 @@
     <div class="main container">
         <div class="row">
             <div class="col s12">
-                <div class="card title-card blue-grey lighten-1">
+                <div :class="themeColor" class="card title-card lighten-1">
                     <div class="card-content">
                         <span class="card-title section-title white-text">Sankey Chart</span>
                     </div>
@@ -171,7 +171,8 @@
                     O: 'rgb(0, 80, 120)',
                     OE: 'rgb(115, 21, 37)',
                     V: 'rgb(15, 132, 187)'                
-                }         
+                },
+                themeColor: Config.themeColor
             }
         },
         methods: {

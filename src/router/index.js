@@ -26,7 +26,10 @@ for (let option in Config.activeModules) {
 }
 
 export default new Router({
-  routes: routes
+  routes: routes,
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  }  
 })
 
 

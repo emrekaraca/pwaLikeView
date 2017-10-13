@@ -6,7 +6,7 @@
             </div>
             
             <div class="col s12">
-                <div class="card title-card blue-grey lighten-1">
+                <div :class="themeColor" class="card title-card lighten-1">
                     <div class="card-content">
                         <span class="card-title section-title white-text">Results from: {{selectedJob}} ({{country[0]}})</span>
                     </div>
@@ -17,9 +17,9 @@
 
                 <!-- ZoomOut Button for the graph -->
                 <div class="right-align" style="margin-top: -40px; margin-right: 50px">
-                    <a class="btn-large btn-floating waves-effect waves-light blue-grey darken-1" onclick="$('#infomodal').modal('open');"><i class="material-icons">info_outline</i></a>
-                    <a @click="zoomOut()" class="btn-large btn-floating waves-effect waves-light blue-grey darken-1"><i class="material-icons">zoom_out</i></a>
-                    <a @click="toggleSettings()" class="btn-large btn-floating waves-effect waves-light blue-grey darken-1"><i class="material-icons">settings</i></a>
+                    <a :class="themeColor" class="btn-large btn-floating waves-effect waves-light darken-1" onclick="$('#infomodal').modal('open');"><i class="material-icons">info_outline</i></a>
+                    <a :class="themeColor" @click="zoomOut()" class="btn-large btn-floating waves-effect waves-light darken-1"><i class="material-icons">zoom_out</i></a>
+                    <a :class="themeColor" @click="toggleSettings()" class="btn-large btn-floating waves-effect waves-light darken-1"><i class="material-icons">settings</i></a>
                 </div>
                 
                 <!-- Chart Container // Contains Loading-Spinner, which is replaced when the chart is generated -->
@@ -74,7 +74,7 @@
                         <label for="end">Until</label>                
                     </div>                
                     <div class="col s3 m2 l2 center-align">
-                        <button class="btn btn-large blue-grey waves-effect waves-light lighten-1 validate" @click="fetchGraph(true)">
+                        <button :class="themeColor" class="btn btn-large waves-effect waves-light lighten-1 validate" @click="fetchGraph(true)">
                             <i class="material-icons">loop</i>
                         </button>
                     </div>
@@ -133,7 +133,7 @@
 
             <!-- Dynamic settings area // populated from database -->
             <div v-show="showSettings" class="col s12 m6 l3 xl3 settingsContainer" v-for="(vals, settingName) in settings">
-                <div class="card title-card blue-grey lighten-1">
+                <div :class="themeColor" class="card title-card lighten-1">
                     <div class="card-content">
                         <span class="card-title section-title">{{settingName}}</span>
                     </div>
@@ -400,7 +400,8 @@ export default {
             country: '',
             jobinfo: '',
             coll: 'jobs3',
-            showSettings: false
+            showSettings: false,
+            themeColor: Config.themeColor
         }
     },
     methods: {
@@ -871,7 +872,7 @@ export default {
         },
         classElec1: function() {
             if (this.showElec1) {
-                return 'blue-grey lighten-1'
+                return this.themeColor + ' lighten-1'
             }
             else {
                 return 'grey'
@@ -879,7 +880,7 @@ export default {
         },
         classElec2: function() {
             if (this.showElec2) {
-                return 'blue-grey lighten-1'
+                return this.themeColor + ' lighten-1'
             }
             else {
                 return 'grey'
@@ -887,7 +888,7 @@ export default {
         },
         classPredictions: function() {
             if (this.showingPredictions) {
-                return 'blue-grey lighten-1'
+                return this.themeColor + ' lighten-1'
             }
             else {
                 return 'grey'
@@ -895,7 +896,7 @@ export default {
         },
         classPolls: function() {
             if (this.showingPolls) {
-                return 'blue-grey lighten-1'
+                return this.themeColor + ' lighten-1'
             }
             else {
                 return 'grey'
@@ -903,7 +904,7 @@ export default {
         },
         classLabels: function() {
             if (this.showLabels) {
-                return 'blue-grey lighten-1'
+                return this.themeColor + ' lighten-1'
             }
             else {
                 return 'grey'

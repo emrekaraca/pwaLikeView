@@ -2,7 +2,7 @@
     <div class="main container">
         <div class="row">
             <div class="col s12">
-                <div class="card title-card blue-grey lighten-1">
+                <div class="card title-card lighten-1" :class="themeColor">
                     <div class="card-content">
                         <span class="card-title section-title white-text">Pie Chart</span>
                     </div>
@@ -76,7 +76,7 @@
 
     .c3-circle {
         opacity: 0.3!important
-    }    
+    }
 
 
 
@@ -97,7 +97,8 @@
                 selectedParty: 'A',
                 pickedDate1: 0,
                 pickedDate2: 0,
-                multiWeek: false
+                multiWeek: false,
+                themeColor: Config.themeColor
             }
         },
         methods: {
@@ -187,7 +188,7 @@
                 let classes = {};
                 for (let party in this.partyNames) {
                     if (this.partyNames[party] == this.selectedParty) {
-                        classes[this.partyNames[party]] = 'blue-grey lighten-1'
+                        classes[this.partyNames[party]] = this.themeColor + ' lighten-1'
                     } else {
                         classes[this.partyNames[party]] = 'grey lighten-4'
                     }

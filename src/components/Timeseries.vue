@@ -2,7 +2,7 @@
     <div class="main container">
         <div class="row">
             <div class="col s12">
-                <div class="card title-card blue-grey lighten-1">
+                <div :class="themeColor" class="card title-card lighten-1">
                     <div class="card-content">
                         <span class="card-title section-title white-text">Timeseries Chart</span>
                         <span class="switch" style="display: float-right">
@@ -77,7 +77,8 @@
                 monthly: false,
                 loading: true,
                 partyNames: ['A', 'AA', 'B', 'C', 'F', 'I', 'NB', 'O', 'OE', 'V'],
-                selectedParty: 'A'
+                selectedParty: 'A',
+                themeColor: Config.themeColor
             }
         },
         methods: {
@@ -178,7 +179,7 @@
                 let classes = {};
                 for (let party in this.partyNames) {
                     if (this.partyNames[party] == this.selectedParty) {
-                        classes[this.partyNames[party]] = 'blue-grey lighten-1'
+                        classes[this.partyNames[party]] = this.themeColor + ' lighten-1'
                     } else {
                         classes[this.partyNames[party]] = 'grey lighten-4'
                     }

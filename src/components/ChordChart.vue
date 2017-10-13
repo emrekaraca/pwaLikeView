@@ -2,7 +2,7 @@
     <div class="main container">
         <div class="row">
             <div class="col s12">
-                <div class="card title-card blue-grey lighten-1">
+                <div :class="themeColor" class="card title-card lighten-1">
                     <div class="card-content">
                         <span class="card-title section-title white-text">Chord Chart</span>
                     </div>
@@ -100,7 +100,8 @@
                     'rgba(99, 99, 99, 0.5)',
                     'rgba(0, 80, 120, 0.5)',
                     'rgba(115, 21, 37, 0.5)',
-                    'rgba(15, 132, 187, 0.5)']                
+                    'rgba(15, 132, 187, 0.5)'],
+                themeColor: Config.themeColor
             }
         },
         methods: {

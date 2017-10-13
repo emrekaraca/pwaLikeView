@@ -2,7 +2,7 @@
     <div class="main container">
         <div class="row">
             <div class="col s12">
-                <div class="card title-card blue-grey lighten-1">
+                <div :class="themeColor" class="card title-card lighten-1">
                     <div class="card-content">
                         <span class="card-title section-title white-text">Flow Chart</span>
                         <!--<span class="card-title section-title white-text">=> Inspired by these <a href="https://www.tagesschau.de/multimedia/bilder/uvotealbum-945.html">CHARTS</a>, but unstyled</span>-->
@@ -135,7 +135,8 @@
                     O: 'rgb(0, 80, 120)',
                     OE: 'rgb(115, 21, 37)',
                     V: 'rgb(15, 132, 187)'                
-                }
+                },
+                themeColor: Config.themeColor
                 
             }
         },
@@ -242,7 +243,7 @@
                 let classes = {};
                 for (let party in this.partyNames) {
                     if (this.partyNames[party] == this.selectedParty) {
-                        classes[this.partyNames[party]] = 'blue-grey lighten-1'
+                        classes[this.partyNames[party]] = this.themeColor + ' lighten-1'
                     } else {
                         classes[this.partyNames[party]] = 'grey lighten-4'
                     }

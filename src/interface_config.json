@@ -1,6 +1,10 @@
 {
   "apiUrl": "https://predictionsapi.herokuapp.com/",
-  "homeDescription": ["This interface displays a number of data visualizations from AT-Election-Prediction-analyses. Click one of the options to see more.", "The site is a work-in-progress. The main goal is to explore options, no extra time is spent to make things perfect."],
+  "homeDescription": ["This interface displays a number of data visualizations from AT-Election-Prediction-analyses. Click one of the options to see more."],
+  "themeColor": "grey",
+  "logo": {
+    "show": true
+  },
   "activeModules": {
     "trends": {
       "doNotChange": {

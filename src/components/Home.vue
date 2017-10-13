@@ -1,34 +1,29 @@
 <template>
   <div class="main container">
     <div class="row">
-      <div class="col s0 m1"></div>
-      <div class="col s12">
-        <div class="row">
-          
-          <div class="col s12">
-            <div class="card blue-grey darken-1">
-              <div class="card-content white-text">
-                <span class="card-title">Home</span>
-                <p v-for="sentence in homeDescription">{{sentence}}</p>
-              </div>
+      <div class="row">
+        
+        <div class="col s12">
+          <div :class="themeColor" class="card darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">Home</span>
+              <p v-for="sentence in homeDescription">{{sentence}}</p>
             </div>
           </div>
-          <template v-for="option, key in options">
+        </div>
+        <template v-for="option, key in options">
+          <a :href="'/#' + option.doNotChange.link">
             <div v-if="option.show" class="card large col s12 m4 l3">
               <div class="card-image">
-                <a :href="'/#' + option.doNotChange.link"><img class="imgContainer" :src="optionPic(key)"></a>
-                <span class="card-title blue-grey-text">{{option.name}}</span>
+                <img class="imgContainer" :src="optionPic(key)">
+                <span :class="themeColor + '-text'" class="card-title option-title text-darken-4">{{option.name}}</span>
               </div>
-              <div class="card-content">
+              <div class="card-content black-text">
                 <p>{{option.description}}</p>
               </div>
-              <div class="card-action">
-                <a :href="'/#' + option.doNotChange.link">Explore</a>
-              </div>
             </div>
-          </template>
-
-        </div>
+          </a>
+        </template>
       </div>
     </div>
   </div>
@@ -41,6 +36,22 @@
   .card-image {
     height: 200px;
   }
+  .option-title {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+  .option-title::before {
+    content: "";
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;  
+    opacity: .5; 
+    z-index: -1;
+    background-color: lightgrey;
+  }
 </style>
 
 <script>
@@ -50,7 +61,8 @@ export default {
   data() {
     return {
       options: Config.activeModules,
-      homeDescription: Config.homeDescription
+      homeDescription: Config.homeDescription,
+      themeColor: Config.themeColor
     }
   },
   methods: {

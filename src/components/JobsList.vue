@@ -1,7 +1,7 @@
 <template id="">
     <div class="main container" >
         <div class="right-align" style="margin-top: -30px; margin-right: -20px">
-            <a href="#" data-activates="slide-out" class="button-collapse2 btn-large btn-floating waves-effect waves-light blue-grey darken-1"><i class="material-icons">timeline</i></a>
+            <a href="#" data-activates="slide-out" :class="themeColor" class="button-collapse2 btn-large btn-floating waves-effect waves-light darken-1"><i class="material-icons">timeline</i></a>
         </div>
 
         <div class="row" style="margin-top: -15px">
@@ -11,8 +11,8 @@
                         <h5>Select Country</h5>
                         <button class="btn btn-flat waves-effect waves-light" v-bind:class="deClass" @click="changeCountry('de')">DE</button>
                         <button class="btn btn-flat waves-effect waves-light" v-bind:class="dkClass" @click="changeCountry('dk')">DK</button>
-                        <button class="btn blue-grey disabled">NO</button>
-                        <button class="btn blue-grey disabled">NZ</button>
+                        <button :class="themeColor" class="btn disabled">NO</button>
+                        <button :class="themeColor" class="btn disabled">NZ</button>
                     </div>
                     <table class="striped">
                         <thead>
@@ -52,7 +52,7 @@
                                 <td>{{ job }}</td>
                                 <td>{{ selectedCountry.toUpperCase()}}</td>
                                 <td class="right-align">
-                                    <a class="btn-floating waves-effect waves-light blue-grey lighten-1" @click="passJob(job)"><i class="material-icons">timeline</i></a>
+                                    <a :class="themeColor" class="btn-floating waves-effect waves-light lighten-1" @click="passJob(job)"><i class="material-icons">timeline</i></a>
                                     <a class="btn-floating waves-effect waves-light red lighten-3" v-bind:class="deleteClass" @click="deleteJob(job)"><i class="material-icons">delete</i></a>
                                 </td>
                             </tr>
@@ -90,7 +90,8 @@
             loading: true,
             predictionJobs: [],
             deleteActive: false,
-            selectedCountry: 'de'
+            selectedCountry: 'de',
+            themeColor: Config.themeColor
         }
     },
     computed:  {
@@ -119,18 +120,18 @@
         },
         deClass: function() {
             if (this.selectedCountry == 'de') {
-                return 'blue-grey'
+                return this.themeColor
             }
             else {
-                return 'blue-grey lighten-3'
+                return this.themeColor + ' lighten-3'
             }
         },
         dkClass: function() {
             if (this.selectedCountry == 'dk') {
-                return 'blue-grey'
+                return this.themeColor
             }
             else {
-                return 'blue-grey lighten-3'
+                return this.themeColor + ' lighten-3'
             }
         }
     },
