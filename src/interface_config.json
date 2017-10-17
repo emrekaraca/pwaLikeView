@@ -15,6 +15,15 @@
       "name": "Raw Likes",
       "description": "In this view you can browse and inspect poll predictions based on Facebook-Likes. You can also activate poll data or election results. In order to open an analysis-dataset, you will have to press the charts button on the top-right-corner."
     },
+    "trendsAbsolute": {
+      "doNotChange": {
+        "fileName": "TrendsAbsolute",
+        "link": "/trendsabsolute"
+      },
+      "show": true,
+      "name": "Raw Likes - Absolute",
+      "description": "In this view you can browse and inspect poll predictions based on Facebook-Likes. You can also activate poll data or election results. In order to open an analysis-dataset, you will have to press the charts button on the top-right-corner."
+    },
     "multiChart": {
       "doNotChange": {
         "fileName": "Multichart",

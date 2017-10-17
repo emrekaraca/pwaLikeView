@@ -402,12 +402,12 @@ export default {
             this.dataIsReloading = true
             let self = this
             let myInit = { mode: 'cors' }
-            fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikes' + '?&jobid=rawLikesNew&dummySetting=1&start=' + this.start + '&end=' + this.end + '&pol=dk', myInit)
+            fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikesabsolute' + '?&jobid=rawLikesAbsolute&dummySetting=1&start=' + this.start + '&end=' + this.end + '&pol=dk', myInit)
             .then((response) => {
                 return response.json();
             })
             .then(function(data) {
-                self.$store.commit('fetchRawLikesData', data)
+                self.$store.commit('fetchRawLikesAbsoluteData', data)
                 self.loadData()
                 self.dataIsReloading = false
                 return
@@ -505,7 +505,7 @@ export default {
             this.showingPolls = true;
         },
         loadData: function () {
-            this.columns = this.$store.state.rawLikesData
+            this.columns = this.$store.state.rawLikesAbsoluteData
             this.fetchGraph()
             $('.modal').modal();
 
@@ -743,7 +743,7 @@ export default {
                     },
                     y: {
                         tick: {
-                            format: d => d + "%"
+                            format: d => d/100 + " Likes"
                         },
                         show: false,
                         padding: {
@@ -758,15 +758,14 @@ export default {
                 grid: {
                         y: {
                             lines: [
-                                {value: 5, text: '5%', position: 'start', class: 'lineClass2'},
-                                {value: 10, text: '10%', position: 'start', class: 'lineClass'},
-                                {value: 15, text: '15%', position: 'start', class: 'lineClass'},
-                                {value: 20, text: '20%', position: 'start', class: 'lineClass'},
-                                {value: 25, text: '25%', position: 'start', class: 'lineClass'},
-                                {value: 30, text: '30%', position: 'start', class: 'lineClass'},
-                                {value: 35, text: '35%', position: 'start', class: 'lineClass'},
-                                {value: 40, text: '40%', position: 'start', class: 'lineClass'},
-                                {value: 45, text: '45%', position: 'start', class: 'lineClass'},
+                                {value: 0, text: '0', position: 'start', class: 'lineClass'},
+                                {value: 1000000, text: '10.000', position: 'start', class: 'lineClass'},
+                                {value: 2000000, text: '20.000', position: 'start', class: 'lineClass'},
+                                {value: 3000000, text: '30.000', position: 'start', class: 'lineClass'},
+                                {value: 4000000, text: '40.000', position: 'start', class: 'lineClass'},
+                                {value: 5000000, text: '50.000', position: 'start', class: 'lineClass'},
+                                {value: 6000000, text: '60.000', position: 'start', class: 'lineClass'},
+                                {value: 7000000, text: '70.000', position: 'start', class: 'lineClass'},
                             ]
                         }
                 }

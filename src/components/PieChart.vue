@@ -1,68 +1,64 @@
 <template>
     <div class="main container">
         <div class="row">
-            <div class="col s12">
-                <div class="card title-card lighten-1" :class="themeColor">
+            <div class="col s12 card" :class="themeColor + ' lighten-4'">
+                <div class="col s12">
                     <div class="card-content">
-                        <span class="card-title section-title white-text">Pie Chart</span>
+                        <span class="card-title section-title">Pie Chart</span>
                     </div>
-                </div>
-            </div>    
-            
-            <div class="col s0 l1"></div>
-            <div class="col s12 l10">
-                <div id="pieChart"></div>
-                <div class="center-align chartContainer" v-if="loading">
-                    <div class="preloader-wrapper big active">
-                        <div class="spinner-layer spinner-red-only">
-                            <div class="circle-clipper left">
-                                <div class="circle"></div>
-                            </div>
-                            <div class="gap-patch">
-                                <div class="circle"></div>
-                            </div>
-                            <div class="circle-clipper right">
-                                <div class="circle"></div>
+                    <div id="pieChart"></div>
+                    <div class="center-align chartContainer" v-if="loading">
+                        <div class="preloader-wrapper big active">
+                            <div class="spinner-layer spinner-red-only">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col s0 m1"></div>
-            <div v-for="party in partyNames" class="col s2 m1 center-align">
-                <button v-bind:class="partyButtonClasses[party]" class="btn btn-floating" @click="selectedParty = party"><img style="transform: translateY(6px)" :src="partyPic(party)" /></button>
-            </div>
-        </div>
+                <div class="row">
+                    <div class="col s0 m1"></div>
+                    <div v-for="party in partyNames" class="col s2 m1 center-align">
+                        <button v-bind:class="partyButtonClasses[party]" class="btn btn-floating" @click="selectedParty = party"><img style="transform: translateY(6px)" :src="partyPic(party)" /></button>
+                    </div>
+                </div>
 
+                <div class="row">
+                    <div class="col s1 m2"></div>
+                    <div class="col s10 m8">
+                        <form action="#">
+                            <p class="range-field">
+                                <span>From {{getMonday(timePeriods[pickedDate1])}}</span>
+                                <span v-if="!multiWeek"> <--> Until {{getSunday(timePeriods[pickedDate1])}}</span>
+                                <span class="switch right">
+                                    <label>
+                                    Single-Week
+                                    <input type="checkbox" v-model="multiWeek">
+                                    <span class="lever"></span>
+                                    Multi-Week
+                                    </label>
+                                </span>
+                                
+                                <input type="range" id="test5" min="0" v-bind:max="timePeriods.length-1" v-model="pickedDate1"/>
+                            </p>
+                        </form>                
+                        <form action="#" v-if="multiWeek">
+                            <p class="range-field">
+                                Until {{getSunday(timePeriods[pickedDate2])}}
+                                <input type="range" id="test5" min="0" v-bind:max="timePeriods.length-1" v-model="pickedDate2"/>
+                            </p>
+                        </form>                
+                    </div>
+                </div>
 
-        <div class="row">
-            <div class="col s0 m2"></div>
-            <div class="col s0 m8">
-                <form action="#">
-                    <p class="range-field">
-                        <span>From {{getMonday(timePeriods[pickedDate1])}}</span>
-                        <span v-if="!multiWeek"> <--> Until {{getSunday(timePeriods[pickedDate1])}}</span>
-                        <span class="switch right">
-                            <label>
-                            Single-Week
-                            <input type="checkbox" v-model="multiWeek">
-                            <span class="lever"></span>
-                            Multi-Week
-                            </label>
-                        </span>
-                        
-                        <input type="range" id="test5" min="0" v-bind:max="timePeriods.length-1" v-model="pickedDate1"/>
-                    </p>
-                </form>                
-                <form action="#" v-if="multiWeek">
-                    <p class="range-field">
-                        Until {{getSunday(timePeriods[pickedDate2])}}
-                        <input type="range" id="test5" min="0" v-bind:max="timePeriods.length-1" v-model="pickedDate2"/>
-                    </p>
-                </form>                
             </div>
         </div>
     </div>
@@ -119,13 +115,13 @@
                 self.pickedDate1 = self.timePeriods.length-1
                 self.pickedDate2 = self.timePeriods.length-1
                 self.columns = data.slice(1, data.length)
-                this.drawChart()
+                this.drawChart(this.selectedColumn)
             },
-            drawChart: function () {
+            drawChart: function (column) {
             chart = c3.generate ({
                     bindto: '#pieChart',
                     data: {
-                        columns: this.selectedColumn,
+                        columns: column,
                         colors: this.partyColors,
                         type: 'pie'
                     },
@@ -139,27 +135,30 @@
                     },
                     legend: {
                         show: true
-                    }
+                    },
+                    transition: {
+                        duration: 150
+                    }                    
                 });      
             }
         },
         mounted () {
             this.loadData()
         },
-        updated () {
-        },
         watch: {
             selectedParty: function () {
-                this.drawChart()
+                chart.load({unload: true, columns: this.selectedColumn})
             },
             pickedDate1: function () {
                 if (!this.multiWeek) {
                     this.pickedDate2 = this.pickedDate1
                 }
-                this.drawChart()
+                chart.load({unload: true, columns: this.selectedColumn})
             },
             pickedDate2: function () {
-                this.drawChart()
+                if (this.multiWeek) {
+                    chart.load({unload: true, columns: this.selectedColumn})                    
+                }
             }
         },
         computed: {
@@ -219,8 +218,6 @@
                 }
                 return obj
             }
-            
-        }
-    
+        }    
     }
 </script>

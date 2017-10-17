@@ -1,74 +1,73 @@
 <template>
     <div class="main container">
-        <div class="row">
+        <div class="row card chartCard" :class="themeColor + ' lighten-4'">
             <div class="col s12">
-                <div :class="themeColor" class="card title-card lighten-1">
-                    <div class="card-content">
-                        <span class="card-title section-title white-text">Sankey Chart</span>
+                <div class="card-content">
+                    <span class="card-title section-title">Sankey Chart</span>
+                </div>
+                <div class="row">
+                    <div class="col s0 l2"></div>
+                    <div class="col s12 l8">
+                        <div class="start label left">From</div>
+                        <div class="end label right">To</div>
                     </div>
                 </div>
-            </div>    
+                <div class="row">
+                    <div class="col s12 center-align sankeyChartContainer">
+                        <svg id="sankeyChart" v-bind:width="containerWidth" v-bind:height="chartHeight"></svg>
 
-        </div>    
-
-        <div class="row">
-            <div class="col s0 l2"></div>
-            <div class="col s12 l8">
-                <div class="start label left">From</div>
-                <div class="end label right">To</div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s0 l1 "></div>            
-            <div class="col s12 l10 center-align sankeyChartContainer">
-                <svg id="sankeyChart" v-bind:width="containerWidth" v-bind:height="chartHeight"></svg>
-
-                <div class="center-align chartContainer" v-if="loading">
-                    <div class="preloader-wrapper big active">
-                        <div class="spinner-layer spinner-red-only">
-                            <div class="circle-clipper left">
-                                <div class="circle"></div>
-                            </div>
-                            <div class="gap-patch">
-                                <div class="circle"></div>
-                            </div>
-                            <div class="circle-clipper right">
-                                <div class="circle"></div>
+                        <div class="center-align chartContainer" v-if="loading">
+                            <div class="preloader-wrapper big active">
+                                <div class="spinner-layer spinner-red-only">
+                                    <div class="circle-clipper left">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="col s1 m2"></div>
+                    <div class="col s10 m8">
+                        <form action="#">
+                            <p class="range-field">
+                                <span>From {{getMonday(timePeriods[pickedDate1])}}</span>
+                                <span v-if="!multiWeek"> <--> Until {{getSunday(timePeriods[pickedDate1])}}</span>
+                                <span class="switch right">
+                                    <label>
+                                    Single-Week
+                                    <input type="checkbox" v-model="multiWeek">
+                                    <span class="lever"></span>
+                                    Multi-Week
+                                    </label>
+                                </span>
+                                
+                                <input type="range" id="test5" min="0" v-bind:max="timePeriods.length-1" v-model="pickedDate1"/>
+                            </p>
+                        </form>
+                        <form action="#" v-if="multiWeek">
+                            <p class="range-field">
+                                <span>Until {{getSunday(timePeriods[pickedDate2])}}</span>
+                                <input type="range" id="test5" min="0" v-bind:max="timePeriods.length-1" v-model="pickedDate2"/>
+                            </p>
+                        </form>                
+                    </div>
                 </div>
+            </div>    
+            </div>    
 
-                <form action="#">
-                    <p class="range-field">
-                        <span>From {{getMonday(timePeriods[pickedDate1])}}</span>
-                        <span v-if="!multiWeek"> <--> Until {{getSunday(timePeriods[pickedDate1])}}</span>
-                        <span class="switch right">
-                            <label>
-                            Single-Week
-                            <input type="checkbox" v-model="multiWeek">
-                            <span class="lever"></span>
-                            Multi-Week
-                            </label>
-                        </span>
-                        
-                        <input type="range" id="test5" min="0" v-bind:max="timePeriods.length-1" v-model="pickedDate1"/>
-                    </p>
-                </form>
-                <form action="#" v-if="multiWeek">
-                    <p class="range-field">
-                        <span>Until {{getSunday(timePeriods[pickedDate2])}}</span>
-                        <input type="range" id="test5" min="0" v-bind:max="timePeriods.length-1" v-model="pickedDate2"/>
-                    </p>
-                </form>                
-
-            </div>
-        </div>
     </div>
   
 </template>
 
 <style>
+    .chartCard {
+    }
     .spinner-layer {
         border-color: #90a4ae;
     }
