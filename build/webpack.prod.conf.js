@@ -98,13 +98,13 @@ var webpackConfig = merge(baseWebpackConfig, {
     ]),
     // service worker caching
     new SWPrecacheWebpackPlugin({
-      cacheId: 'my-vue-app',
+      cacheId: 'like-view-app',
       filename: 'service-worker.js',
       staticFileGlobs: ['dist/**/*.{js,html,css,woff,woff2,png}'],
       minify: true,
       stripPrefix: 'dist/',
       runtimeCaching: [{
-        urlPattern: new RegExp('https://predictionsapi.herokuapp.com'),
+        urlPattern: new RegExp('https://likeviewapi.herokuapp.com/api/'),
         handler: 'networkFirst'
       }]
     })

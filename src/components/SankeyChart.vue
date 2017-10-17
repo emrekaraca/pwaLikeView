@@ -189,31 +189,17 @@
             },
             loadData: function() {
                 let self = this;
-                let myInit = { 
-                    mode: 'cors'
-                };
-                //fetch('http://localhost:3000/api/getvoteswings', myInit)
-                fetch(Config.apiUrl + 'api/getvoteswings', myInit)
-                .then((response) => {
-                    return response.json();
-                })
-                .then(function(data) {
-                    console.log(data);
-                    self.loading = false
-                    self.timePeriods = data[0].slice(1, data[0].length-1)
-                    self.pickedDate1 = self.timePeriods.length-1
-                    self.pickedDate2 = self.timePeriods.length-1
-                    self.columns = data.slice(1, data.length)
-                    if ($('.sankeyChartContainer').width() > 900) {
-                        self.containerWidth = 900
-                    } else {
-                        self.containerWidth = +$('.sankeyChartContainer').width()
-                    }                    
-                    return 'x'
-                })
-                .then((data) => {
-                    this.drawChart()
-                })
+                let data = self.$store.state.voteSwingData
+                self.loading = false
+                self.timePeriods = data[0].slice(1, data[0].length-1)
+                self.pickedDate1 = self.timePeriods.length-1
+                self.pickedDate2 = self.timePeriods.length-1
+                self.columns = data.slice(1, data.length)
+                if ($('.sankeyChartContainer').width() > 900) {
+                    self.containerWidth = 900
+                } else {
+                    self.containerWidth = +$('.sankeyChartContainer').width()
+                }
             },
             drawChart: function () {
                 $('#sankeyChart').html('')
@@ -400,6 +386,7 @@
             // this.computeData()
         },
         updated () {
+            this.drawChart()
         },
         watch: {
             activeParties: function () {
@@ -418,17 +405,6 @@
         computed: {
             chartHeight: function () {
                 return this.containerWidth * 1.1
-            },
-            partyButtonClasses: function () {
-                let classes = {};
-                for (let party in this.partyNames) {
-                    if (this.partyActive[this.partyNames[party]]) {
-                        classes[this.partyNames[party]] = 'blue-grey lighten-1'
-                    } else {
-                        classes[this.partyNames[party]] = 'grey'
-                    }
-                }
-                return classes
             },
             activeParties: function () {
                 return this.partyNames.filter((i) => this.partyActive[i])

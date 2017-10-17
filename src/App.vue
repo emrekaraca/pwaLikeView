@@ -3,36 +3,68 @@
     <app-header></app-header> 
     <div class="col s12">
       <transition name="fade">
-        <router-view></router-view>
+        <router-view v-if="render"></router-view>
       </transition>
     </div>
   </div>
 </template>
 
 <script>
-
+import Config from './interface_config.json'
 import Header from './components/Header.vue'
 
 
 export default {
   data () {
     return {
+      render: false
     }
   },
   components: {
     'app-header': Header
-  }
+  },
+  methods: {
+    loadVoteSwingData: function () {
+      let self = this
+      let myInit = { mode: 'cors' }
+      fetch(Config.apiUrl + 'api/getvoteswings', myInit)
+      .then((response) => {
+          return response.json();
+      })
+      .then(function(data) {
+        self.$store.commit('fetchVoteSwingData', data)
+        return
+      })
+    },
+    loadRawLikesData: function () {
+      let self = this
+      let myInit = { mode: 'cors' }
+      fetch(Config.apiUrl + 'api/getresult/' + 'dk-predictions' + '?&jobid=rawLikesNew&dummySetting=1&start=03-2017&end=12-2017&pol=dk', myInit)
+      .then((response) => {
+          return response.json();
+      })
+      .then(function(data) {
+        self.$store.commit('fetchRawLikesData', data)
+        self.render = true
+        return
+      })
+    }
+  },
+  created() {
+    this.loadRawLikesData()
+    this.loadVoteSwingData()
+  }  
 }
 </script>
 
 <style>
   .fade-enter-active, .fade-leave-active {
     transition-property: opacity;
-    transition-duration: .25s;
+    transition-duration: .4s;
   }
 
   .fade-enter-active {
-    transition-delay: .5s;
+    transition-delay: .4s;
   }
 
   .fade-enter, .fade-leave-active {
@@ -48,6 +80,7 @@ export default {
   .col {
     padding: 4px!important
   }
+
   
   @media only screen and (min-width: 601px)
   .container {

@@ -12,13 +12,15 @@
         </div>
         <template v-for="option, key in options">
           <a :href="'/#' + option.doNotChange.link">
-            <div v-if="option.show" class="card large col s12 m4 l3">
-              <div class="card-image">
-                <img class="imgContainer" :src="optionPic(key)">
-                <span :class="themeColor + '-text'" class="card-title option-title text-darken-4">{{option.name}}</span>
-              </div>
-              <div class="card-content black-text">
-                <p>{{option.description}}</p>
+            <div v-if="option.show" class="col s12 m4 l3">
+              <div class="card large" :class="themeColor + ' lighten-4'">
+                <div class="card-image">
+                  <img class="imgContainer" :src="optionPic(key)">
+                  <span :class="themeColor + '-text'" class="card-title option-title text-darken-4">{{option.name}}</span>
+                </div>
+                <div class="card-content black-text">
+                  <p>{{option.description}}</p>
+                </div>
               </div>
             </div>
           </a>
@@ -31,6 +33,10 @@
 <style>
   .imgContainer {
     opacity: 0.5;
+  }
+  .card {
+    margin: 0px 0px;
+    padding: 10px;
   }
   .card-image {
     height: 200px;
@@ -47,9 +53,9 @@
     left: 0;
     width: 100%; 
     height: 100%;  
-    opacity: .3; 
+    opacity: .4; 
     z-index: -1;
-    background-color: lightgrey;
+    background-color: white;
   }
 </style>
 
@@ -65,7 +71,7 @@ export default {
     }
   },
   methods: {
-    optionPic: (key) => require('./../assets/homePics/' + key + '.png')
+    optionPic: (key) => require('./../assets/homePics/' + key + '.png'),
   }
 }
 </script>

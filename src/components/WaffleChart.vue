@@ -216,25 +216,14 @@
             },
             loadData: function() {
                 let self = this;
-                let myInit = { 
-                    mode: 'cors'
-                };
-                fetch(Config.apiUrl + 'api/getvoteswings', myInit)
-                .then((response) => {
-                    return response.json();
-                })
-                .then(function(data) {
-                    console.log(data);
-                    self.loading = false
-                    self.timePeriods = data[0].slice(1, data[0].length-1)
-                    self.pickedDate1 = self.timePeriods.length-1
-                    self.pickedDate2 = self.timePeriods.length-1
-                    self.columns = data.slice(1, data.length)
-                    return 'x'
-                })
-                .then((data) => {
-                    this.drawChart()
-                })
+                let data = self.$store.state.voteSwingData
+                self.loading = false
+                self.timePeriods = data[0].slice(1, data[0].length-1)
+                self.pickedDate1 = self.timePeriods.length-1
+                self.pickedDate2 = self.timePeriods.length-1
+                self.columns = data.slice(1, data.length)
+                return 'x'
+                this.drawChart()
             },
             drawChart: function () {
                 $('.chart').html('')

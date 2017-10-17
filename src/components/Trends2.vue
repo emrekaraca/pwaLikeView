@@ -2,6 +2,7 @@
     <div class="main container" >
         <div class="row">
             <div class="col s12 m12">
+            <app-jobs-list></app-jobs-list>
             </div>
             
             <div class="col s12">
@@ -18,6 +19,8 @@
                 <div class="right-align" style="margin-top: -40px; margin-right: 10px">
                     <a :class="themeColor" class="btn btn-floating waves-effect waves-light" onclick="$('#infomodal').modal('open')"><i class="material-icons">info_outline</i></a>
                     <a :class="themeColor" @click="zoomOut()" class="btn btn-floating waves-effect waves-light"><i class="material-icons">zoom_out</i></a>
+                    <a :class="themeColor" @click="toggleSettings()" class="btn btn-floating waves-effect waves-light"><i class="material-icons">settings</i></a>
+                    <a data-activates="slide-out" :class="themeColor" class="button-collapse2 btn btn-floating waves-effect waves-light"><i class="material-icons">timeline</i></a>                    
                 </div>
                 
                 <!-- Chart Container // Contains Loading-Spinner, which is replaced when the chart is generated -->
@@ -49,7 +52,7 @@
                 </div>                
                 
                 
-                <div class="card chartCard">
+                <div class="card chartCard" v-if="selectedJob">
                     <div id="chart" >
                     </div>
                 </div>
@@ -72,7 +75,7 @@
                         <label for="end">Until</label>                
                     </div>                
                     <div class="col s3 m2 l2 center-align">
-                        <button :class="themeColor" class="btn btn-large waves-effect waves-light lighten-1 validate" @click="fetchGraph()">
+                        <button :class="themeColor" class="btn btn-large waves-effect waves-light lighten-1 validate" @click="fetchGraph(true)">
                             <i class="material-icons">loop</i>
                         </button>
                     </div>
@@ -127,6 +130,20 @@
             <div>
                 <p style="color: white">.</p>
                 <br/>
+            </div>
+
+            <!-- Dynamic settings area // populated from database -->
+            <div v-show="showSettings" class="col s12 m6 l3 xl3 settingsContainer" v-for="(vals, settingName) in settings">
+                <div :class="themeColor" class="card title-card lighten-1">
+                    <div class="card-content">
+                        <span class="card-title section-title">{{settingName}}</span>
+                    </div>
+                </div>
+                <p v-for="(option, index) in settings[settingName]">
+                    <input v-if="index == 0" v-bind:name="settingName" type="radio" v-bind:id="option + '-' + settingName" v-model="selectedSettings[settingName]" v-bind:value="option" class="radio" />
+                    <input v-else v-bind:name="settingName" type="radio" v-bind:id="option + '-' + settingName" v-bind:value="option" v-model="selectedSettings[settingName]"/>
+                    <label v-bind:for="option + '-' + settingName">{{ option }}</label>
+                </p>
             </div>
 
         </div>
@@ -349,12 +366,16 @@
 
 <script>
 import { eventBus } from './../main';
+import JobsList from './JobsList.vue'
 import Config from './../interface_config.json'
 import c3 from 'c3'
 let chart; /* Defining chart in component scope, in order to be able to load new data after chart-generation */
 
 
 export default {
+    components: {
+        'app-jobs-list': JobsList
+    },    
     data() {
         return {
             selectedJob: '',
@@ -384,6 +405,9 @@ export default {
     },
     methods: {
         partyPic: (party) => require('./../assets/dk/' + party + '-small.png'),
+        toggleSettings: function() {
+            this.showSettings = !this.showSettings
+        },
         fetchPartyNames: function(columns) {
             this.partiesElec1 = [];
             this.partiesElec2 = [];
@@ -475,23 +499,72 @@ export default {
             this.showElec2 = true;
             this.showingPolls = true;
         },
-        loadData: function () {
-            this.columns = this.$store.state.rawLikesData
-            this.fetchGraph()
-        },
-        fetchGraph: function() {
-            this.fetchPartyNames(this.columns)
-            this.drawChart(this.columns)
-            this.resetSettings()
-            this.toggleElec1()
-            this.toggleElec2()
-            this.togglePolls()
-            this.drawLines()
-            this.initialLoading = false
-            console.log("drawing new chart")
+        fetchGraph: function(timePeriodWasChanged = false) {
+            let self = this; 
+            if (timePeriodWasChanged) {
+                this.dataIsReloading = true
+            }
+            let queryString = "?&jobid=" + this.selectedJob
+            for (let setting in this.selectedSettings) {
+                queryString += '&' + setting + '=' + this.selectedSettings[setting]
+            }   
+            queryString += '&start=' + this.start + '&end=' + this.end
+            if (this.initialLoading || timePeriodWasChanged) {
+                if (this.country == 'dk') {
+                    queryString += '&pol=dk'
+                } 
+                else if (this.country == 'de')
+                    queryString += '&pol=de'
+            }
+            console.log(Config.apiUrl + 'api/getresult/' + this.coll + queryString)
+            let myInit = { 
+                mode: 'cors'
+            };            
+            fetch(Config.apiUrl + 'api/getresult/' + this.coll + queryString, myInit)
+            .then((response) => {
+                console.log("result returned")
+                return response.json();
+            })
+            .then(data => {
+                self.columns = data
+
+                if (this.initialLoading) {
+                    this.drawChart(data)
+                    this.fetchPartyNames(this.columns)
+                    this.resetSettings()
+                    this.toggleElec1()
+                    this.toggleElec2()
+                    this.togglePolls()
+                    this.drawLines()
+                    this.initialLoading = false
+                    this.dataIsReloading = false
+                    console.log("drawing new chart")
+                } 
+                else if (timePeriodWasChanged) {
+                    chart.load(
+                        {
+                            unload: true,
+                            columns: data
+                        }
+                    )
+                    chart.resize()
+                    //setTimeout(() => {chart.unzoom()}, 500)
+                    console.log("loading chart with new date period")
+                    this.dataIsReloading = false                    
+                    setTimeout(function() {chart.unzoom()}, 500)
+                }
+                else {
+                    chart.load(
+                        {
+                            columns: data
+                        }
+                    )
+                    console.log("loading chart with new setting")
+                    this.dataIsReloading = false                
+                }
+            })
         },
         drawChart: data => {
-            console.log(data)
             let self = this
             chart = c3.generate({
                 bindto: '#chart',
@@ -744,7 +817,49 @@ export default {
         
     },
     mounted() {
-        this.loadData()
+        eventBus.$on('selectedJob', (data) => {
+            console.log(data.job)
+            let self = this;            
+            this.coll = data.coll;
+            this.selectedSettings = {};
+
+            this.selectedJob = data['job']; /* Saving passed jobId */
+            this.initialLoading = true
+            if (chart) {
+                chart.destroy()
+            }
+            let myInit = { 
+                mode: 'cors'
+            };            
+            fetch(Config.apiUrl + 'api/getjobinfo/' + this.coll + '/' + this.selectedJob, myInit) /* Fetching Available settings and setting-values for selected job */
+            .then((response) => {
+                return response.json();
+            })
+            .then(data => {
+                self.settings = data; /* Saving settings and setting-values */
+                self.country = data.country
+                delete self.settings['country']
+                self.jobinfo = data.jobinfo
+                delete self.settings['jobinfo']
+                for (let setting in self.settings) {
+                    self.$set(self.selectedSettings, setting, self.settings[setting][0])
+                }
+                $('.modal').modal();
+                self.fetchGraph()
+            })
+        });
+    },
+    watch: {
+        selectedSettings: {
+            handler: function(val) {            
+                console.log("Selected Setting changed")
+                if (!this.initialLoading) {
+                    this.dataIsReloading = true;
+                    this.fetchGraph();
+                }
+            },
+            deep: true
+        }
     },
     computed: {
         paragraphs: function () {

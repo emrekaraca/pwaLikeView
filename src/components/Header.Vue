@@ -25,15 +25,20 @@
 </template>
 
 <style media="screen">
+
+  .nav-extended .nav-wrapper {
+    overflow: hidden;
+  }
+
   .nav-extended .nav-wrapper .brand-logo {
     transform: translateX(10px);
-    height: 100%;    
+    height: 100%;
   }
 
   .nav-extended .nav-wrapper .brand-logo .logo {
     height: 100%;
     background-color: white;
-    float: right
+    float: right;
   }
 
   .nav-extended .nav-wrapper .brand-logo .edge {
