@@ -12,7 +12,7 @@
                 </div>
             </div>-->
 
-            <div class="col s12 card chartContainer" :class="themeColor + ' lighten-4'">
+            <div class="col s12 card grey lighten-4">
 
                 <!-- ZoomOut Button for the graph -->
                 <div style="margin-top: 20px; margin-right: 20px; position: absolute; right: 0">
@@ -21,7 +21,7 @@
                 </div>
                 
                 <div class="card-content">
-                    <span class="card-title section-title">Raw Likes Distribution to Parties</span>
+                    <span class="card-title section-title">Raw Likes Distribution to Parties - Absolute Numbers</span>
                 </div>                    
 
                 <!-- Chart Container // Contains Loading-Spinner, which is replaced when the chart is generated -->
@@ -105,33 +105,6 @@
 
                 </div>
             </div>
-            
-            <!-- Quick Action Buttons for showing/hiding all predictions/polls -->
-            <div class="col s6 m6 l3 center-align">
-                <button class="btn btn-large waves-effect waves-light " v-bind:class="classPredictions" @click="togglePredictions()">
-                    Predictions
-                </button>
-            </div>                
-            <div class="col s6 m6 l3 center-align">
-                <button class="btn btn-large waves-effect waves-light " v-bind:class="classPolls" @click="togglePolls()">
-                    Polls
-                </button>
-            </div>                
-            <div class="col s6 m6 l3 center-align">
-                <button class="btn btn-large waves-effect waves-light " v-bind:class="classElec1"  @click="toggleElec1()">
-                    {{electionYears[0]}} Election
-                </button>
-            </div>
-            <div class="col s6 m6 l3 center-align">
-                <button class="btn btn-large waves-effect waves-light " v-bind:class="classElec2"  @click="toggleElec2()">
-                    {{electionYears[1]}} Election
-                </button>
-            </div>
-            
-            <div>
-                <p style="color: white">.</p>
-                <br/>
-            </div>
 
         </div>
     </div>
@@ -169,6 +142,14 @@
         //transform: translateX(-20px);
     }
 
+    .c3-grid .lineClass line {
+        stroke-opacity: 0.3;
+    }
+
+    .c3-grid .totalLikesClass line {
+        stroke-opacity: 0;
+    }
+
     .lineClass {
         font-size: 20px;
         //transform: translateX(-20px);
@@ -178,6 +159,11 @@
         font-size: 20px;
         //transform: translateX(-20px);
     }
+
+    .totalLikesClass {
+        color: darkgrey
+    }
+
 
     
     .chartContainer {
@@ -205,6 +191,10 @@
         opacity: 0.3
     }    
 
+    .c3-circles-totalLikes, .c3-lines-totalLikes {
+        opacity: 0
+    }
+
     .btn-large {
         margin-bottom: 5px;
         width: 100%
@@ -213,7 +203,6 @@
     .c3-line {
         stroke-width: 2px
     }
-
 
     .c3-tooltip-name--A .name, .c3-tooltip-name--A-poll .name, .c3-tooltip-name--A-2011 .name, .c3-tooltip-name--A-2015 .name {
         background-image: url("https://www.b.dk/upload/tcarlsen/parties-history/img/a_small.png");
@@ -315,7 +304,7 @@
         background-image: url("https://www.b.dk/upload/tcarlsen/parties-history/img/o_small.png");
         background-repeat: no-repeat;
         height: 20px;
-        background-color: transparent
+        background-color: transparent;
     }
 
     .c3-tooltip-name--O .name span, .c3-tooltip-name--O-poll .name span {
@@ -402,7 +391,7 @@ export default {
             this.dataIsReloading = true
             let self = this
             let myInit = { mode: 'cors' }
-            fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikesabsolute' + '?&jobid=rawLikesAbsolute&dummySetting=1&start=' + this.start + '&end=' + this.end + '&pol=dk', myInit)
+            fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikesabsolute' + '?&jobid=rawLikesAbsolute&dummySetting=1&start=' + this.start + '&end=' + this.end, myInit)
             .then((response) => {
                 return response.json();
             })
@@ -464,6 +453,7 @@ export default {
             if (this.showLabels) {
                 chart.legend.hide()
                 this.showLabels = false
+                chart.resize()
             }
             else {
                 chart.legend.show()
@@ -512,7 +502,8 @@ export default {
         },
         fetchGraph: function() {
             this.fetchPartyNames(this.columns)
-            this.drawChart(this.columns)
+            this.drawChart(this.dataWithTotalLikes)
+            //this.drawChart(this.columns)
             this.resetSettings()
             this.toggleElec1()
             this.toggleElec2()
@@ -531,6 +522,8 @@ export default {
                 },     
                 data: {
                     xs: {
+                        totalLikes: 'x5',
+
                         AfD: 'x1',
                         CDU: 'x1',
                         FDP: 'x1',
@@ -685,7 +678,9 @@ export default {
                         OE_2015: 'rgba(115, 21, 37, 1)',
                         V_2015: 'rgba(15, 132, 187, 1)',
                         N_2015: 'rgba(0, 80, 120, 1)',
-                        Q_2015: 'rgba(115, 21, 37, 1)'                        
+                        Q_2015: 'rgba(115, 21, 37, 1)',
+
+                        totalLikes: 'grey'
                     },                    
                     names: {
                         AA: 'Alternativet',
@@ -713,7 +708,15 @@ export default {
                         D_poll: 'Nye Borg.-Poll',
                         K_poll: 'Kristendem.-Poll'
                     },
-                    order: null
+                    order: null,
+                    axes: {
+                        x1: 'y',
+                        totalLikes: 'y2'
+
+                    },
+                    types: {
+                        totalLikes: 'area'
+                    }
                 },    
                 tooltip: {
                     grouped: true
@@ -750,24 +753,53 @@ export default {
                             top: 50
                         },
                         min: 1
+                    },
+                    y2: {
+                        show: false,
+                        tick: {
+                            format: d => d/100 + " Likes"
+                        },
+                        padding: {
+                            top: 50
+                        },
+                        min: 1
+                        
                     }
                 },
                 legend: {
                     show: false
                 },
                 grid: {
-                        y: {
-                            lines: [
-                                {value: 0, text: '0', position: 'start', class: 'lineClass'},
-                                {value: 1000000, text: '10.000', position: 'start', class: 'lineClass'},
-                                {value: 2000000, text: '20.000', position: 'start', class: 'lineClass'},
-                                {value: 3000000, text: '30.000', position: 'start', class: 'lineClass'},
-                                {value: 4000000, text: '40.000', position: 'start', class: 'lineClass'},
-                                {value: 5000000, text: '50.000', position: 'start', class: 'lineClass'},
-                                {value: 6000000, text: '60.000', position: 'start', class: 'lineClass'},
-                                {value: 7000000, text: '70.000', position: 'start', class: 'lineClass'},
-                            ]
-                        }
+                    y: {
+                        lines: [
+                            {value: 0, text: '0', position: 'start', class: 'lineClass'},
+                            {value: 1000000, text: '10.000', position: 'start', class: 'lineClass'},
+                            {value: 2000000, text: '20.000', position: 'start', class: 'lineClass'},
+                            {value: 3000000, text: '30.000', position: 'start', class: 'lineClass'},
+                            {value: 4000000, text: '40.000', position: 'start', class: 'lineClass'},
+                            {value: 5000000, text: '50.000', position: 'start', class: 'lineClass'},
+                            {value: 10000000, text: '100.000', position: 'start', class: 'lineClass'},
+                            {value: 15000000, text: '150.000', position: 'start', class: 'lineClass'},
+                            {value: 20000000, text: '200.000', position: 'start', class: 'lineClass'},
+                            {value: 30000000, text: '300.000', position: 'start', class: 'lineClass'},
+                            {value: 40000000, text: '400.000', position: 'start', class: 'lineClass'},
+                            {value: 50000000, text: '500.000', position: 'start', class: 'lineClass'},
+                            {value: 10000000, text: '100.000 Total Likes', axis: 'y2', position: 'end', class: 'totalLikesClass'},
+                            {value: 20000000, text: '200.000 Total Likes', axis: 'y2', position: 'end', class: 'totalLikesClass'},
+                            {value: 30000000, text: '300.000 Total Likes', axis: 'y2', position: 'end', class: 'totalLikesClass'},
+                            {value: 40000000, text: '400.000 Total Likes', axis: 'y2', position: 'end', class: 'totalLikesClass'},
+                            {value: 50000000, text: '500.000 Total Likes', axis: 'y2', position: 'end', class: 'totalLikesClass'},
+                            {value: 75000000, text: '750.000 Total Likes', axis: 'y2', position: 'end', class: 'totalLikesClass'},
+                            {value: 100000000, text: '1.000.000 Total Likes', axis: 'y2', position: 'end', class: 'totalLikesClass'},
+                            {value: 125000000, text: '1.250.000 Total Likes', axis: 'y2', position: 'end', class: 'totalLikesClass'},
+                            {value: 150000000, text: '1.500.000 Total Likes', axis: 'y2', position: 'end', class: 'totalLikesClass'},
+                            {value: 200000000, text: '2.000.000 Total Likes', axis: 'y2', position: 'end', class: 'totalLikesClass'},
+                            {value: 250000000, text: '2.500.000 Total Likes', axis: 'y2', position: 'end', class: 'totalLikesClass'},
+                            {value: 300000000, text: '3.000.000 Total Likes', axis: 'y2', position: 'end', class: 'totalLikesClass'},
+                            {value: 350000000, text: '3.500.000 Total Likes', axis: 'y2', position: 'end', class: 'totalLikesClass'},
+                            {value: 400000000, text: '4.000.000 Total Likes', axis: 'y2', position: 'end', class: 'totalLikesClass'}
+                        ]
+                    }
                 }
             });
         }
@@ -777,6 +809,23 @@ export default {
         this.loadData()
     },
     computed: {
+        dataWithTotalLikes: function () {
+            let data = this.columns
+            data.push(['totalLikes'])
+            for (let party in data) {
+                if (data[party][0] !== 'x1' && data[party][0] !== 'totalLikes') {
+                    for (let week = 1; week < data[party].length; week++) {
+                        if (data[data.length-1].length < week + 1) {
+                            data[data.length-1].push(0)
+                        }
+                        data[data.length-1][week] += parseInt(data[party][week])
+                    }
+                }
+            }
+            data.push(data[0].slice())
+            data[data.length-1][0] = 'x5'
+            return data
+        },        
         paragraphs: function () {
             if (this.jobinfo) {
                 if (this.jobinfo[0]) {

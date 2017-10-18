@@ -13,7 +13,7 @@
         <template v-for="option, key in options">
           <a :href="'/#' + option.doNotChange.link">
             <div v-if="option.show" class="col s12 m4 l3">
-              <div class="card large" :class="themeColor + ' lighten-4'">
+              <div class="card large grey lighten-4">
                 <div class="card-image">
                   <img class="imgContainer" :src="optionPic(key)">
                   <span :class="themeColor + '-text'" class="card-title option-title text-darken-4">{{option.name}}</span>

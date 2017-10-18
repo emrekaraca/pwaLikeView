@@ -51,7 +51,7 @@ export default {
     loadRawLikesAbsoluteData: function () {
       let self = this
       let myInit = { mode: 'cors' }
-      fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikesabsolute' + '?&jobid=rawLikesAbsolute&dummySetting=1&start=01-2017&end=12-2017&pol=dk', myInit)
+      fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikesabsolute' + '?&jobid=rawLikesAbsolute&dummySetting=1&start=01-2017&end=12-2017', myInit)
       .then((response) => {
           return response.json();
       })

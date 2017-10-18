@@ -1,6 +1,6 @@
 <template>
     <div class="main container">
-        <div class="row card chartCard" :class="themeColor + ' lighten-4'">
+        <div class="row card chartCard grey lighten-4">
             <div class="col s12">
                 <div class="card-content">
                     <span class="card-title section-title">Sankey Chart</span>

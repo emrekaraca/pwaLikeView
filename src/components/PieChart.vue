@@ -1,7 +1,7 @@
 <template>
     <div class="main container">
         <div class="row">
-            <div class="col s12 card" :class="themeColor + ' lighten-4'">
+            <div class="col s12 card grey lighten-4">
                 <div class="col s12">
                     <div class="card-content">
                         <span class="card-title section-title">Pie Chart</span>
@@ -72,6 +72,10 @@
 
     .c3-circle {
         opacity: 0.3!important
+    }
+
+    #pieChart text {
+        fill: lightgrey!important
     }
 
 

@@ -1,7 +1,7 @@
 <template>
     <div class="main container">
         <div class="row">
-            <div class="col s12 card chartCard" :class="themeColor + ' lighten-4'">
+            <div class="col s12 card chartCard grey lighten-4">
                 <div class="card-content">
                     <span class="card-title section-title">Waffle Chart</span>
                 </div>

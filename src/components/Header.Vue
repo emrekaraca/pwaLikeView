@@ -17,7 +17,7 @@
           </ul>
           <router-link v-if="showLogo" to="/" class="brand-logo right">
             <img class="edge" src="../assets/homePics/edge.png"/>
-            <span class="logo"><img src="../assets/logo/logo.png"/></span>
+            <span class="logo"><img :src=brandLogo /></span>
           </router-link>
         </div>
       </nav>
@@ -71,7 +71,11 @@ export default {
         } else {
             return 500
         }
-    }    
+    },
+    logoFileName: () => Config.logo.fileName,
+    brandLogo: function () {
+      return require('../assets/logo/' + this.logoFileName)
+    }
   },
   mounted() {
         $(".button-collapse").sideNav({

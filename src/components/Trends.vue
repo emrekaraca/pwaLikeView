@@ -12,7 +12,7 @@
                 </div>
             </div>-->
 
-            <div class="col s12 card chartContainer" :class="themeColor + ' lighten-4'">
+            <div class="col s12 card grey lighten-4">
 
                 <!-- ZoomOut Button for the graph -->
                 <div style="margin-top: 20px; margin-right: 20px; position: absolute; right: 0">
@@ -54,8 +54,7 @@
                 
                 
                 <div class="chartCard">
-                    <div id="chart" >
-                    </div>
+                    <div id="rawchart"></div>
                 </div>
 
             </div>
@@ -109,7 +108,7 @@
             <!-- Quick Action Buttons for showing/hiding all predictions/polls -->
             <div class="col s6 m6 l3 center-align">
                 <button class="btn btn-large waves-effect waves-light " v-bind:class="classPredictions" @click="togglePredictions()">
-                    Predictions
+                    Raw Likes
                 </button>
             </div>                
             <div class="col s6 m6 l3 center-align">
@@ -166,8 +165,14 @@
 
     .c3-grid .lineClass2 line {
         stroke: red;
+        stroke-opacity: 0.3;
         //transform: translateX(-20px);
     }
+
+    .c3-grid .lineClass line {
+        stroke-opacity: 0.3;
+    }
+
 
     .lineClass {
         font-size: 20px;
@@ -525,7 +530,7 @@ export default {
             console.log(data)
             let self = this
             chart = c3.generate({
-                bindto: '#chart',
+                bindto: '#rawchart',
                 size: {
                     height: 350
                 },     
