@@ -1,64 +1,52 @@
 <template>
     <div class="main container">
         <div class="row">
-            <div class="col s12 card grey lighten-4">
-                <div class="col s12">
+            <div class="col s4">
+                <div class="card small green lighten-4">
                     <div class="card-content">
-                        <span class="card-title section-title">Pie Chart</span>
-                    </div>
-                    <div id="pieChart"></div>
-                    <div class="center-align chartContainer" v-if="loading">
-                        <div class="preloader-wrapper big active">
-                            <div class="spinner-layer spinner-red-only">
-                                <div class="circle-clipper left">
-                                    <div class="circle"></div>
-                                </div>
-                                <div class="gap-patch">
-                                    <div class="circle"></div>
-                                </div>
-                                <div class="circle-clipper right">
-                                    <div class="circle"></div>
-                                </div>
-                            </div>
-                        </div>
+                        <span class="card-title">Biggest Winner</span>
+                        <img :src="partyPic('O')" alt="" width="100%">
+                        <ul>
+                            <li>Logo of Party with biggest gains in last week</li>
+                            <li>Absolute number of likes / Absolute number of likes won</li>
+                            <li>Percentage of likes / Percentage win</li>
+                        </ul>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="col s0 m1"></div>
-                    <div v-for="party in partyNames" class="col s2 m1 center-align">
-                        <button v-bind:class="partyButtonClasses[party]" class="btn btn-floating" @click="selectedParty = party"><img style="transform: translateY(6px)" :src="partyPic(party)" /></button>
+            </div>
+            <div class="col s4">
+                <div class="card small red lighten-4">
+                    <div class="card-content">
+                        <span class="card-title">Biggest Loser</span>
+                        <img :src="partyPic('V')" alt="" width="100%">
+                        <ul>
+                            <li>Logo of Party with biggest gains in last week</li>
+                            <li>Absolute number of likes / Absolute number of likes won</li>
+                            <li>Percentage of likes / Percentage win</li>
+                        </ul>
+                        
+                    </div>                    
+                </div>
+            </div>
+            <div class="col s4">
+                <div class="card small blue lighten-4">
+                    <div class="card-content">
+                        <span class="card-title">Overall Stats</span>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="col s1 m2"></div>
-                    <div class="col s10 m8">
-                        <form action="#">
-                            <p class="range-field">
-                                <span>From {{getMonday(timePeriods[pickedDate1])}}</span>
-                                <span v-if="!multiWeek"> <--> Until {{getSunday(timePeriods[pickedDate1])}}</span>
-                                <span class="switch right">
-                                    <label>
-                                    Single-Week
-                                    <input type="checkbox" v-model="multiWeek">
-                                    <span class="lever"></span>
-                                    Multi-Week
-                                    </label>
-                                </span>
-                                
-                                <input type="range" id="test5" min="0" v-bind:max="timePeriods.length-1" v-model="pickedDate1"/>
-                            </p>
-                        </form>                
-                        <form action="#" v-if="multiWeek">
-                            <p class="range-field">
-                                Until {{getSunday(timePeriods[pickedDate2])}}
-                                <input type="range" id="test5" min="0" v-bind:max="timePeriods.length-1" v-model="pickedDate2"/>
-                            </p>
-                        </form>                
-                    </div>
+            </div>
+            <div class="col s8">
+                <div class="card small orange lighten-4">
+                    <div class="card-content">
+                        <span class="card-title">All parties Overview</span>
+                        <ul>
+                            <li v-for="party in ['A', 'AA', 'F', 'O', 'V']"><img :src="partyPic(party)" alt="" max-width="100%" height="30px"></li>
+                        </ul>
+                    </div>                    
                 </div>
-
+            </div>
+            <div class="col s4">
+                <div class="card small grey lighten-4"></div>
             </div>
         </div>
     </div>
@@ -66,6 +54,9 @@
 </template>
 
 <style>
+    .card {
+        margin: 3px 3px;    
+    }
     .spinner-layer {
         border-color: #90a4ae;
     }
@@ -102,7 +93,7 @@
             }
         },
         methods: {
-            partyPic: (party) => require('./../assets/dk/' + party + '-small.png'),
+            partyPic: (party) => require('./../assets/dk/' + party + '-big.png'),
             getMonday: function (date) {
                 let monday = new Date(new Date(date).setDate(new Date(date).getDate()-6))
                 return monday.getDate() + '.' + parseInt(monday.getMonth()+1) + '.' + monday.getFullYear()

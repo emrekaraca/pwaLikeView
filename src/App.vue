@@ -57,15 +57,15 @@ export default {
       })
       .then(function(data) {
         self.$store.commit('fetchRawLikesAbsoluteData', data)
-        self.render = true
         return
       })
     }
   },
-  created() {
+  mounted() {
     this.loadRawLikesData()
     this.loadVoteSwingData()
     this.loadRawLikesAbsoluteData()
+    this.render = true
   }  
 }
 </script>

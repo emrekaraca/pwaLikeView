@@ -1,17 +1,7 @@
 <template>
     <div class="main container" >
         <div class="row">
-            <div class="col s12 m12">
-            </div>
             
-            <!--<div class="col s12">
-                <div :class="themeColor" class="card title-card lighten-1">
-                    <div class="card-content">
-                        <span class="card-title section-title white-text">Raw Likes Distribution to Parties</span>
-                    </div>
-                </div>
-            </div>-->
-
             <div class="col s12 card grey lighten-4">
 
                 <!-- ZoomOut Button for the graph -->
@@ -107,22 +97,22 @@
             
             <!-- Quick Action Buttons for showing/hiding all predictions/polls -->
             <div class="col s6 m6 l3 center-align">
-                <button class="btn btn-large waves-effect waves-light " v-bind:class="classPredictions" @click="togglePredictions()">
+                <button class="btn btn-large waves-effect waves-light" v-bind:class="classPredictions" @click="togglePredictions()">
                     Raw Likes
                 </button>
             </div>                
             <div class="col s6 m6 l3 center-align">
-                <button class="btn btn-large waves-effect waves-light " v-bind:class="classPolls" @click="togglePolls()">
+                <button class="btn btn-large waves-effect waves-light" v-bind:class="classPolls" @click="togglePolls()">
                     Polls
                 </button>
             </div>                
             <div class="col s6 m6 l3 center-align">
-                <button class="btn btn-large waves-effect waves-light " v-bind:class="classElec1"  @click="toggleElec1()">
+                <button class="btn btn-large waves-effect waves-light" v-bind:class="classElec1"  @click="toggleElec1()">
                     {{electionYears[0]}} Election
                 </button>
             </div>
             <div class="col s6 m6 l3 center-align">
-                <button class="btn btn-large waves-effect waves-light " v-bind:class="classElec2"  @click="toggleElec2()">
+                <button class="btn btn-large waves-effect waves-light" v-bind:class="classElec2"  @click="toggleElec2()">
                     {{electionYears[1]}} Election
                 </button>
             </div>

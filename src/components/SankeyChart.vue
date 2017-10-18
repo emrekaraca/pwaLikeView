@@ -66,8 +66,6 @@
 </template>
 
 <style>
-    .chartCard {
-    }
     .spinner-layer {
         border-color: #90a4ae;
     }
@@ -190,7 +188,7 @@
                 let self = this;
                 let data = self.$store.state.voteSwingData
                 self.loading = false
-                self.timePeriods = data[0].slice(1, data[0].length-1)
+                self.timePeriods = data[0].slice(1, data[0].length)
                 self.pickedDate1 = self.timePeriods.length-1
                 self.pickedDate2 = self.timePeriods.length-1
                 self.columns = data.slice(1, data.length)

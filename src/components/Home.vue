@@ -1,32 +1,33 @@
 <template>
-  <div class="main container">
-    <div class="row">
-      <div class="row">
-        
-        <div class="col s12">
-          <div :class="themeColor" class="card darken-1">
-            <div class="card-content white-text">
-              <p v-for="sentence in homeDescription">{{sentence}}</p>
-            </div>
-          </div>
+
+  <div class="main container row">
+    <div class="col s12">
+      <div :class="themeColor" class="card darken-1">
+        <div class="card-content white-text">
+          <p v-for="sentence in homeDescription">{{sentence}}</p>
         </div>
-        <template v-for="option, key in options">
-          <a :href="'/#' + option.doNotChange.link">
-            <div v-if="option.show" class="col s12 m4 l3">
-              <div class="card large grey lighten-4">
-                <div class="card-image">
-                  <img class="imgContainer" :src="optionPic(key)">
-                  <span :class="themeColor + '-text'" class="card-title option-title text-darken-4">{{option.name}}</span>
-                </div>
-                <div class="card-content black-text">
-                  <p>{{option.description}}</p>
-                </div>
-              </div>
-            </div>
-          </a>
-        </template>
       </div>
     </div>
+
+    <template v-for="option, key in options">
+      <a :href="'/#' + option.doNotChange.link">
+        <div v-if="option.show" class="col s12 m4 l3">
+          <div class="card medium grey lighten-4">
+
+            <div class="card-image">
+              <img class="imgContainer" :src="optionPic(key)">
+              <span :class="themeColor + '-text'" class="card-title option-title text-darken-4">{{option.name}}</span>
+            </div>
+
+            <div class="card-content black-text">
+              <p>{{option.description}}</p>
+            </div>
+
+          </div>
+        </div>
+      </a>
+    </template>
+
   </div>
 </template>
 
@@ -35,15 +36,18 @@
     opacity: 0.5;
   }
   .card {
-    margin: 0px 0px;
-    padding: 10px;
+      padding: 10px;
   }
   .card-image {
-    height: 200px;
+    height: 100px;
+  }
+  .card-content {
+    max-height: 100%!important;
   }
   .option-title {
     position: relative;
     z-index: 1;
+    top:0;
     width: 100%;
   }
   .option-title::before {
