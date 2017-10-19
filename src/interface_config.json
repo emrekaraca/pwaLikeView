@@ -7,6 +7,15 @@
     "fileName": "logo.png"
   },
   "activeModules": {
+    "dashboard": {
+      "doNotChange": {
+        "fileName": "Dashboard",
+        "link": "/dashboard"
+      },        
+      "show": true,
+      "name": "Dashboard",
+      "description": "This timeseries-chart shows for each Danish party how the likes of all users that predominantly like this party are distributed over all parties over time."
+    },
     "trends": {
       "doNotChange": {
         "fileName": "Trends",
@@ -41,15 +50,6 @@
       },        
       "show": false,
       "name": "Timeseries",
-      "description": "This timeseries-chart shows for each Danish party how the likes of all users that predominantly like this party are distributed over all parties over time."
-    },
-    "dashboard": {
-      "doNotChange": {
-        "fileName": "Dashboard",
-        "link": "/dashboard"
-      },        
-      "show": true,
-      "name": "Dashboard",
       "description": "This timeseries-chart shows for each Danish party how the likes of all users that predominantly like this party are distributed over all parties over time."
     },
     "pie": {
