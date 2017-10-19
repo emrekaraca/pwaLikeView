@@ -375,7 +375,7 @@ export default {
             pollsLoaded: false,
             initialLoading: true,
             dataIsReloading: false,
-            start: '07-2017',
+            start: '01-2017',
             end: '12-2017',
             showingPredictions: true,
             showingPolls: true,

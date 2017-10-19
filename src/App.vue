@@ -39,7 +39,7 @@ export default {
     loadRawLikesAbsoluteData: function () {
       let self = this
       let myInit = { mode: 'cors' }
-      fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikesabsolute' + '?&jobid=rawLikesAbsolute&dummySetting=1&start=07-2017&end=12-2017', myInit)
+      fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikesabsolute' + '?&jobid=rawLikesAbsolute&dummySetting=1&start=01-2017&end=12-2017', myInit)
       .then((response) => {
           return response.json();
       })
@@ -51,7 +51,7 @@ export default {
     loadRawLikesData: function () {
       let self = this
       let myInit = { mode: 'cors' }
-      fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikes' + '?&jobid=rawLikesNew&dummySetting=1&start=07-2017&end=12-2017&pol=dk', myInit)
+      fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikes' + '?&jobid=rawLikesNew&dummySetting=1&start=01-2017&end=12-2017&pol=dk', myInit)
       .then((response) => {
           return response.json();
       })
