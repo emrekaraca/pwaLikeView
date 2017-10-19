@@ -153,7 +153,7 @@
                     'rgba(15, 133, 75, 1)',
                     'rgba(156, 29, 42, 1)',
                     'rgba(239, 133, 53, 1)',
-                    'rgba(99, 99, 99, 1)',
+                    '#2a4952',
                     'rgba(0, 80, 120, 1)',
                     'rgba(115, 21, 37, 1)',
                     'rgba(15, 132, 187, 1)'],
@@ -164,7 +164,8 @@
                     C: 'rgb(15, 133, 75)',
                     F: 'rgb(156, 29, 42)',
                     I: 'rgb(239, 133, 53)',
-                    NB:'rgb(99, 99, 99)',
+                    D: '#2a4952',
+                    NB: '#2a4952',
                     O: 'rgb(0, 80, 120)',
                     OE: 'rgb(115, 21, 37)',
                     V: 'rgb(15, 132, 187)'                
@@ -183,6 +184,17 @@
             },
             toggleParty: function (party) {
                 this.partyActive[party] = !this.partyActive[party]
+            },
+            getPartyPicName: function (name) {
+                if (name === 'OE') {
+                    return 'ø'
+                } else if (name === 'AA') {
+                    return 'å'
+                } else if (name === 'NB') {
+                    return 'd'
+                } else {
+                    return name.toLowerCase()
+                }
             },
             loadData: function() {
                 let self = this;
@@ -306,15 +318,16 @@
                     })
                     
 
-                node.append("text")
-                    .attr("x", function(d) { return d.x0 - 6; })
-                    .attr("y", function(d) { return (d.y1 + d.y0) / 2; })
+                node.append("svg:image")
+                    .attr("x", function(d) { return d.x0 - 28; })
+                    .attr("y", function(d) { return (d.y1 + d.y0) / 2 -10; })
                     .attr("dy", "0.35em")
-                    .attr("text-anchor", "end")
-                    .text(function(d) { return d.name; })
+                    .attr("image-anchor", "end")
+                    .attr("xlink:href", function(d) {return "https://www.b.dk/upload/tcarlsen/parties-history/img/" + self.getPartyPicName(d.name) + "_small.png"})                    
+                    // .attr("src", function(d) { return 'https://www.b.dk/upload/tcarlsen/parties-history/img/v_small.png' })
                     .filter(function(d) { return d.x0 < width / 2; })
                     .attr("x", function(d) { return d.x1 + 6; })
-                    .attr("text-anchor", "start");           
+                    .attr("image-anchor", "start");           
 
                 /*node.append("title")
                     .text(function(d) { return d.name + "\n" + format(d.value); });*/

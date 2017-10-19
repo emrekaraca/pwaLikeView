@@ -3,10 +3,17 @@
         <div class="row">
             <div class="col s12 card grey lighten-4">
                 <div class="col s12">
-                    <div class="card-content">
-                        <span class="card-title section-title">Pie Chart</span>
+                    <div class="row">
+                        <div class="col s12 l6 center-align">
+                            <span class="card-title">Where did the Likes go?</span>
+                            
+                            <div id="pieChart"></div>
+                        </div>
+                        <div class="col s12 l6 center-align">
+                            <span class="card-title">Where did the Likes come from?</span>
+                            <div id="pieChart2"></div>
+                        </div>
                     </div>
-                    <div id="pieChart"></div>
                     <div class="center-align chartContainer" v-if="loading">
                         <div class="preloader-wrapper big active">
                             <div class="spinner-layer spinner-red-only">
@@ -74,7 +81,7 @@
         opacity: 0.3!important
     }
 
-    #pieChart text {
+    #pieChart text, #pieChart2 text {
         fill: lightgrey!important
     }
 
@@ -85,7 +92,7 @@
 <script>
     import Config from './../interface_config.json'
     import c3 from 'c3'
-    let chart
+    let chart, chart2
     export default {
         data () {
             return {
@@ -120,6 +127,7 @@
                 self.pickedDate2 = self.timePeriods.length-1
                 self.columns = data.slice(1, data.length)
                 this.drawChart(this.selectedColumn)
+                this.drawChart2(this.selectedColumn2)
             },
             drawChart: function (column) {
             chart = c3.generate ({
@@ -134,11 +142,35 @@
                             format: function (value, ratio) { return value + ' Likes'; }
                         }
                     },
+                    // size: {
+                    //     width: this.containerWidth
+                    // },
+                    legend: {
+                        show: false
+                    },
+                    transition: {
+                        duration: 150
+                    }                    
+                });      
+            },
+            drawChart2: function (column) {
+            chart2 = c3.generate ({
+                    bindto: '#pieChart2',
+                    data: {
+                        columns: column,
+                        colors: this.partyColors2,
+                        type: 'pie'
+                    },
+                    pie: {
+                        label: {
+                            format: function (value, ratio) { return value + ' Likes'; }
+                        }
+                    },
                     size: {
-                        height: this.containerWidth
+                        width: this.containerWidth
                     },
                     legend: {
-                        show: true
+                        show: false
                     },
                     transition: {
                         duration: 150
@@ -152,27 +184,23 @@
         watch: {
             selectedParty: function () {
                 chart.load({unload: true, columns: this.selectedColumn})
+                chart2.load({unload: true, columns: this.selectedColumn2})
             },
             pickedDate1: function () {
                 if (!this.multiWeek) {
                     this.pickedDate2 = this.pickedDate1
                 }
                 chart.load({unload: true, columns: this.selectedColumn})
+                chart2.load({unload: true, columns: this.selectedColumn2})
             },
             pickedDate2: function () {
                 if (this.multiWeek) {
                     chart.load({unload: true, columns: this.selectedColumn})                    
+                    chart2.load({unload: true, columns: this.selectedColumn2})                    
                 }
             }
         },
         computed: {
-            containerWidth: function() {
-                if ($('.chartContainer').width() > 500) {
-                    return 500
-                } else {
-                    return $('.chartContainer').width()
-                }
-            },
             partyButtonClasses: function () {
                 let classes = {};
                 for (let party in this.partyNames) {
@@ -200,6 +228,22 @@
                         return [column[0], sum]
                     })
             },
+            selectedColumn2: function() {
+                let self = this
+                return this.columns
+                    .filter((column) => {
+                        if (column[0].split('-')[1] == self.selectedParty) {
+                            return column
+                        }
+                    })
+                    .map((column) => {
+                        let sum = 0;
+                        for (let i = parseInt(this.pickedDate1)+1; i <= parseInt(this.pickedDate2)+1; i++) {
+                            sum += column[i]
+                        }
+                        return [column[0], sum]
+                    })
+            },
             partyColors: function () {
                 let obj = {}
                 let colors = {
@@ -207,7 +251,8 @@
                     AA: 'rgb(90, 255, 90)',
                     B: 'rgb(229, 43, 145)',
                     C: 'rgb(15, 133, 75)',
-                    D: 'rgb(0, 68, 79)',
+                    D: '#2a4952',
+                    NB: '#2a4952',
                     F: 'rgb(156, 29, 42)',
                     I: 'rgb(239, 133, 53)',
                     K: 'rgb((240, 172, 85)',
@@ -218,6 +263,29 @@
                 for (let party1 in this.partyNames) {
                     for (let party2 in this.partyNames) {
                         obj[this.partyNames[party1] + '-' + this.partyNames[party2]] = colors[this.partyNames[party2]]
+                    }
+                }
+                return obj
+            },
+            partyColors2: function () {
+                let obj = {}
+                let colors = {
+                    A: 'rgb(227, 47, 59)',
+                    AA: 'rgb(90, 255, 90)',
+                    B: 'rgb(229, 43, 145)',
+                    C: 'rgb(15, 133, 75)',
+                    D: '#2a4952',
+                    NB: '#2a4952',
+                    F: 'rgb(156, 29, 42)',
+                    I: 'rgb(239, 133, 53)',
+                    K: 'rgb((240, 172, 85)',
+                    O: 'rgb(0, 80, 120)',
+                    OE: 'rgb(115, 21, 37)',
+                    V: 'rgb(15, 132, 187)'                
+                }
+                for (let party1 in this.partyNames) {
+                    for (let party2 in this.partyNames) {
+                        obj[this.partyNames[party1] + '-' + this.partyNames[party2]] = colors[this.partyNames[party1]]
                     }
                 }
                 return obj

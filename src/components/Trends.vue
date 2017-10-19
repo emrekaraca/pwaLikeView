@@ -375,7 +375,7 @@ export default {
             pollsLoaded: false,
             initialLoading: true,
             dataIsReloading: false,
-            start: '01-2017',
+            start: '07-2017',
             end: '12-2017',
             showingPredictions: true,
             showingPolls: true,
@@ -708,8 +708,9 @@ export default {
                         D_poll: 'Nye Borg.-Poll',
                         K_poll: 'Kristendem.-Poll'
                     },
-                    order: null
-                },    
+                    order: null,
+                    type: 'spline',
+                },
                 tooltip: {
                     grouped: true
                 },

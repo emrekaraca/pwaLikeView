@@ -134,8 +134,8 @@
     }
     
     .rect-NB {
-        fill: rgb(240, 172, 85)!important;
-        background-color: rgb(240, 172, 85)!important;
+        fill: #2a4952!important;
+        background-color: #2a4952!important;
     }
     
     .rect-O {
@@ -178,7 +178,8 @@
                     C: 'rgb(15, 133, 75)',
                     F: 'rgb(156, 29, 42)',
                     I: 'rgb(239, 133, 53)',
-                    NB: 'rgb(240, 172, 85)',
+                    D: '#2a4952',
+                    NB: '#2a4952',
                     O: 'rgb(0, 80, 120)',
                     OE: 'rgb(115, 21, 37)',
                     V: 'rgb(15, 132, 187)'                
@@ -199,16 +200,6 @@
             },
             partyColor: function (party) {
                 return "background-color: " + this.colors[party]
-            },
-            arrowColor: function (swingValue, party, selectedParty) {
-                if (swingValue > 0) {
-                    return "background-color: " + this.colors[party]
-                }
-                else if (swingValue < 0) {
-                    return "background-color: " + this.colors[selectedParty]
-                } else {
-                    return "background-color: grey"                   
-                }
             },
             loadData: function() {
                 let self = this;
