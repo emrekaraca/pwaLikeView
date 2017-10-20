@@ -14,7 +14,7 @@
       },        
       "show": true,
       "name": "Dashboard",
-      "description": "This timeseries-chart shows for each Danish party how the likes of all users that predominantly like this party are distributed over all parties over time."
+      "description": "The Dashboard offers a detailed week-by-week perspective on overall political activity on facebook."
     },
     "trends": {
       "doNotChange": {
@@ -23,7 +23,7 @@
       },
       "show": true,
       "name": "Raw Likes",
-      "description": "In this view you can browse and inspect poll predictions based on Facebook-Likes. You can also activate poll data or election results. In order to open an analysis-dataset, you will have to press the charts button on the top-right-corner."
+      "description": "The Raw Likes view shows how Facebook-Likes are distributed among parties over time on a week-to-week-basis."
     },
     "trendsAbsolute": {
       "doNotChange": {
@@ -32,7 +32,7 @@
       },
       "show": true,
       "name": "Raw Likes - Absolute",
-      "description": "In this view you can browse and inspect poll predictions based on Facebook-Likes. You can also activate poll data or election results. In order to open an analysis-dataset, you will have to press the charts button on the top-right-corner."
+      "description": "The Raw Likes Absolute view shows the absolute number of likes each party has received over time on a week-to-week-basis."
     },
     "multiChart": {
       "doNotChange": {
@@ -59,7 +59,7 @@
       },
       "show": true,
       "name": "Pie Chart",
-      "description": "This pie-chart shows for each Danish party how the likes of all users that predominantly like this party are distributed over all parties aggregated over one or multiple weeks (you can set the timeframe with the sliders)."
+      "description": "This view shows where the likes of users of a specific party went as well as where a party's likes came from."
     },
     "chord": {
       "doNotChange": {
@@ -77,7 +77,7 @@
       },
       "show": true,
       "name": "Sankey Chart",
-      "description": "This sankey-chart shows for each Danish party how the likes of all users that predominantly like this party are distributed over all parties aggregated over one or multiple weeks (you can set the timeframe with the sliders)."
+      "description": "The sankey chart shows where a party's users' likes went and where a party's likes came from."
     },
     "flow": {
       "doNotChange": {
@@ -95,7 +95,7 @@
       },        
       "show": true,
       "name": "Waffle Chart",
-      "description": "Waffle chart representation of where a party's users' likes go to."
+      "description": "The Waffle Chart view shows where the likes of users of a specific party went."
     }
   }
 }

@@ -2,6 +2,9 @@
     <div class="main container">
         <div class="row">
             <div class="col s12 l4">
+                <a :class="(weekShift == maxWeeks ? themeColor + ' lighten-2' : themeColor)" title="previous week" class="btn btn-floating waves-effect waves-light pageBtn pageBtnBack"@click="(weekShift < maxWeeks ? weekShift++ : null)"><i class="material-icons arrowIcon">arrow_left</i></a>
+                <a :class="(weekShift == 0 ? themeColor + ' lighten-2' : themeColor)" title="next week" class="btn btn-floating waves-effect waves-light pageBtn pageBtnForward" @click="(weekShift > 0 ? weekShift-- : null)"><i class="material-icons arrowIcon">arrow_right</i></a>
+                
                 <div class="card topCard small grey lighten-4">
                     <div class="card-content">
                         <span class="card-title">Overall Stats</span>
@@ -18,7 +21,7 @@
                                 </tr>
                                 <tr>
                                     <td>6-Month-Avg</td>
-                                    <td>{{parseNumberWithSign(totalLikesLastTwoWeeks[0] - totalLikesSixMonthsAverage)}} / {{totalLikesSixMonthsPercentageChange}}% <i v-if="totalLikesSixMonthsPercentageChange<0" class="material-icons red-text">arrow_drop_down</i><i v-if="totalLikesSixMonthsPercentageChange>0" class="material-icons green-text">arrow_drop_up</i></td>
+                                    <td>{{parseNumberWithSign(totalLikesLastTwoWeeks[0] - totalLikesSixMonthsAverage)}} / <span v-if="totalLikesSixMonthsPercentageChange>0">+</span>{{totalLikesSixMonthsPercentageChange}}% <i v-if="totalLikesSixMonthsPercentageChange<0" class="material-icons red-text">arrow_drop_down</i><i v-if="totalLikesSixMonthsPercentageChange>0" class="material-icons green-text">arrow_drop_up</i></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -42,7 +45,7 @@
                                 </tr>
                                 <tr>
                                     <td>6-Month-Avg</td>
-                                    <td>{{parseNumberWithSign(biggestWinner[4])}} / +{{biggestWinner[5]}}% <i v-if="biggestWinner[5]<0" class="material-icons red-text">arrow_drop_down</i><i v-if="biggestWinner[5]>0" class="material-icons green-text">arrow_drop_up</i><</td>
+                                    <td>{{parseNumberWithSign(biggestWinner[4])}} / <span v-if="biggestWinner[5]>0">+</span>{{biggestWinner[5]}}% <i v-if="biggestWinner[5]<0" class="material-icons red-text">arrow_drop_down</i><i v-if="biggestWinner[5]>0" class="material-icons green-text">arrow_drop_up</i></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -66,7 +69,7 @@
                                 </tr>
                                 <tr>
                                     <td>6-Month-Avg</td>
-                                    <td>{{parseNumberWithSign(biggestLoser[4])}} / {{biggestLoser[5]}}% <i v-if='biggestLoser[5] < 0' class="material-icons red-text">arrow_drop_down</i><i v-if='biggestLoser[5] > 0' class="material-icons green-text">arrow_drop_up</i></td>
+                                    <td>{{parseNumberWithSign(biggestLoser[4])}} / <span v-if="biggestLoser[5]>0">+</span>{{biggestLoser[5]}}% <i v-if="biggestLoser[5] < 0" class="material-icons red-text">arrow_drop_down</i><i v-if="biggestLoser[5] > 0" class="material-icons green-text">arrow_drop_up</i></td>
                                 </tr>
                             </tbody>
                         </table>                        
@@ -99,11 +102,11 @@
                     </div>                    
                 </div>
             </div>
-            <div class="col s2">
+            <div class="col s6 m4 l2">
                 <button class="btn btn-large waves-effect waves-light" style="width: 100%" :class="weekClass(0)" @click="weekShift = 0">Last Week</button>
             </div>
-            <div class="col s2" v-for="week in 12" v-if="week!==1">
-                <button class="btn btn-large waves-effect waves-light" style="width: 100%" :class="weekClass(week)" @click="weekShift = week">{{week}} Weeks ago</button>
+            <div class="col s6 m4 l2" v-for="week in maxWeeks">
+                <button class="btn btn-large waves-effect waves-light" style="width: 100%" :class="weekClass(week)" @click="weekShift = week">{{week+1}} Weeks ago</button>
             </div>
         </div>
     </div>
@@ -144,7 +147,7 @@
     }
 
     td:first-child, th:first-child {
-    padding-left: 25px;
+    padding-left: 15px;
     padding-right: 0;
     }
 
@@ -157,6 +160,23 @@
 
     .card:hover {
         box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.3);        
+    }
+
+    .pageBtn {
+        position: absolute;
+        right: 10%;
+}
+
+    .pageBtnBack {
+        transform: translate(-50px, -30px)
+    }
+
+    .pageBtnForward {
+        transform: translateY(-30px)
+    }
+
+    .arrowIcon {
+        transform: translateX(-20px);
     }
 </style>
 
@@ -171,7 +191,8 @@
                 loading: true,
                 partyNames: ['A', 'AA', 'B', 'C', 'F', 'I', 'NB', 'O', 'OE', 'V'],
                 themeColor: Config.themeColor,
-                weekShift: 1
+                weekShift: 0,
+                maxWeeks: 11
             }
         },
         methods: {
@@ -245,7 +266,7 @@
 
             },
             totalLikesSixMonthsAverage: function () {
-                return Math.round(this.totalLikes.slice(this.totalLikes.length-27-this.weekShift-this.weekShift, this.totalLikes.length-1-this.weekShift).map(x => x/100).reduce(function(acc, val) { return acc + val }, 0) / 26)
+                return Math.round(this.totalLikes.slice(this.totalLikes.length-27-this.weekShift, this.totalLikes.length-1-this.weekShift).map(x => x/100).reduce(function(acc, val) { return acc + val }, 0) / 26)
             },
             totalLikesSixMonthsPercentageChange: function () {
                 return parseFloat((this.totalLikesLastTwoWeeks[0] / this.totalLikesSixMonthsAverage *100 -100).toFixed(1))

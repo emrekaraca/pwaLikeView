@@ -1,18 +1,18 @@
 <template>
 
   <div class="main container row">
-    <div class="col s12">
+    <!-- <div class="col s12">
       <div :class="themeColor" class="card darken-1">
         <div class="card-content white-text">
           <p v-for="sentence in homeDescription">{{sentence}}</p>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <template v-for="option, key in options">
       <a :href="'/#' + option.doNotChange.link">
-        <div v-if="option.show" class="col s12 m4 l3">
-          <div class="card medium grey lighten-4">
+        <div v-if="option.show" class="col s12 m6 l4">
+          <div class="card small grey lighten-4">
 
             <div class="card-image">
               <img class="imgContainer" :src="optionPic(key)">
@@ -33,13 +33,13 @@
 
 <style scoped>
   .imgContainer {
-    opacity: 0.5;
+    opacity: 0.7;
   }
   .card {
       padding: 10px;
   }
   .card-image {
-    height: 100px;
+    height: 130px;
   }
   .card-content {
     max-height: 100%!important;

@@ -16,7 +16,7 @@
 
                 <!-- ZoomOut Button for the graph -->
                 <div style="margin-top: 20px; margin-right: 20px; position: absolute; right: 0">
-                    <a :class="themeColor" class="btn btn-large btn-floating waves-effect waves-light" onclick="$('#infomodal').modal('open')"><i class="material-icons">info_outline</i></a>
+                    <!-- <a :class="themeColor" class="btn btn-large btn-floating waves-effect waves-light" onclick="$('#infomodal').modal('open')"><i class="material-icons">info_outline</i></a> -->
                     <a :class="themeColor" @click="zoomOut()" class="btn btn-large btn-floating waves-effect waves-light"><i class="material-icons">zoom_out</i></a>
                 </div>
                 
@@ -58,7 +58,25 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col s12 graphBtn center-align">
+                        <template v-for="party in predictionPartyNames" v-if="!party.includes('x')">
+                            <img class="graphBtn" :src="partyPic(party)" :title="party" @click="toggleParty(party)" :class="partyButtonClass(party)">
+                        </template>
+                        <i class="material-icons graphBtn" @click="showAll()" title="Show all parties">radio_button_checked</i>
+                        <i class="material-icons graphBtn" @click="hideAll()" title="Hide all parties">radio_button_unchecked</i>
+                        <i class="graphBtn material-icons" @click="toggleTotalLikes()" :class="totalLikesClass(party)" title="Toggle total likes overlay">texture</i>
+                    </div>
+                </div>
+                
+
             </div>
+            <!-- <div class="col s1 center-align">
+                <p class="graphBtn" v-for="party in predictionPartyNames" v-if="!party.includes('x')" @click="toggleParty(party)" :class="partyButtonClass(party)"><img :src="partyPic(party)" alt=""></p>
+                <p class="graphBtn"><i class="material-icons" @click="showAll()">radio_button_checked</i></p>
+                <p class="graphBtn"><i class="material-icons" @click="hideAll()">radio_button_unchecked</i></p>
+            </div> -->
+            
         </div>    
 
         <!-- Settings Area // Becomes visible, when initial loading is done -->
@@ -78,11 +96,6 @@
                     <div class="col s3 m2 l2 center-align">
                         <button :class="themeColor" class="btn btn-large waves-effect waves-light lighten-1 validate" @click="loadRawLikesData()">
                             <i class="material-icons">loop</i>
-                        </button>
-                    </div>
-                    <div class="col s3 m2 l2 center-align">
-                        <button class="btn btn-large waves-effect waves-light validate" v-bind:class="classLabels" @click="toggleLabels()">
-                            <i class="material-icons">label_outline</i>
                         </button>
                     </div>
 
@@ -346,6 +359,18 @@
         background-color: transparent!important
     }
 
+    .hiddenParty {
+        opacity: 0.3;
+    }
+
+    .graphBtn {
+        cursor: pointer;
+        margin: 0px 0.5%
+    }
+
+
+     
+
     
 </style>
 
@@ -377,15 +402,57 @@ export default {
             showElec2: true,
             partiesElec1: [],
             partiesElec2: [],
-            showLabels: false,
             country: '',
             jobinfo: '',
             coll: 'jobs3',
             showSettings: false,
-            themeColor: Config.themeColor
+            themeColor: Config.themeColor,
+            hiddenData: [],
+            showTotalLikes: true
         }
     },
     methods: {
+        toggleParty: function (party) {
+            if (this.hiddenData.includes(party)) {
+                chart.show(party)
+                let i = this.hiddenData.indexOf(party)
+                this.hiddenData.splice(i, 1)
+            } else {
+                chart.hide(party)
+                this.hiddenData.push(party)
+            }
+        },
+        toggleTotalLikes: function () {
+            if (this.showTotalLikes) {
+                chart.hide('totalLikes')
+                this.showTotalLikes = false
+            } else {
+                chart.show('totalLikes')
+                this.showTotalLikes = true
+            }
+        },
+        partyButtonClass: function (party) {
+            if (this.hiddenData.includes(party)) {
+                return 'hiddenParty'
+            } else {
+                return
+            }
+        },
+        totalLikesClass: function () {
+            if (this.showTotalLikes) {
+                return
+            } else {
+                return 'hiddenParty'
+            }
+        },
+        showAll: function () {
+            chart.show(this.predictionPartyNames)
+            this.hiddenData = []
+        },
+        hideAll: function () {
+            chart.hide(this.predictionPartyNames)
+            this.hiddenData = this.predictionPartyNames.slice()
+        },        
         partyPic: (party) => require('./../assets/dk/' + party + '-small.png'),
         loadRawLikesData: function () {
             this.dataIsReloading = true
@@ -422,7 +489,7 @@ export default {
                 else if (columns[array][0].includes('2015')) {
                     this.partiesElec2.push(columns[array][0])
                 }
-                else if (columns[array][0] !== 'x1' && columns[array][0] !== 'x2' && !columns[array][0].includes('poll')) {
+                else if (!columns[array][0].includes('x') && !columns[array][0].includes('totalLikes')) {
                     this.predictionPartyNames.push(columns[array][0])
                 }
                 else if (columns[array][0] !== 'x1' && columns[array][0] !== 'x2' && columns[array][0].includes('poll')) {
@@ -446,18 +513,6 @@ export default {
                 chart.show(this.partiesElec1)
                 chart.unzoom()
                 this.showElec1 = true
-            }
-        },
-        toggleLabels: function() {
-            console.log("toggling labels")
-            if (this.showLabels) {
-                chart.legend.hide()
-                this.showLabels = false
-                chart.resize()
-            }
-            else {
-                chart.legend.show()
-                this.showLabels = true
             }
         },
         toggleElec2: function() {
@@ -860,14 +915,6 @@ export default {
         },
         classPolls: function() {
             if (this.showingPolls) {
-                return this.themeColor
-            }
-            else {
-                return 'grey lighten-1'
-            } 
-        },
-        classLabels: function() {
-            if (this.showLabels) {
                 return this.themeColor
             }
             else {

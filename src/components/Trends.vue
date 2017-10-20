@@ -6,7 +6,7 @@
 
                 <!-- ZoomOut Button for the graph -->
                 <div style="margin-top: 20px; margin-right: 20px; position: absolute; right: 0">
-                    <a :class="themeColor" class="btn btn-large btn-floating waves-effect waves-light" onclick="$('#infomodal').modal('open')"><i class="material-icons">info_outline</i></a>
+                    <!-- <a :class="themeColor" class="btn btn-large btn-floating waves-effect waves-light" onclick="$('#infomodal').modal('open')"><i class="material-icons">info_outline</i></a> -->
                     <a :class="themeColor" @click="zoomOut()" class="btn btn-large btn-floating waves-effect waves-light"><i class="material-icons">zoom_out</i></a>
                 </div>
                 
@@ -47,6 +47,21 @@
                     <div id="rawchart"></div>
                 </div>
 
+                <div class="row">
+                    <div class="col s12 graphBtn center-align">
+                        <template v-for="party in predictionPartyNames" v-if="!party.includes('x')">
+                            <img class="graphBtn" :src="partyPic(party)" :alt="party" @click="toggleParty(party)" :class="partyButtonClass(party)" :title="party">
+                            <img class="pollBtn graphBtn" :src="partyPic(party)" :alt="party + '_poll'" @click="toggleParty(party + '_poll')" :class="partyButtonClass(party + '_poll')" :title="party + ' polls'">
+                        </template>
+                        <i class="material-icons graphBtn" @click="showAllParties()" title="Show all parties">radio_button_checked</i>
+                        <i class="material-icons graphBtn" @click="showAllPolls()" title="Show all polls">radio_button_checked</i>
+                        <i class="material-icons graphBtn" @click="hideAllParties()" title="Hide all parties">radio_button_unchecked</i>
+                        <i class="material-icons graphBtn" @click="hideAllPolls()" title="Hide all polls">radio_button_unchecked</i>
+                        <button class="graphBtn graphBtnTxt btn btn-floating grey" @click="toggleElec1()" :class="classElec1" :title="'Toggle ' + electionYears[0] + ' election results'">{{electionYears[0]}}</button>
+                        <button class="graphBtn graphBtnTxt btn btn-floating grey" @click="toggleElec2()" :class="classElec2" :title="'Toggle ' + electionYears[1] + ' election results'">{{electionYears[1]}}</button>
+
+                    </div>
+                </div>
             </div>
         </div>    
 
@@ -69,11 +84,6 @@
                             <i class="material-icons">loop</i>
                         </button>
                     </div>
-                    <div class="col s3 m2 l2 center-align">
-                        <button class="btn btn-large waves-effect waves-light validate" v-bind:class="classLabels" @click="toggleLabels()">
-                            <i class="material-icons">label_outline</i>
-                        </button>
-                    </div>
 
                     <!-- Loading-Spinner, which is running at any kind of graph-refresh -->
                     <div class="col s6 m1 l2 center-align">
@@ -94,39 +104,18 @@
 
                 </div>
             </div>
-            
-            <!-- Quick Action Buttons for showing/hiding all predictions/polls -->
-            <div class="col s6 m6 l3 center-align">
-                <button class="btn btn-large waves-effect waves-light" v-bind:class="classPredictions" @click="togglePredictions()">
-                    Raw Likes
-                </button>
-            </div>                
-            <div class="col s6 m6 l3 center-align">
-                <button class="btn btn-large waves-effect waves-light" v-bind:class="classPolls" @click="togglePolls()">
-                    Polls
-                </button>
-            </div>                
-            <div class="col s6 m6 l3 center-align">
-                <button class="btn btn-large waves-effect waves-light" v-bind:class="classElec1"  @click="toggleElec1()">
-                    {{electionYears[0]}} Election
-                </button>
-            </div>
-            <div class="col s6 m6 l3 center-align">
-                <button class="btn btn-large waves-effect waves-light" v-bind:class="classElec2"  @click="toggleElec2()">
-                    {{electionYears[1]}} Election
-                </button>
-            </div>
-            
-            <div>
-                <p style="color: white">.</p>
-                <br/>
-            </div>
-
+                        
         </div>
     </div>
 </template>
 
 <style>
+
+    .btn-large {
+        margin-bottom: 5px;
+        width: 100%
+    }
+
     body {
         background: #eceff1 
     }
@@ -200,10 +189,6 @@
         opacity: 0.3
     }    
 
-    .btn-large {
-        margin-bottom: 5px;
-        width: 100%
-    }
 
     .c3-line {
         stroke-width: 2px
@@ -352,6 +337,22 @@
         background-color: transparent!important
     }
 
+    .hiddenParty {
+        opacity: 0.3;
+    }
+
+    .graphBtn {
+        cursor: pointer;
+        margin: 0px 0.5%
+    }
+
+    .graphBtnTxt {
+        transform: translateY(-7px);
+        font-size: 10px;
+        width: 30px;
+        height: 30px;
+        line-height: 2px;
+    }
     
 </style>
 
@@ -383,15 +384,56 @@ export default {
             showElec2: true,
             partiesElec1: [],
             partiesElec2: [],
-            showLabels: false,
-            country: '',
+            country: 'dk',
             jobinfo: '',
             coll: 'jobs3',
             showSettings: false,
-            themeColor: Config.themeColor
+            themeColor: Config.themeColor,
+            hiddenParties: []
         }
     },
     methods: {
+        toggleParty: function (party) {
+            if (this.hiddenParties.includes(party)) {
+                chart.show(party)
+                let i = this.hiddenParties.indexOf(party)
+                this.hiddenParties.splice(i, 1)
+            } else {
+                chart.hide(party)
+                this.hiddenParties.push(party)
+            }
+        },
+        partyButtonClass: function (party) {
+            if (this.hiddenParties.includes(party)) {
+                return 'hiddenParty'
+            } else {
+                return
+            }
+        },
+        showAllParties: function () {
+            chart.show(this.predictionPartyNames)
+            this.hiddenParties = this.hiddenParties.filter(x=>x.includes('poll'))
+        },
+        hideAllParties: function () {
+            chart.hide(this.predictionPartyNames)
+            for (let party in this.predictionPartyNames) {
+                if (!this.hiddenParties.includes(this.predictionPartyNames[party])) {
+                    this.hiddenParties.push(this.predictionPartyNames[party])
+                }                 
+            }
+        },
+        showAllPolls: function () {
+            chart.show(this.pollPartyNames)
+            this.hiddenParties = this.hiddenParties.filter(x=>!x.includes('poll'))
+        },
+        hideAllPolls: function () {
+            chart.hide(this.pollPartyNames)
+            for (let party in this.pollPartyNames) {
+                if (!this.hiddenParties.includes(this.pollPartyNames[party])) {
+                    this.hiddenParties.push(this.pollPartyNames[party])
+                }                 
+            }
+        },
         partyPic: (party) => require('./../assets/dk/' + party + '-small.png'),
         loadRawLikesData: function () {
             this.dataIsReloading = true
@@ -428,7 +470,7 @@ export default {
                 else if (columns[array][0].includes('2015')) {
                     this.partiesElec2.push(columns[array][0])
                 }
-                else if (columns[array][0] !== 'x1' && columns[array][0] !== 'x2' && !columns[array][0].includes('poll')) {
+                else if (!columns[array][0].includes('x') && !columns[array][0].includes('poll')) {
                     this.predictionPartyNames.push(columns[array][0])
                 }
                 else if (columns[array][0] !== 'x1' && columns[array][0] !== 'x2' && columns[array][0].includes('poll')) {
@@ -452,17 +494,6 @@ export default {
                 chart.show(this.partiesElec1)
                 chart.unzoom()
                 this.showElec1 = true
-            }
-        },
-        toggleLabels: function() {
-            console.log("toggling labels")
-            if (this.showLabels) {
-                chart.legend.hide()
-                this.showLabels = false
-            }
-            else {
-                chart.legend.show()
-                this.showLabels = true
             }
         },
         toggleElec2: function() {
@@ -498,6 +529,7 @@ export default {
             this.showElec1 = true;
             this.showElec2 = true;
             this.showingPolls = true;
+            this.hiddenParties = this.pollPartyNames.slice()
         },
         loadData: function () {
             this.columns = this.$store.state.rawLikesData
@@ -783,18 +815,18 @@ export default {
         },
         classElec1: function() {
             if (this.showElec1) {
-                return this.themeColor
+                return 
             }
             else {
-                return 'grey lighten-1'
+                return 'hiddenParty'
             } 
         },
         classElec2: function() {
             if (this.showElec2) {
-                return this.themeColor
+                return
             }
             else {
-                return 'grey lighten-1'
+                return 'hiddenParty'
             } 
         },
         classPredictions: function() {
