@@ -532,7 +532,13 @@ export default {
             this.hiddenParties = this.pollPartyNames.slice()
         },
         loadData: function () {
-            this.columns = this.$store.state.rawLikesData
+            this.columns = this.$store.state.rawLikesData.map(x => {
+                if (x[0].includes('x') || x[0].includes('poll')) {
+                    return x
+                } else {
+                    return x.slice(0, x.length-1)
+                }
+            })
             this.fetchGraph()
             $('.modal').modal();
 

@@ -65,7 +65,9 @@
                         </template>
                         <i class="material-icons graphBtn" @click="showAll()" title="Show all parties">radio_button_checked</i>
                         <i class="material-icons graphBtn" @click="hideAll()" title="Hide all parties">radio_button_unchecked</i>
-                        <i class="graphBtn material-icons" @click="toggleTotalLikes()" :class="totalLikesClass(party)" title="Toggle total likes overlay">texture</i>
+                        <i class="graphBtn material-icons" @click="toggleTotalLikes()" :class="totalLikesClass()" title="Toggle total likes overlay">texture</i>
+                        <button class="graphBtn graphBtnTxt btn btn-floating" @click="toggleTrendline()" :class="classTrendline" title="Toggle trendline smoothing"><i class="material-icons graphBtnTxtIcon">show_chart</i></button>
+                        <span class="green-text" v-if="smoothFactor!==0">{{smoothFactor}}-week-averages</span>
                     </div>
                 </div>
                 
@@ -368,6 +370,18 @@
         margin: 0px 0.5%
     }
 
+    .graphBtnTxt {
+        transform: translateY(-7px);
+        font-size: 12px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .graphBtnTxtIcon {
+        transform: translateY(-4px);        
+    }
+    
+
 
      
 
@@ -408,7 +422,8 @@ export default {
             showSettings: false,
             themeColor: Config.themeColor,
             hiddenData: [],
-            showTotalLikes: true
+            showTotalLikes: true,
+            smoothFactor: 0
         }
     },
     methods: {
@@ -469,6 +484,52 @@ export default {
                 return
             })
         },        
+        smoothData: function (input, factor=0) {
+            if (factor===0) {
+                return input
+            } else {
+                let data = input
+                for (let party in data) {
+                    if (data[party][0] !== 'x1') {
+                        let newParty = [data[party][0]]
+                        if (factor === 2) {
+                            for (let week = 1; week < data[party].length-2; week++) {
+                                newParty.push(((parseInt(data[party][week]) + parseInt(data[party][week+1]))/2).toString())
+                            }
+                            data[party] = newParty
+                        }
+                        else if (factor === 4) {                            
+                            for (let week = 1; week < data[party].length-4; week++) {
+                                newParty.push(((
+                                    parseInt(data[party][week]) + 
+                                    parseInt(data[party][week+1]) +
+                                    parseInt(data[party][week+2]) +
+                                    parseInt(data[party][week+3])
+                                )/4).toString())
+                            }
+                            data[party] = newParty
+                        }
+                        else if (factor === 8) {                            
+                            for (let week = 1; week < data[party].length-8; week++) {
+                                newParty.push(((
+                                    parseInt(data[party][week]) + 
+                                    parseInt(data[party][week+1]) +
+                                    parseInt(data[party][week+2]) +
+                                    parseInt(data[party][week+3]) +
+                                    parseInt(data[party][week+4]) +
+                                    parseInt(data[party][week+5]) +
+                                    parseInt(data[party][week+6]) +
+                                    parseInt(data[party][week+7])
+                                )/8).toString())
+                            }
+                            data[party] = newParty
+                        }
+                    }
+                }
+                data[0].pop()
+                return data
+            }
+        },
         fetchPartyNames: function(columns) {
             this.partiesElec1 = [];
             this.partiesElec2 = [];
@@ -544,13 +605,28 @@ export default {
                 this.showingPolls = true
             }
         },
+        toggleTrendline: function() {
+            if (this.smoothFactor === 0) {
+                this.smoothFactor = 2
+                chart.load({columns: this.dataWithTotalLikes})
+            } else if (this.smoothFactor === 2) {
+                this.smoothFactor = 4
+                chart.load({columns: this.dataWithTotalLikes})
+            } else if (this.smoothFactor === 4) {
+                this.smoothFactor = 8
+                chart.load({columns: this.dataWithTotalLikes})
+            } else {
+                this.smoothFactor = 0
+                chart.load({columns: this.dataWithTotalLikes})
+            }
+        },
         resetSettings: function() {
             this.showElec1 = true;
             this.showElec2 = true;
             this.showingPolls = true;
         },
         loadData: function () {
-            this.columns = this.$store.state.rawLikesAbsoluteData
+            this.columns = this.$store.state.rawLikesAbsoluteData.map(x => x.slice(0, x.length-1))
             this.fetchGraph()
             $('.modal').modal();
 
@@ -865,8 +941,15 @@ export default {
         this.loadData()
     },
     computed: {
-        dataWithTotalLikes: function () {
-            let data = this.columns
+        showTrendline: function () {
+            if (this.smoothFactor === 0) {
+                return false
+            } else {
+                return true
+            }
+        },
+        dataWithTotalLikes: function (input, factor=0) {
+            let data = this.smoothData(this.columns.slice(), this.smoothFactor)
             data.push(['totalLikes'])
             for (let party in data) {
                 if (data[party][0] !== 'x1' && data[party][0] !== 'totalLikes') {
@@ -908,6 +991,14 @@ export default {
         classPredictions: function() {
             if (this.showingPredictions) {
                 return this.themeColor
+            }
+            else {
+                return 'grey lighten-1'
+            } 
+        },
+        classTrendline: function() {
+            if (this.showTrendline) {
+                return 'green'
             }
             else {
                 return 'grey lighten-1'
