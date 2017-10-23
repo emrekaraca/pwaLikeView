@@ -17,7 +17,7 @@
                                 </tr>
                                 <tr>
                                     <td>Last week</td>
-                                    <td>{{parseNumberWithSign(totalLikesLastTwoWeeks[0] - totalLikesLastTwoWeeks[1])}} / {{totalLikesPercentageChange}}% <i v-if="totalLikesPercentageChange<0" class="material-icons red-text">arrow_drop_down</i><i v-if="totalLikesPercentageChange>0" class="material-icons green-text">arrow_drop_up</i></td>
+                                    <td>{{parseNumberWithSign(totalLikesLastTwoWeeks[0] - totalLikesLastTwoWeeks[1])}} / <span v-if="totalLikesPercentageChange>0">+</span>{{totalLikesPercentageChange}}% <i v-if="totalLikesPercentageChange<0" class="material-icons red-text">arrow_drop_down</i><i v-if="totalLikesPercentageChange>0" class="material-icons green-text">arrow_drop_up</i></td>
                                 </tr>
                                 <tr>
                                     <td>6-Month-Avg</td>
@@ -41,7 +41,7 @@
                                 </tr>
                                 <tr>
                                     <td>Last Week</td>
-                                    <td>{{parseNumberWithSign(biggestWinner[2])}} / +{{biggestWinner[3]}}% <i class="material-icons green-text">arrow_drop_up</i></td>
+                                    <td>{{parseNumberWithSign(biggestWinner[2])}} / <span v-if="biggestWinner[3]>0">+</span>{{biggestWinner[3]}}% <i v-if="biggestWinner[3]<0" class="material-icons red-text">arrow_drop_down</i><i v-if="biggestWinner[3]>0" class="material-icons green-text">arrow_drop_up</i></td>
                                 </tr>
                                 <tr>
                                     <td>6-Month-Avg</td>
@@ -143,7 +143,7 @@
 
     .bottomCardTable td {
         height: 20px;
-        padding: 4px 0px;
+        padding: 4px 10px;
     }
 
     td:first-child, th:first-child {
