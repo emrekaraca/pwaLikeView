@@ -95,19 +95,19 @@ var webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ]),
+    ])//,
     // service worker caching
-    new SWPrecacheWebpackPlugin({
-      cacheId: 'like-view-app',
-      filename: 'service-worker.js',
-      staticFileGlobs: ['dist/**/*.{js,html,css,woff,woff2,png}'],
-      minify: true,
-      stripPrefix: 'dist/',
-      runtimeCaching: [{
-        urlPattern: new RegExp('https://likeviewapi.herokuapp.com/api/'),
-        handler: 'networkFirst'
-      }]
-    })
+    // new SWPrecacheWebpackPlugin({
+    //   cacheId: 'like-view-app',
+    //   filename: 'service-worker.js',
+    //   staticFileGlobs: ['dist/**/*.{js,html,css,woff,woff2,png}'],
+    //   minify: true,
+    //   stripPrefix: 'dist/',
+    //   runtimeCaching: [{
+    //     urlPattern: new RegExp('https://likeviewapi.herokuapp.com/api/'),
+    //     handler: 'networkFirst'
+    //   }]
+    // })
   ]
 })
 
