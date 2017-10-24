@@ -198,7 +198,7 @@
             },
             loadData: function() {
                 let self = this;
-                let data = self.$store.state.voteSwingData
+                let data = self.$store.state.voteSwingData.map(x=>x.slice(0, x.length-1))
                 self.loading = false
                 self.timePeriods = data[0].slice(1, data[0].length)
                 self.pickedDate1 = self.timePeriods.length-1
@@ -300,6 +300,7 @@
                     .on("click",highlight_node_links)
                     .on("mouseover", function(d) {	
                         console.log(d)	
+                        
                         div.transition()		
                             .duration(200)		
                             .style("opacity", 0.95);

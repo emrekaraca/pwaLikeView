@@ -76,7 +76,7 @@
                     </div>                    
                 </div>
             </div>
-            <div class="col s12">
+            <div class="col s12 l8">
                 <div class="card bottomCard grey lighten-4">
                     <div class="card-content">
                         <table class="striped highlight bottomCardTable">
@@ -102,11 +102,49 @@
                     </div>                    
                 </div>
             </div>
-            <div class="col s6 m4 l2">
-                <button class="btn btn-large waves-effect waves-light" style="width: 100%" :class="weekClass(0)" @click="weekShift = 0">Last Week</button>
+
+
+            <div class="col s12 l4">
+                <div class="card bottomCard grey lighten-4">
+                    <dic class="card-content">
+                        <table class="striped highlight bottomCardTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Party</th>
+                                    <th>Likes in Week</th>
+                                    <th>Total Likes</th>
+                                    <th>Post</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(post, index) in posts">
+                                    <td>{{index+1}}</td>
+                                    <td><img :src="partyPic(post.party)" alt="" max-width="100%" height="25px"></td>
+                                    <td>{{post.weekLikes}}</td>
+                                    <td>{{post.totalLikes}}</td>
+                                    <td><a :href="post.url" target="_blank">Post</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </dic>
+                </div>
             </div>
-            <div class="col s6 m4 l2" v-for="week in maxWeeks">
-                <button class="btn btn-large waves-effect waves-light" style="width: 100%" :class="weekClass(week)" @click="weekShift = week">{{week+1}} Weeks ago</button>
+
+
+
+
+
+
+            <div class="col s12">
+                <div class="row">
+                    <div class="col s6 m4 l2">
+                        <button class="btn btn-large waves-effect waves-light" style="width: 100%" :class="weekClass(0)" @click="weekShift = 0">Last Week</button>
+                    </div>
+                    <div class="col s6 m4 l2" v-for="week in maxWeeks">
+                        <button class="btn btn-large waves-effect waves-light" style="width: 100%" :class="weekClass(week)" @click="weekShift = week">{{week+1}} Weeks ago</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -192,7 +230,39 @@
                 partyNames: ['A', 'AA', 'B', 'C', 'F', 'I', 'NB', 'O', 'OE', 'V'],
                 themeColor: Config.themeColor,
                 weekShift: 0,
-                maxWeeks: 11
+                maxWeeks: 11,
+                posts: [
+                    {
+                        party: 'A',
+                        weekLikes: 12000,
+                        totalLikes: 18000,
+                        url: 'https://facebook.com/1055750931118544_1262072177153084'
+                    },
+                    {
+                        party: 'B',
+                        weekLikes: 11000,
+                        totalLikes: 15000,
+                        url: 'https://facebook.com/202754879788353_986971484700018'
+                    },
+                    {
+                        party: 'AA',
+                        weekLikes: 10000,
+                        totalLikes: 12000,
+                        url: 'https://facebook.com/106952222676974_1208726602499525'
+                    },
+                    {
+                        party: 'V',
+                        weekLikes: 9000,
+                        totalLikes: 10000,
+                        url: 'https://facebook.com/167412043730_10153379450553731'
+                    },
+                    {
+                        party: 'O',
+                        weekLikes: 8000,
+                        totalLikes: 9000,
+                        url: 'https://facebook.com/257110534379440_940021062755047'
+                    }
+                ]
             }
         },
         methods: {

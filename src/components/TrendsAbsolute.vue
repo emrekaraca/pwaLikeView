@@ -526,7 +526,6 @@ export default {
                         }
                     }
                 }
-                data[0].pop()
                 return data
             }
         },

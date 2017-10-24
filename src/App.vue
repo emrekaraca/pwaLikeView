@@ -24,7 +24,7 @@ export default {
     'app-header': Header
   },
   methods: {
-    loadVoteSwingData: function () {
+    loadVoteSwingData: function (callback1, callback2, callback3) {
       let self = this
       let myInit = { mode: 'cors' }
       fetch(Config.apiUrl + 'api/getvoteswings', myInit)
@@ -33,10 +33,10 @@ export default {
       })
       .then(function(data) {
         self.$store.commit('fetchVoteSwingData', data)
-        return
+        callback1(callback2, callback3)
       })
     },
-    loadRawLikesAbsoluteData: function () {
+    loadRawLikesAbsoluteData: function (callback2, callback3) {
       let self = this
       let myInit = { mode: 'cors' }
       fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikesabsolute' + '?&jobid=rawLikesAbsolute&dummySetting=1&start=01-2017&end=12-2017', myInit)
@@ -45,10 +45,10 @@ export default {
       })
       .then(function(data) {
         self.$store.commit('fetchRawLikesAbsoluteData', data)
-        return
+        callback2(callback3)
       })
     },
-    loadRawLikesData: function () {
+    loadRawLikesData: function (callback3) {
       let self = this
       let myInit = { mode: 'cors' }
       fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikes' + '?&jobid=rawLikesNew&dummySetting=1&start=01-2017&end=12-2017&pol=dk', myInit)
@@ -57,15 +57,15 @@ export default {
       })
       .then(function(data) {
         self.$store.commit('fetchRawLikesData', data)
-        return
+        callback3()
       })
     }
   },
   mounted() {
-    this.loadRawLikesData()
-    this.loadVoteSwingData()
-    this.loadRawLikesAbsoluteData()
-    this.render = true
+    this.loadVoteSwingData(this.loadRawLikesAbsoluteData, this.loadRawLikesData, () => {this.render = true})
+    // this.loadVoteSwingData()
+    // this.loadRawLikesAbsoluteData()
+    
   }  
 }
 </script>
