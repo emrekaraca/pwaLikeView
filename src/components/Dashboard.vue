@@ -76,9 +76,10 @@
                     </div>                    
                 </div>
             </div>
-            <div class="col s12 l8">
+            <div class="col s12 l6">
                 <div class="card bottomCard grey lighten-4">
                     <div class="card-content">
+                        <span class="card-title">Ranking by posts in week</span>
                         <table class="striped highlight bottomCardTable">
                             <thead>
                                 <tr>
@@ -104,31 +105,38 @@
             </div>
 
 
-            <div class="col s12 l4">
-                <div class="card bottomCard grey lighten-4">
-                    <dic class="card-content">
-                        <table class="striped highlight bottomCardTable">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Party</th>
-                                    <th>Likes in Week</th>
-                                    <th>Total Likes</th>
-                                    <th>Post</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(post, index) in posts">
-                                    <td>{{index+1}}</td>
-                                    <td><img :src="partyPic(post.party)" alt="" max-width="100%" height="25px"></td>
-                                    <td>{{post.weekLikes}}</td>
-                                    <td>{{post.totalLikes}}</td>
-                                    <td><a :href="post.url" target="_blank">Post</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </dic>
-                </div>
+            <div class="col s12 l6">
+                <transition name="fade">
+                    <div class="card bottomCard grey lighten-4" v-if="!postsLoading">
+                        <div class="card-content">
+                            <span class="card-title">Top 10 Posts - {{getMonday(posts.week)}} - {{getSunday(posts.week)}}</span>
+                            <table class="striped highlight bottomCardTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Party</th>
+                                        <th>FB-Page</th>
+                                        <th>Likes in Week</th>
+                                        <th>Total Likes</th>
+                                        <th>Post</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- <transition name="fade"> -->
+                                        <tr v-for="(post, index) in posts.posts">
+                                            <td>{{index+1}}</td>
+                                            <td></td>
+                                            <td>{{post.name}}</td>
+                                            <td>{{post.count}}</td>
+                                            <td>{{post.totalLikes}}</td>
+                                            <td><a :href="post.url" target="_blank">Post</a></td>
+                                        </tr>
+                                    <!-- </transition> -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </transition>
             </div>
 
 
@@ -180,8 +188,12 @@
     }
 
     .bottomCardTable td {
-        height: 20px;
+        height: 40px;
         padding: 4px 10px;
+    }
+
+    .bottomCard .card-title {
+        padding: 20px 0 0 20px
     }
 
     td:first-child, th:first-child {
@@ -231,38 +243,8 @@
                 themeColor: Config.themeColor,
                 weekShift: 0,
                 maxWeeks: 11,
-                posts: [
-                    {
-                        party: 'A',
-                        weekLikes: 12000,
-                        totalLikes: 18000,
-                        url: 'https://facebook.com/1055750931118544_1262072177153084'
-                    },
-                    {
-                        party: 'B',
-                        weekLikes: 11000,
-                        totalLikes: 15000,
-                        url: 'https://facebook.com/202754879788353_986971484700018'
-                    },
-                    {
-                        party: 'AA',
-                        weekLikes: 10000,
-                        totalLikes: 12000,
-                        url: 'https://facebook.com/106952222676974_1208726602499525'
-                    },
-                    {
-                        party: 'V',
-                        weekLikes: 9000,
-                        totalLikes: 10000,
-                        url: 'https://facebook.com/167412043730_10153379450553731'
-                    },
-                    {
-                        party: 'O',
-                        weekLikes: 8000,
-                        totalLikes: 9000,
-                        url: 'https://facebook.com/257110534379440_940021062755047'
-                    }
-                ]
+                posts: [],
+                postsLoading: true
             }
         },
         methods: {
@@ -299,6 +281,20 @@
                 if (num.length > 3 && num.length< 7) {
                     return num.substring(0, num.length-3) + '.' + num.substring(num.length-3, num.length)
                 } else { return num }
+            },
+            loadPosts: function () {
+                this.postsLoading = true
+                let self = this
+                let myInit = { mode: 'cors' }
+                fetch(Config.apiUrl + 'api/getposts/' + this.getWeek(this.weekShift), myInit)
+                .then((response) => {
+                    return response.json();
+                })
+                .then(function(data) {
+                    console.log(data.posts)
+                    self.postsLoading = false
+                    self.posts = data
+                })
             },
             getWeek: function (shift) {return this.timePeriods[this.timePeriods.length-1-shift]},            
         },
@@ -357,6 +353,14 @@
             },
             biggestLoser: function () {
                 return this.partyChange.reduce((prev, curr) => (prev[2] < curr[2]) ? prev : curr)
+            }
+        },
+        mounted () {
+            this.loadPosts()
+        },
+        watch: {
+            weekShift: function () {
+                this.loadPosts()
             }
         }
     }
