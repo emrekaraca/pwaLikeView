@@ -3,6 +3,7 @@
     <app-header></app-header> 
     <div class="col s12">
       <transition name="fade">
+        <app-loading v-if="!render"></app-loading>
         <router-view v-if="render"></router-view>
       </transition>
     </div>
@@ -12,6 +13,7 @@
 <script>
 import Config from './interface_config.json'
 import Header from './components/Header.vue'
+import Loading from './components/Loading.vue'
 
 
 export default {
@@ -21,7 +23,8 @@ export default {
     }
   },
   components: {
-    'app-header': Header
+    'app-header': Header,
+    'app-loading': Loading
   },
   methods: {
     loadVoteSwingData: function (callback1, callback2, callback3) {
