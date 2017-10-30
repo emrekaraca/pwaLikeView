@@ -107,8 +107,8 @@
 
             <div class="col s12 l6">
                 <transition name="fade">
-                    <div class="card bottomCard grey lighten-4" v-if="!postsLoading">
-                        <div class="card-content">
+                    <div class="card bottomCard grey lighten-4">
+                        <div class="card-content" :class="changinDataClass">
                             <span class="card-title">Top 10 Posts - {{getMonday(posts.week)}} - {{getSunday(posts.week)}}</span>
                             <table class="striped highlight bottomCardTable">
                                 <thead>
@@ -125,7 +125,7 @@
                                     <!-- <transition name="fade"> -->
                                         <tr v-for="(post, index) in posts.posts">
                                             <td>{{index+1}}</td>
-                                            <td></td>
+                                            <td><img :src="partyPic(post.party)" alt="" max-width="100%" height="25px"></td>
                                             <td>{{post.name}}</td>
                                             <td>{{post.count}}</td>
                                             <td>{{post.totalLikes}}</td>
@@ -227,6 +227,14 @@
 
     .arrowIcon {
         transform: translateX(-20px);
+    }
+
+    .changingData {
+        opacity: 0;
+    }
+
+    .card-content {
+        transition: opacity 0.2s;
     }
 </style>
 
@@ -353,6 +361,13 @@
             },
             biggestLoser: function () {
                 return this.partyChange.reduce((prev, curr) => (prev[2] < curr[2]) ? prev : curr)
+            },
+            changinDataClass: function () {
+                if (this.postsLoading) {
+                    return 'changingData'
+                } else {
+                    return
+                }
             }
         },
         mounted () {
