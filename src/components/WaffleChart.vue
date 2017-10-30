@@ -25,7 +25,7 @@
         
                 <div class="col s0 m1"></div>
                 <div v-for="party in partyNames" class="col s2 m1 center-align">
-                    <button v-bind:class="partyButtonClasses[party]" class="btn btn-floating" @click="selectedParty = party"><img style="transform: translateY(6px)" :src="partyPic(party)" /></button>
+                    <button v-bind:class="partyButtonClasses[party]" class="btn btn-floating" @click="selectedParty = party"><img style="transform: translateY(8px)" :src="partyPic(party)" max-width="100%" height="25px" /></button>
                 </div>
                 <div class="row">
                     <div class="col s1 m2"></div>

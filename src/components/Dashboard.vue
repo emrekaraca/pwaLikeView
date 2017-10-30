@@ -103,6 +103,7 @@
                     </div>                    
                 </div>
             </div>
+            
 
 
             <div class="col s12 l6">
@@ -114,7 +115,6 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Party</th>
                                         <th>FB-Page</th>
                                         <th>Likes in Week</th>
                                         <th>Total Likes</th>
@@ -125,12 +125,11 @@
                                     <!-- <transition name="fade"> -->
                                         <tr v-for="(post, index) in posts.posts">
                                             <td>{{index+1}}</td>
-                                            <td><img :src="partyPic('A')" alt="" max-width="100%" height="25px"></td>
-                                            <td>{{post.name}}</td>
+                                            <td><img :src="partyPic(post.party)" alt="" max-width="100%" height="30px" class="partyPic"><img :src="post.userPic" class="circle userPic" alt="" max-width="100%" height="30px"><span class="userName">{{post.name}}</span></td>
                                             <td>{{post.count}}</td>
                                             <td>{{post.totalLikes}}</td>
                                             <!-- <td><a :href="post.url" target="_blank">Post</a></td> -->
-                                            <td><button class="btn waves-effect waves-light" :class="themeColor + ' lighten-1'"><i class="material-icons">speaker_notes</i></button></td>
+                                            <td><button class="btn waves-effect waves-light" :class="themeColor + ' lighten-1'" @click="showPost(post.url)"><i class="material-icons">speaker_notes</i></button></td>
                                         </tr>
                                     <!-- </transition> -->
                                 </tbody>
@@ -140,6 +139,17 @@
                 </transition>
             </div>
 
+            <transition>
+                <modal name="post"
+                    :width="500"
+                    height="auto"
+                    :scrollable="true"
+                    @before-open="modalData">
+                
+                    <iframe :src="'https://www.facebook.com/plugins/post.php?href=' + postUrl + '&width=500'" width="500" style="border:none; height: 80vh" frameborder="0" allowTransparency="true"></iframe>
+                
+                </modal>
+            </transition>
 
 
 
@@ -160,7 +170,7 @@
   
 </template>
 
-<style scoped>
+<style>
     .card {
         margin: 3px 3px;    
     }
@@ -221,10 +231,6 @@
         transform: translateY(-30px)
     }
 
-    /* .arrowIcon {
-        transform: translateX(-20px);
-    } */
-
     i.arrow {
         position: absolute;
         transform: translateY(-3px)
@@ -237,6 +243,21 @@
 
     .card-content {
         transition: opacity 0.2s;
+    }
+
+    .userPic {
+        position: absolute;
+        transform: translate(5px, 0px);
+        box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.3);
+    }
+
+    .partyPic {
+        position: absolute;
+        transform: translate(-10px, -8px);
+    }
+
+    .userName {
+        padding-left: 45px;
     }
 </style>
 
@@ -254,10 +275,16 @@
                 weekShift: 0,
                 maxWeeks: 11,
                 posts: [],
-                postsLoading: true
+                postsLoading: true,
+                postUrl: ''
             }
         },
         methods: {
+            showPost: function (url) {this.$modal.show('post', { url: url })},
+            hidePost: function () {this.$modal.hide('post')},
+            modalData: function (data) {
+                this.postUrl = data.params.url
+            },
             bigPartyPic: (party) => require('./../assets/dk/' + party + '-big.png'),
             partyPic: (party) => require('./../assets/dk/' + party + '-small.png'),
             weekClass: function (week) {

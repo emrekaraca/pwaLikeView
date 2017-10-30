@@ -50,8 +50,8 @@
                 <div class="row">
                     <div class="col s12 graphBtn center-align">
                         <template v-for="party in predictionPartyNames" v-if="!party.includes('x')">
-                            <img class="graphBtn" :src="partyPic(party)" :alt="party" @click="toggleParty(party)" :class="partyButtonClass(party)" :title="party">
-                            <img class="pollBtn graphBtn" :src="partyPic(party)" :alt="party + '_poll'" @click="toggleParty(party + '_poll')" :class="partyButtonClass(party + '_poll')" :title="party + ' polls'">
+                            <img class="graphBtn" :src="partyPic(party)" :alt="party" @click="toggleParty(party)" :class="partyButtonClass(party)" :title="party" max-width="100%" height="25px">
+                            <img class="pollBtn graphBtn" :src="partyPic(party)" :alt="party + '_poll'" @click="toggleParty(party + '_poll')" :class="partyButtonClass(party + '_poll')" :title="party + ' polls'" max-width="100%" height="25px">
                         </template>
                         <i class="material-icons graphBtn" @click="showAllParties()" title="Show all parties">radio_button_checked</i>
                         <i class="material-icons graphBtn" @click="showAllPolls()" title="Show all polls">radio_button_checked</i>

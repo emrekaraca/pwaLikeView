@@ -61,7 +61,7 @@
                 <div class="row">
                     <div class="col s12 graphBtn center-align">
                         <template v-for="party in predictionPartyNames" v-if="!party.includes('x')">
-                            <img class="graphBtn" :src="partyPic(party)" :title="party" @click="toggleParty(party)" :class="partyButtonClass(party)">
+                            <img class="graphBtn" :src="partyPic(party)" :title="party" @click="toggleParty(party)" :class="partyButtonClass(party)" max-width="100%" height="25px">
                         </template>
                         <i class="material-icons graphBtn" @click="showAll()" title="Show all parties">radio_button_checked</i>
                         <i class="material-icons graphBtn" @click="hideAll()" title="Hide all parties">radio_button_unchecked</i>
