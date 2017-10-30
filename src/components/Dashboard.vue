@@ -219,7 +219,7 @@
     }
 
     .pageBtn {
-        position: absolute;
+        position: absolute!important;
         right: 10%;
     }
 
