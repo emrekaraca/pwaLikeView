@@ -17,11 +17,11 @@
                                 </tr>
                                 <tr>
                                     <td>Last week</td>
-                                    <td>{{parseNumberWithSign(totalLikesLastTwoWeeks[0] - totalLikesLastTwoWeeks[1])}} / <span v-if="totalLikesPercentageChange>0">+</span>{{totalLikesPercentageChange}}% <i v-if="totalLikesPercentageChange<0" class="material-icons red-text">arrow_drop_down</i><i v-if="totalLikesPercentageChange>0" class="material-icons green-text">arrow_drop_up</i></td>
+                                    <td>{{parseNumberWithSign(totalLikesLastTwoWeeks[0] - totalLikesLastTwoWeeks[1])}} / <span v-if="totalLikesPercentageChange>0">+</span>{{totalLikesPercentageChange}}% <i v-if="totalLikesPercentageChange<0" class="material-icons arrow red-text">arrow_drop_down</i><i v-if="totalLikesPercentageChange>0" class="material-icons arrow green-text">arrow_drop_up</i></td>
                                 </tr>
                                 <tr>
                                     <td>6-Month-Avg</td>
-                                    <td>{{parseNumberWithSign(totalLikesLastTwoWeeks[0] - totalLikesSixMonthsAverage)}} / <span v-if="totalLikesSixMonthsPercentageChange>0">+</span>{{totalLikesSixMonthsPercentageChange}}% <i v-if="totalLikesSixMonthsPercentageChange<0" class="material-icons red-text">arrow_drop_down</i><i v-if="totalLikesSixMonthsPercentageChange>0" class="material-icons green-text">arrow_drop_up</i></td>
+                                    <td>{{parseNumberWithSign(totalLikesLastTwoWeeks[0] - totalLikesSixMonthsAverage)}} / <span v-if="totalLikesSixMonthsPercentageChange>0">+</span>{{totalLikesSixMonthsPercentageChange}}% <i v-if="totalLikesSixMonthsPercentageChange<0" class="material-icons arrow red-text">arrow_drop_down</i><i v-if="totalLikesSixMonthsPercentageChange>0" class="material-icons arrow green-text">arrow_drop_up</i></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -41,11 +41,11 @@
                                 </tr>
                                 <tr>
                                     <td>Last Week</td>
-                                    <td>{{parseNumberWithSign(biggestWinner[2])}} / <span v-if="biggestWinner[3]>0">+</span>{{biggestWinner[3]}}% <i v-if="biggestWinner[3]<0" class="material-icons red-text">arrow_drop_down</i><i v-if="biggestWinner[3]>0" class="material-icons green-text">arrow_drop_up</i></td>
+                                    <td>{{parseNumberWithSign(biggestWinner[2])}} / <span v-if="biggestWinner[3]>0">+</span>{{biggestWinner[3]}}% <i v-if="biggestWinner[3]<0" class="material-icons arrow red-text">arrow_drop_down</i><i v-if="biggestWinner[3]>0" class="material-icons arrow green-text">arrow_drop_up</i></td>
                                 </tr>
                                 <tr>
                                     <td>6-Month-Avg</td>
-                                    <td>{{parseNumberWithSign(biggestWinner[4])}} / <span v-if="biggestWinner[5]>0">+</span>{{biggestWinner[5]}}% <i v-if="biggestWinner[5]<0" class="material-icons red-text">arrow_drop_down</i><i v-if="biggestWinner[5]>0" class="material-icons green-text">arrow_drop_up</i></td>
+                                    <td>{{parseNumberWithSign(biggestWinner[4])}} / <span v-if="biggestWinner[5]>0">+</span>{{biggestWinner[5]}}% <i v-if="biggestWinner[5]<0" class="material-icons arrow red-text">arrow_drop_down</i><i v-if="biggestWinner[5]>0" class="material-icons arrow green-text">arrow_drop_up</i></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -65,11 +65,11 @@
                                 </tr>
                                 <tr>
                                     <td>Last Week</td>
-                                    <td>{{parseNumberWithSign(biggestLoser[2])}} / {{biggestLoser[3]}}% <i class="material-icons red-text">arrow_drop_down</i></td>
+                                    <td>{{parseNumberWithSign(biggestLoser[2])}} / {{biggestLoser[3]}}% <i class="material-icons arrow red-text">arrow_drop_down</i></td>
                                 </tr>
                                 <tr>
                                     <td>6-Month-Avg</td>
-                                    <td>{{parseNumberWithSign(biggestLoser[4])}} / <span v-if="biggestLoser[5]>0">+</span>{{biggestLoser[5]}}% <i v-if="biggestLoser[5] < 0" class="material-icons red-text">arrow_drop_down</i><i v-if="biggestLoser[5] > 0" class="material-icons green-text">arrow_drop_up</i></td>
+                                    <td>{{parseNumberWithSign(biggestLoser[4])}} / <span v-if="biggestLoser[5]>0">+</span>{{biggestLoser[5]}}% <i v-if="biggestLoser[5] < 0" class="material-icons arrow red-text">arrow_drop_down</i><i v-if="biggestLoser[5] > 0" class="material-icons arrow green-text">arrow_drop_up</i></td>
                                 </tr>
                             </tbody>
                         </table>                        
@@ -95,8 +95,8 @@
                                     <td>{{index+1}}</td>
                                     <td><img :src="partyPic(party[0])" alt="" max-width="100%" height="25px"></td>
                                     <td>{{parseNumber(party[1])}}</td>
-                                    <td>{{parseNumberWithSign(party[2])}} / <span v-if="party[3]>0">+</span>{{party[3]}}% <i v-if="party[2]<0" class="material-icons red-text">arrow_drop_down</i><i v-if="party[2]>0" class="material-icons green-text">arrow_drop_up</i></td>
-                                    <td>{{parseNumberWithSign(party[4])}} / <span v-if="party[5]>0">+</span>{{party[5]}}% <i v-if="party[4]<0" class="material-icons red-text">arrow_drop_down</i><i v-if="party[4]>0" class="material-icons green-text">arrow_drop_up</i></td>
+                                    <td>{{parseNumberWithSign(party[2])}} / <span v-if="party[3]>0">+</span>{{party[3]}}% <i v-if="party[2]<0" class="material-icons arrow red-text">arrow_drop_down</i><i v-if="party[2]>0" class="material-icons arrow green-text">arrow_drop_up</i></td>
+                                    <td>{{parseNumberWithSign(party[4])}} / <span v-if="party[5]>0">+</span>{{party[5]}}% <i v-if="party[4]<0" class="material-icons arrow red-text">arrow_drop_down</i><i v-if="party[4]>0" class="material-icons arrow green-text">arrow_drop_up</i></td>
                                 </tr>                            
                             </tbody>
                         </table>
@@ -125,11 +125,12 @@
                                     <!-- <transition name="fade"> -->
                                         <tr v-for="(post, index) in posts.posts">
                                             <td>{{index+1}}</td>
-                                            <td><img :src="partyPic(post.party)" alt="" max-width="100%" height="25px"></td>
+                                            <td><img :src="partyPic('A')" alt="" max-width="100%" height="25px"></td>
                                             <td>{{post.name}}</td>
                                             <td>{{post.count}}</td>
                                             <td>{{post.totalLikes}}</td>
-                                            <td><a :href="post.url" target="_blank">Post</a></td>
+                                            <!-- <td><a :href="post.url" target="_blank">Post</a></td> -->
+                                            <td><button class="btn waves-effect waves-light" :class="themeColor + ' lighten-1'"><i class="material-icons">speaker_notes</i></button></td>
                                         </tr>
                                     <!-- </transition> -->
                                 </tbody>
@@ -163,11 +164,6 @@
     .card {
         margin: 3px 3px;    
     }
-    i {
-        position: absolute;
-        transform: translateY(-3px)
-    }
-
     table.striped>tbody>tr:nth-child(odd) {
         background-color: #ecebeb!important;
     }
@@ -188,7 +184,7 @@
     }
 
     .bottomCardTable td {
-        height: 40px;
+        height: 45px;
         padding: 4px 10px;
     }
 
@@ -215,7 +211,7 @@
     .pageBtn {
         position: absolute;
         right: 10%;
-}
+    }
 
     .pageBtnBack {
         transform: translate(-50px, -30px)
@@ -225,9 +221,15 @@
         transform: translateY(-30px)
     }
 
-    .arrowIcon {
+    /* .arrowIcon {
         transform: translateX(-20px);
+    } */
+
+    i.arrow {
+        position: absolute;
+        transform: translateY(-3px)
     }
+
 
     .changingData {
         opacity: 0;
