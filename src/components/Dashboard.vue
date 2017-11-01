@@ -76,7 +76,7 @@
                     </div>                    
                 </div>
             </div>
-            <div class="col s12 l6">
+            <div class="col s12 m12 l6">
                 <div class="card bottomCard grey lighten-4">
                     <div class="card-content">
                         <span class="card-title">Ranking by posts in week</span>
@@ -106,7 +106,7 @@
             
 
 
-            <div class="col s12 l6">
+            <div class="col s1 m12 l6">
                 <transition name="fade">
                     <div class="card bottomCard grey lighten-4">
                         <div class="card-content" :class="changinDataClass">
@@ -116,8 +116,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th>FB-Page</th>
-                                        <th>Likes in Week</th>
-                                        <th>Total Likes</th>
+                                        <th>Week</th>
+                                        <th>Total</th>
                                         <th>Post</th>
                                     </tr>
                                 </thead>
@@ -129,7 +129,7 @@
                                             <td>{{post.count}}</td>
                                             <td>{{post.totalLikes}}</td>
                                             <!-- <td><a :href="post.url" target="_blank">Post</a></td> -->
-                                            <td><button class="btn waves-effect waves-light" :class="themeColor + ' lighten-1'" @click="showPost(post.url)"><i class="material-icons">speaker_notes</i></button></td>
+                                            <td><button class="btn btn-floating waves-effect waves-light" :class="themeColor + ' lighten-1'" @click="showPost(post.url, post._id)"><i class="material-icons">speaker_notes</i></button></td>
                                         </tr>
                                     <!-- </transition> -->
                                 </tbody>
@@ -139,15 +139,15 @@
                 </transition>
             </div>
 
-            <transition>
+            <transition name="fade">
                 <modal name="post"
                     :width="500"
                     height="auto"
                     :scrollable="true"
                     @before-open="modalData">
                 
+                    <p>FB-ID: {{postID}}</p>
                     <iframe :src="'https://www.facebook.com/plugins/post.php?href=' + postUrl + '&width=500'" width="500" style="border:none; height: 80vh" frameborder="0" allowTransparency="true"></iframe>
-                
                 </modal>
             </transition>
 
@@ -194,7 +194,7 @@
     }
 
     .bottomCardTable td {
-        height: 45px;
+        height: 48px;
         padding: 4px 10px;
     }
 
@@ -203,7 +203,11 @@
     }
 
     td:first-child, th:first-child {
-    padding-left: 15px;
+    padding-left: 10px;
+    padding-right: 0;
+    }
+
+    td:last-child, th:last-child {
     padding-right: 0;
     }
 
@@ -276,14 +280,16 @@
                 maxWeeks: 11,
                 posts: [],
                 postsLoading: true,
-                postUrl: ''
+                postUrl: '',
+                postID: ''
             }
         },
         methods: {
-            showPost: function (url) {this.$modal.show('post', { url: url })},
+            showPost: function (url, postID) {this.$modal.show('post', { url: url, postID: postID })},
             hidePost: function () {this.$modal.hide('post')},
             modalData: function (data) {
                 this.postUrl = data.params.url
+                this.postID = data.params.postID
             },
             bigPartyPic: (party) => require('./../assets/dk/' + party + '-big.png'),
             partyPic: (party) => require('./../assets/dk/' + party + '-small.png'),
