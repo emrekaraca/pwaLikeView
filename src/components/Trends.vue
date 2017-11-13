@@ -536,7 +536,7 @@ export default {
                 if (x[0].includes('x') || x[0].includes('poll')) {
                     return x
                 } else {
-                    return x.slice(0, x.length-1)
+                    return x.slice(0, x.length)
                 }
             })
             this.fetchGraph()

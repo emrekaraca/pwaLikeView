@@ -203,7 +203,7 @@
             },
             loadData: function() {
                 let self = this;
-                let data = self.$store.state.voteSwingData.map(x=>x.slice(0, x.length-1))
+                let data = self.$store.state.voteSwingData.map(x=>x.slice(0, x.length))
                 self.loading = false
                 self.timePeriods = data[0].slice(1, data[0].length)
                 self.pickedDate1 = self.timePeriods.length-1

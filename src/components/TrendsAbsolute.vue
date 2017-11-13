@@ -625,7 +625,7 @@ export default {
             this.showingPolls = true;
         },
         loadData: function () {
-            this.columns = this.$store.state.rawLikesAbsoluteData.map(x => x.slice(0, x.length-1))
+            this.columns = this.$store.state.rawLikesAbsoluteData.map(x => x.slice(0, x.length))
             this.fetchGraph()
             $('.modal').modal();
 
