@@ -1,25 +1,21 @@
 <template>
     <div class="main container">
-        <div class="row">
-            <div class="col s12">
-                <div :class="themeColor" class="card title-card lighten-1">
-                    <div class="card-content">
-                        <span class="card-title section-title white-text">Timeseries Chart</span>
-                        <span class="switch" style="display: float-right">
-                            <label class="white-text">
-                            Weekly
-                            <input type="checkbox" v-model="monthly">
-                            <span class="lever"></span>
-                            Monthly
-                            </label>
-                        </span>
-                        
-                    </div>
+        <div class="row">            
+            <div class="col s12 card grey lighten-4" style="position: relative">
+                <div class="card-content">
+                    <span class="card-title section-title">Vote Swing over Time</span>
+                </div>                    
+                <div style="position: absolute; top: 30px; right: 10px">
+                    <button class="btn btn-floating" :class="themeColor" @click="toggleSpline()">
+                        <i class="material-icons" v-if="chartIsSpline">timeline</i>
+                        <i class="material-icons" v-else>show_chart</i>
+                    </button>
                 </div>
-            </div>    
-            
-            <div class="col s0 l1"></div>
-            <div class="col s12 l10">
+                <div style="position: absolute; top: 30px; right: 60px">
+                    <button class="btn btn-floating" :class="themeColor" @click="monthly = !monthly">
+                        <i class="material-icons">date_range</i>
+                    </button>
+                </div>
                 <div id="chartX"></div>
                 <div class="center-align chartContainer" v-if="loading">
                     <div class="preloader-wrapper big active">
@@ -42,7 +38,7 @@
         <div class="row">
             <div class="col s0 m1"></div>
             <div v-for="party in partyNames" class="col s2 m1 center-align">
-                <button v-bind:class="partyButtonClasses[party]" class="btn btn-floating" @click="selectedParty = party"><img style="transform: translateY(6px)" :src="partyPic(party)" /></button>
+                <button v-bind:class="partyButtonClasses[party]" class="btn btn-floating" @click="selectedParty = party"><img style="transform: translateY(8px)" :src="partyPic(party)" max-width="100%" height="25px" /></button>
             </div>
         </div>
     </div>
@@ -61,6 +57,10 @@
     .c3-line {
         stroke-width: 2px
     }
+
+    .chartCard {
+        padding: 10px;
+    }    
 </style>
 
 <script>
@@ -78,10 +78,19 @@
                 loading: true,
                 partyNames: ['A', 'AA', 'B', 'C', 'F', 'I', 'NB', 'O', 'OE', 'V'],
                 selectedParty: 'A',
-                themeColor: Config.themeColor
+                themeColor: Config.themeColor,
+                chartIsSpline: false
             }
         },
         methods: {
+            toggleSpline: function () {
+                if (this.chartIsSpline) {
+                    chart.transform('spline')
+                } else {
+                    chart.transform('line')
+                }
+                this.chartIsSpline = !this.chartIsSpline
+            },
             partyPic: (party) => require('./../assets/dk/' + party + '-small.png'),            
             weeklyToMonthly: function (columns) {
                 let monthlyColumns = columns.map((column) => [ column[0] ])
@@ -115,7 +124,8 @@
                         xFormat: this.weeklyMonthlyFormat,
                 //        xFormat: '%Y%m%d', // 'xFormat' can be used as custom format of 'x'
                         columns: this.selectedColumn,
-                        colors: this.partyColors
+                        colors: this.partyColors,
+                        type: 'spline'
                     },
                     size: {
                         height: 400
@@ -141,8 +151,25 @@
                             tick: {
                                 format: d3.format(",")
                                 // format: function (d) { return "$" + d; }
-                            }
+                            },
+                            show: false
                         }                
+                    },
+                    grid: {
+                        y: {
+                            lines: [
+                                {value: 0, text: '0', position: 'start', class: 'lineClass'},
+                                {value: 25000, text: '25.000', position: 'start', class: 'lineClass'},
+                                {value: 50000, text: '50.000', position: 'start', class: 'lineClass'},
+                                {value: 75000, text: '75.000', position: 'start', class: 'lineClass'},
+                                {value: 100000, text: '100.000', position: 'start', class: 'lineClass'},
+                                {value: 150000, text: '150.000', position: 'start', class: 'lineClass'},
+                                {value: 200000, text: '200.000', position: 'start', class: 'lineClass'},
+                                {value: 300000, text: '300.000', position: 'start', class: 'lineClass'},
+                                {value: 400000, text: '400.000', position: 'start', class: 'lineClass'},
+                                {value: 500000, text: '500.000', position: 'start', class: 'lineClass'}
+                            ]
+                        }
                     }
                 });      
             }
@@ -202,7 +229,7 @@
                     AA: 'rgb(90, 255, 90)',
                     B: 'rgb(229, 43, 145)',
                     C: 'rgb(15, 133, 75)',
-                    D: 'rgb(0, 68, 79)',
+                    NB: 'rgb(0, 68, 79)',
                     F: 'rgb(156, 29, 42)',
                     I: 'rgb(239, 133, 53)',
                     K: 'rgb((240, 172, 85)',

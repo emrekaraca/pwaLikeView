@@ -7,7 +7,7 @@
                 <!-- ZoomOut Button for the graph -->
                 <div style="margin-top: 20px; margin-right: 20px; position: absolute; right: 0">
                     <!-- <a :class="themeColor" class="btn btn-large btn-floating waves-effect waves-light" onclick="$('#infomodal').modal('open')"><i class="material-icons">info_outline</i></a> -->
-                    <a :class="themeColor" @click="zoomOut()" class="btn btn-large btn-floating waves-effect waves-light"><i class="material-icons">zoom_out</i></a>
+                    <a :class="themeColor" @click="zoomOut()" class="btn btn-floating waves-effect waves-light"><i class="material-icons">zoom_out</i></a>
                 </div>
                 
                 <div class="card-content">

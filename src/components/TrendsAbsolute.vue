@@ -67,7 +67,7 @@
                         <i class="material-icons graphBtn" @click="hideAll()" title="Hide all parties">radio_button_unchecked</i>
                         <i class="graphBtn material-icons" @click="toggleTotalLikes()" :class="totalLikesClass()" title="Toggle total likes overlay">texture</i>
                         <button class="graphBtn graphBtnTxt btn btn-floating" @click="toggleTrendline()" :class="classTrendline" title="Toggle trendline smoothing"><i class="material-icons graphBtnTxtIcon">show_chart</i></button>
-                        <span class="green-text" v-if="smoothFactor!==0">{{smoothFactor}}-week-averages</span>
+                        <span class="green-text" style="position: absolute" v-if="smoothFactor!==0">{{smoothFactor}}-week-averages</span>
                     </div>
                 </div>
                 

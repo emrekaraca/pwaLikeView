@@ -48,7 +48,7 @@
         "fileName": "Timeseries",
         "link": "/timeseries"
       },        
-      "show": false,
+      "show": true,
       "name": "Timeseries",
       "description": "This timeseries-chart shows for each Danish party how the likes of all users that predominantly like this party are distributed over all parties over time."
     },
@@ -66,9 +66,9 @@
         "fileName": "ChordChart",
         "link": "/chord"
       },        
-      "show": false,
+      "show": true,
       "name": "Chord Chart",
-      "description": "This chord-chart shows the likes of all users that predominantly like one party are distributed over all parties aggregated over one or multiple weeks (you can set the timeframe with the sliders). The color of a chord between two parties indicates that the surplus of likes goes towards that party with the same color."
+      "description": "This chord-chart shows the likes of all users that predominantly like one party are distributed over all parties aggregated over one or multiple weeks."
     },
     "sankey": {
       "doNotChange": {
@@ -84,7 +84,7 @@
         "fileName": "FlowChart",
         "link": "/flow"
       },
-      "show": false,
+      "show": true,
       "name": "Flow Chart",
       "description": "This simple Like-Flow visualization simply shows the net-flow of likes between one party and the others."
     },

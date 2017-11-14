@@ -1,39 +1,11 @@
 <template>
     <div class="main container">
-        <div class="row">
-            <div class="col s12">
-                <div :class="themeColor" class="card title-card lighten-1">
-                    <div class="card-content">
-                        <span class="card-title section-title white-text">Chord Chart</span>
-                    </div>
-                </div>
-            </div>    
-            
-            <div class="col s0 l1"></div>
-            <div class="col s12 l10 center-align chordChartContainer">
-                <svg id="chordChart" v-bind:width="containerWidth" v-bind:height="containerWidth"></svg>
-
-                <div class="center-align" v-if="loading">
-                    <div class="preloader-wrapper big active">
-                        <div class="spinner-layer spinner-red-only">
-                            <div class="circle-clipper left">
-                                <div class="circle"></div>
-                            </div>
-                            <div class="gap-patch">
-                                <div class="circle"></div>
-                            </div>
-                            <div class="circle-clipper right">
-                                <div class="circle"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
+        <div class="row card grey lighten-4">            
+            <div class="col s12 center-align chordChartContainer">
+                <svg id="chordChart" v-bind:width="containerWidth" v-bind:height="containerWidth"></svg>                
             </div>
-        </div>
-        <div class="row">
             <div class="col s0 m2"></div>
-            <div class="col s0 m8">
+            <div class="col s12 m8">
                 <form action="#">
                     <p class="range-field">
                         <span>From {{getMonday(timePeriods[pickedDate1])}}</span>
@@ -63,12 +35,8 @@
 </template>
 
 <style>
-    .spinner-layer {
-        border-color: #90a4ae;
-    }
-
     .group-tick line {
-    stroke: #000;
+        stroke: #000;
     }
 
 </style>
@@ -97,7 +65,7 @@
                     'rgba(15, 133, 75, 0.5)',
                     'rgba(156, 29, 42, 0.5)',
                     'rgba(239, 133, 53, 0.5)',
-                    'rgba(99, 99, 99, 0.5)',
+                    'rgba(0, 68, 79, 0.5)',
                     'rgba(0, 80, 120, 0.5)',
                     'rgba(115, 21, 37, 0.5)',
                     'rgba(15, 132, 187, 0.5)'],
@@ -118,31 +86,18 @@
             },
             loadData: function() {
                 let self = this;
-                let myInit = { 
-                    mode: 'cors'
-                };
-                //fetch('http://localhost:3000/api/getvoteswings', myInit)
-                fetch(Config.apiUrl + 'api/getvoteswings', myInit)
-                .then((response) => {
-                    return response.json();
-                })
-                .then(function(data) {
-                    console.log(data);
-                    self.loading = false
-                    self.timePeriods = data[0].slice(1, data[0].length-1)
-                    self.pickedDate1 = self.timePeriods.length-1
-                    self.pickedDate2 = self.timePeriods.length-1                    
-                    self.columns = data.slice(1, data.length)
-                    if ($('.chordChartContainer').width() > 900) {
-                        self.containerWidth = 900
-                    } else {
-                        self.containerWidth = +$('.chordChartContainer').width()
-                    }
-                    return 'x'
-                })
-                .then((data) => {
-                    this.drawChart()
-                })
+                let data = self.$store.state.voteSwingData.map(x=>x.slice(0, x.length))
+                self.loading = false
+                self.timePeriods = data[0].slice(1, data[0].length)
+                self.pickedDate1 = self.timePeriods.length-1
+                self.pickedDate2 = self.timePeriods.length-1
+                self.columns = data.slice(1, data.length)
+                if ($('.chordChartContainer').width() > 900) {
+                    self.containerWidth = 900
+                } else {
+                    self.containerWidth = +$('.chordChartContainer').width()
+                }
+                return 'x'
             },
             drawChart: function () {
                 $('#chordChart').html('')
@@ -277,9 +232,6 @@
                             .style("stroke-opacity", 0.6)
                             .style("fill-opacity", 0.6);
                     })/*fade*/
-
-
-
             }
         },
         mounted () {
@@ -287,6 +239,7 @@
             // this.computeData()
         },
         updated () {
+            this.drawChart()
         },
         watch: {
             activeParties: function () {
@@ -349,11 +302,7 @@
                     }
                 }
                 return matrix
-
-
             }
-            
         }
-    
     }
 </script>

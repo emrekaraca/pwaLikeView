@@ -1,67 +1,46 @@
 <template>
     <div class="main container">
-        <div class="row">
-            <div class="col s12">
-                <div :class="themeColor" class="card title-card lighten-1">
-                    <div class="card-content">
-                        <span class="card-title section-title white-text">Flow Chart</span>
-                        <!--<span class="card-title section-title white-text">=> Inspired by these <a href="https://www.tagesschau.de/multimedia/bilder/uvotealbum-945.html">CHARTS</a>, but unstyled</span>-->
-                    </div>
-                </div>
-            </div>    
+        <div class="row card grey lighten-4">
+            <div class="card-content">
+                <span class="card-title section-title">Net Like Flow between Parties</span>
+            </div>                    
             
-            <div class="col s0 l1"></div>
-            <div class="col s12 l10">
-                <div class="preloader-wrapper big active" v-if="loading">
-                    <div class="spinner-layer spinner-red-only">
-                        <div class="circle-clipper left">
-                            <div class="circle"></div>
+            <div class="col s12">                
+                <transition name="fade">
+                    <div class="row">
+                        <div class="col m1 l3 hide-on-small-only"></div>
+                        <div class="col s2 m2 l1 box box-left valign-wrapper" v-bind:style="partyColor(selectedParty)"><img class="leftLogo" :src="partyPic(selectedParty)" /></div>
+                        <div class="col s8 m6 l4 box box-middle">
+                            <div class="row">
+                                <template v-for="party in otherParties" >
+                                    <div class="col s12 arrow center-align" style="position: relative" :key="party">
+                                        <svg height="40" width="20" style="position: absolute; left: 5; top: 0" v-if="voterSwing[party]>0"> 
+                                            <polygon points="20,0 20,40 0,20" v-bind:style="arrowColor(voterSwing[party])" />
+                                        </svg>
+                                        <div v-bind:style="arrowColor(voterSwing[party])" class="arrow" style="position: absolute; left: 25px; top: 0; right: 25px">
+                                            <span class="flowNumber">{{voterSwing[party]}}</span>
+                                        </div>
+                                        <svg height="40" width="20" style="position: absolute; right: 5; top: 0">
+                                            <polygon points="0,0 0,40 20,20" v-bind:style="arrowColor(voterSwing[party])" v-if="voterSwing[party]<0" />
+                                        </svg>                
+                                    </div>
+                                </template>
+                            </div>
                         </div>
-                        <div class="gap-patch">
-                            <div class="circle"></div>
-                        </div>
-                        <div class="circle-clipper right">
-                            <div class="circle"></div>
+                        <div class="col s2 m2 l1 box box-right">
+                            <div class="row">
+                                <div v-for="party in otherParties" class="col s12 right-party center-align box" v-bind:style="partyColor(party)"><img class="rightLogo" :src="partyPic(party)" /></div>
+                            </div>                        
                         </div>
                     </div>
-                </div>
-                
-                <div class="row" v-else>
-                    <div class="col s0 m1"></div>
-                    <div class="col s3 m2 box box-left center-align" v-bind:style="partyColor(selectedParty)"><h5>{{selectedParty}}</h5></div>
-                    <div class="col s1 m1"></div>
-                    <div class="col s4 m4 box box-middle">
-                        <div class="row">
-                            <div v-for="party in otherParties" class="col s12 arrow center-align"  v-bind:style="arrowColor(voterSwing[party])" id="arrow1">
-                                <i class="material-icons" v-if="voterSwing[party]>0">arrow_back</i>
-                                {{voterSwing[party]}}
-                                <i class="material-icons" v-if="voterSwing[party]<0">arrow_forward</i>
-                                </div>
-                        </div>
-                    </div>
-                    <div class="col s1 m1"></div>
-                    <div class="col s3 m2">
-                        <div class="row">
-                            <div v-for="party in otherParties" class="col s12 right-party center-align" v-bind:style="partyColor(party)" id="rp1"><h5>{{party}}</h5></div>
-                        </div>                        
-                    </div>
-                    <div class="col s0 m1"></div>
-                </div>
-                <div class="center-align chartContainer" v-if="loading">
-                </div>
+                </transition>
             </div>
-        </div>
-
-        <div class="row">
             <div class="col s0 m1"></div>
             <div v-for="party in partyNames" class="col s2 m1 center-align">
-                <button v-bind:class="partyButtonClasses[party]" class="btn btn-floating" @click="selectedParty = party"><img style="transform: translateY(6px)" :src="partyPic(party)" /></button>
+                <button v-bind:class="partyButtonClasses[party]" class="btn btn-floating" @click="selectedParty = party"><img style="transform: translateY(8px)" :src="partyPic(party)" max-width="100%" height="25px" /></button>
             </div>
-        </div>
-
-        <div class="row">
             <div class="col s0 m2"></div>
-            <div class="col s0 m8">
+            <div class="col s12 m8">
                 <form action="#">
                     <p class="range-field">
                         <span>From {{getMonday(timePeriods[pickedDate1])}}</span>
@@ -83,29 +62,53 @@
                         Until {{getSunday(timePeriods[pickedDate2])}}
                         <input type="range" id="test5" min="0" v-bind:max="timePeriods.length-1" v-model="pickedDate2"/>
                     </p>
-                </form>                
+                </form>                          
             </div>
         </div>
     </div>
   
 </template>
 
-<style>
-    .spinner-layer {
-        border-color: #90a4ae;
-    }
-
-    .c3-circle {
-        opacity: 0.3!important
-    }
-
+<style scoped>
     .box {
         height: 440px;
+        padding: 0!important;
+        border-radius: 3px;
+    }
+
+    .box-left {
+        text-align: center;
     }
 
     .arrow, .right-party {
         margin-bottom: 10px;
         height: 40px;
+    }
+
+    .row {
+        margin: 0!important
+    }
+
+    .leftLogo {
+        width: 80%;
+        max-width: 50px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .rightLogo {
+        height: 95%;
+        max-height: 32px;
+        margin-left: auto;
+        margin-right: auto;
+        transform: translateY(4px);
+    }
+
+    .flowNumber {
+        font-size: 18px;
+        font-weight: bold;
+        line-height: 40px;
+        color: white;
     }
 </style>
 
@@ -125,16 +128,16 @@
                 pickedDate2: 0,
                 multiWeek: false,
                 colors: {
-                    A: 'rgb(227, 47, 59)',
-                    AA: 'rgb(90, 255, 90)',
-                    B: 'rgb(229, 43, 145)',
-                    C: 'rgb(15, 133, 75)',
-                    F: 'rgb(156, 29, 42)',
-                    I: 'rgb(239, 133, 53)',
-                    NB: 'rgb(240, 172, 85)',
-                    O: 'rgb(0, 80, 120)',
-                    OE: 'rgb(115, 21, 37)',
-                    V: 'rgb(15, 132, 187)'                
+                    A: 'rgba(227, 47, 59, 0.6)',
+                    AA: 'rgba(90, 255, 90, 0.6)',
+                    B: 'rgba(229, 43, 145, 0.6)',
+                    C: 'rgba(15, 133, 75, 0.6)',
+                    F: 'rgba(156, 29, 42, 0.6)',
+                    I: 'rgba(239, 133, 53, 0.6)',
+                    NB: 'rgba(0, 68, 79, 9.6)',
+                    O: 'rgba(0, 80, 120, 0.6)',
+                    OE: 'rgba(115, 21, 37, 0.6)',
+                    V: 'rgba(15, 132, 187, 0.6)'                
                 },
                 themeColor: Config.themeColor
                 
@@ -154,15 +157,15 @@
                 return "background-color: " + this.colors[party]
             },
             arrowColor: function (swingValue) {
-                let alpha = Math.abs(swingValue) / Math.max(...Object.values(this.voterSwing).map((x)=>Math.abs(x))) + 0.3
+                let alpha = Math.abs(swingValue) / Math.max(...Object.values(this.voterSwing).map((x)=>Math.abs(x))) + 0.5
 
                 if (swingValue > 0) {
-                    return "background-color: rgba(50,205,50," + alpha + ")"
+                    return "background-color: rgba(50,205,50," + alpha + "); fill: rgba(50,205,50," + alpha + ")"
                 }
                 else if (swingValue < 0) {
-                    return "background-color: rgba(220,20,60," + alpha + ")"
+                    return "background-color: rgba(220,20,60," + alpha + "); fill: rgba(220,20,60," + alpha + ")"
                 } else {
-                    return "background-color: rgb(220,220,220)"                   
+                    return "background-color: rgb(220,220,220); fill: rgb(220,220,220)"                   
                 }
             },
             loadData: function() {
@@ -177,7 +180,7 @@
                 .then(function(data) {
                     console.log(data);
                     self.loading = false
-                    self.timePeriods = data[0].slice(1, data[0].length-1)
+                    self.timePeriods = data[0].slice(1, data[0].length)
                     self.pickedDate1 = self.timePeriods.length-1
                     self.pickedDate2 = self.timePeriods.length-1
                     self.columns = data.slice(1, data.length)

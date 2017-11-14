@@ -89,18 +89,17 @@ export default {
 
   .container {
     margin: 0 auto;
-    max-width:80%;
-    width: 80%;
+    max-width: 95%;
   }
 
   .col {
-    padding: 4px!important
+    padding: 0 5px!important
   }
 
   
   @media only screen and (min-width: 601px)
   .container {
-      width: 75%;
+      width: 95%;
   }
 
   @media only screen and (min-width: 993px)

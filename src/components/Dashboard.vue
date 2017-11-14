@@ -170,7 +170,7 @@
   
 </template>
 
-<style>
+<style scoped>
     .card {
         margin: 3px 3px;    
     }
