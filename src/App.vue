@@ -62,10 +62,22 @@ export default {
         self.$store.commit('fetchRawLikesData', data)
         callback3()
       })
+    },
+    loadPredictionsData: function () {
+      let self = this
+      // let myInit = { mode: 'cors' }
+      // fetch(Config.apiUrl + 'api/getresult/' + 'dk-predictions' + '?pol=dk', myInit)
+      // .then((response) => {
+        //     return response.json();
+      // })
+      // .then(function(data) {
+        //   self.$store.commit('fetchPredictionsData', data)
+      // })
+      self.render = true
     }
   },
-  mounted() {
-    this.loadVoteSwingData(this.loadRawLikesAbsoluteData, this.loadRawLikesData, () => {this.render = true})
+  mounted () {
+    this.loadVoteSwingData(this.loadRawLikesAbsoluteData, this.loadRawLikesData, this.loadPredictionsData)
     // this.loadVoteSwingData()
     // this.loadRawLikesAbsoluteData()
     
@@ -74,6 +86,10 @@ export default {
 </script>
 
 <style>
+  body {
+      background: #eceff1 
+  }
+
   .fade-enter-active, .fade-leave-active {
     transition-property: opacity;
     transition-duration: .4s;

@@ -37,7 +37,6 @@
   }
   .card {
       padding: 10px;
-      margin: 12px 0 0 0;
   }
   .card-image {
     height: 130px;

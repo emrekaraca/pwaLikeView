@@ -11,7 +11,7 @@
                         <div class="col m1 l3 hide-on-small-only"></div>
                         <div class="col s2 m2 l1 box box-left valign-wrapper" v-bind:style="partyColor(selectedParty)"><img class="leftLogo" :src="partyPic(selectedParty)" /></div>
                         <div class="col s8 m6 l4 box box-middle">
-                            <div class="row">
+                            <div class="row noMargin">
                                 <template v-for="party in otherParties" >
                                     <div class="col s12 arrow center-align" style="position: relative" :key="party">
                                         <svg height="40" width="20" style="position: absolute; left: 5; top: 0" v-if="voterSwing[party]>0"> 
@@ -28,7 +28,7 @@
                             </div>
                         </div>
                         <div class="col s2 m2 l1 box box-right">
-                            <div class="row">
+                            <div class="row noMargin">
                                 <div v-for="party in otherParties" class="col s12 right-party center-align box" v-bind:style="partyColor(party)"><img class="rightLogo" :src="partyPic(party)" /></div>
                             </div>                        
                         </div>
@@ -85,7 +85,7 @@
         height: 40px;
     }
 
-    .row {
+    .noMargin {
         margin: 0!important
     }
 

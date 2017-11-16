@@ -22,7 +22,8 @@ export default new Vuex.Store({
   state: {
     voteSwingData: [],
     rawLikesData: [],
-    rawLikesAbsoluteData: []
+    rawLikesAbsoluteData: [],
+    predictionsData: []
   },
   mutations: {
     fetchVoteSwingData (state, n) {
@@ -33,6 +34,9 @@ export default new Vuex.Store({
     },
     fetchRawLikesAbsoluteData (state, n) {
       state.rawLikesAbsoluteData = n
+    },
+    fetchPredictionsData (state, n) {
+      state.predictionsData = n
     }
-  }  
+  }
 })

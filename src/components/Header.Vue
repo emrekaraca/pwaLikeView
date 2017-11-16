@@ -57,7 +57,7 @@
 import Config from './../interface_config.json'
 
 export default {
-  data() {
+  data () {
     return {
       options: Config.activeModules,
       themeColor: Config.themeColor,
@@ -66,30 +66,28 @@ export default {
   },
   computed: {
     menuWidth: function () {
-        if (window.innerWidth < 500) {
-            return window.innerWidth
-        } else {
-            return 500
-        }
+      if (window.innerWidth < 500) {
+        return window.innerWidth
+      } else {
+        return 500
+      }
     },
     logoFileName: () => Config.logo.fileName,
     brandLogo: function () {
       return require('../assets/logo/' + this.logoFileName)
     }
   },
-  mounted() {
-        $(".button-collapse").sideNav({
-          closeOnClick: true,
-          draggable: true,
-          menuWidth: this.menuWidth
-        });
+  mounted () {
+    $('.button-collapse').sideNav({
+      closeOnClick: true,
+      draggable: true,
+      menuWidth: this.menuWidth
+    })
   },
   methods: {
-    menuActive: function(option) {
-      if (option == this.$route.name) {
-        return "active"
-      } else {
-        return
+    menuActive: function (option) {
+      if (option === this.$route.name) {
+        return 'active'
       }
     }
   }

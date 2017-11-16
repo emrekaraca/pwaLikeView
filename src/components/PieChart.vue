@@ -82,7 +82,17 @@
     }
 
     #pieChart text, #pieChart2 text {
-        fill: lightgrey!important
+        fill: lightgrey!important;
+    }
+    
+    #pieChart, #pieChart2 {
+        filter: drop-shadow(0 2px 2px rgba(0,0,0,0.14));
+        filter: drop-shadow(0 1px 5px rgba(0,0,0,0.12));
+        filter: drop-shadow(0 3px 2px rgba(0,0,0,0.3));
+    }
+
+    .c3-chart-arc path, .c3 path {
+        stroke: none;
     }
 
 

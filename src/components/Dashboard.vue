@@ -106,11 +106,29 @@
             
 
 
-            <div class="col s1 m12 l6">
+            <div class="col s12 l6">
                 <transition name="fade">
-                    <div class="card bottomCard grey lighten-4">
-                        <div class="card-content" :class="changinDataClass">
+                    <div class="card bottomCard grey lighten-4" style="min-height: 592px">
+
+                        <div v-if="postsLoading" style="position: absolute; top: 100px; left: 170px">
+                            <app-loading></app-loading>
+                        </div>
+
+                        <div class="card-content" :class="changingDataClass" style="position: relative">
                             <span class="card-title">Top 10 Posts - {{getMonday(posts.week)}} - {{getSunday(posts.week)}}</span>
+                            
+                            <a class='dropdown-button btn btn-floating' :class="themeColor + ' lighten-1'" href='#' data-activates='dropdown1' style="position: absolute; top: 15px; right: 10px">
+                                <i class="material-icons">adjust</i>
+                            </a>
+
+                            <!-- Dropdown Structure -->
+                            <ul id='dropdown1' class='dropdown-content'>
+                                <li @click="postsParty = 'all'"><i class="material-icons">radio_button_checked</i></li>
+                                <template v-for="party in partyNames">
+                                    <li @click="postsParty = party"><a><img :src="partyPic(party)" alt="" max-width="100%" height="30px"></a></li>
+                                </template>
+                            </ul>   
+
                             <table class="striped highlight bottomCardTable">
                                 <thead>
                                     <tr>
@@ -171,9 +189,6 @@
 </template>
 
 <style scoped>
-    .card {
-        margin: 3px 3px;    
-    }
     table.striped>tbody>tr:nth-child(odd) {
         background-color: #ecebeb!important;
     }
@@ -263,13 +278,34 @@
     .userName {
         padding-left: 45px;
     }
+
+    #dropdown1 {
+        width: 65px!important;
+        min-width: 65px!important;
+    }
+
+    .dropdown-content li {
+        text-align: center;
+        padding: 5px 0;
+        height: 40px453;
+    }
+
+    .dropdown-content li a {
+        padding: 0;
+    }
+
 </style>
 
 <script>
     import Config from './../interface_config.json'
+    import partyConfig from './../assets/assets_config.json'
+    import Loading from './Loading'
     import c3 from 'c3'
     let chart
     export default {
+        components: {
+            'app-loading': Loading
+        },
         data () {
             return {
                 chart: "",
@@ -281,7 +317,8 @@
                 posts: [],
                 postsLoading: true,
                 postUrl: '',
-                postID: ''
+                postID: '',
+                postsParty: 'all'
             }
         },
         methods: {
@@ -329,7 +366,8 @@
                 this.postsLoading = true
                 let self = this
                 let myInit = { mode: 'cors' }
-                fetch(Config.apiUrl + 'api/getposts/' + this.getWeek(this.weekShift), myInit)
+                /* + '?party=' + self.postsParty*/
+                fetch(Config.apiUrl + 'api/getposts/' + this.getWeek(this.weekShift) + '?party=' + this.postsParty, myInit)
                 .then((response) => {
                     return response.json();
                 })
@@ -342,6 +380,13 @@
             getWeek: function (shift) {return this.timePeriods[this.timePeriods.length-1-shift]},            
         },
         computed: {
+            postsPartyBtn: function () {
+                if (this.postsParty === 'all') {
+                    return this.themeColor + ' lighten-1'
+                } else {
+                    return this.postsParty
+                }
+            },
             data: function () {return this.$store.state.rawLikesData.filter(arr => !arr[0].includes('_') && !arr[0].includes('x')).map(x => x.slice(0, x.length))},
             absoluteData: function () {return this.$store.state.rawLikesAbsoluteData.filter(arr => !arr[0].includes('x') && !arr[0].includes('totalLikes')).map(x => x.slice(0, x.length))},
             totalLikes: function () {
@@ -397,19 +442,25 @@
             biggestLoser: function () {
                 return this.partyChange.reduce((prev, curr) => (prev[2] < curr[2]) ? prev : curr)
             },
-            changinDataClass: function () {
+            changingDataClass: function () {
                 if (this.postsLoading) {
                     return 'changingData'
                 } else {
-                    return
+                    return ''
                 }
             }
         },
         mounted () {
             this.loadPosts()
+            $('.dropdown-button').dropdown({
+                alignment: 'left'
+            })
         },
         watch: {
             weekShift: function () {
+                this.loadPosts()
+            },
+            postsParty: function () {
                 this.loadPosts()
             }
         }
