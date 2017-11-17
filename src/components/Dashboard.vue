@@ -143,7 +143,7 @@
                                     <!-- <transition name="fade"> -->
                                         <tr v-for="(post, index) in posts.posts">
                                             <td>{{index+1}}</td>
-                                            <td><img :src="partyPic(post.party)" alt="" max-width="100%" height="30px" class="partyPic"><img :src="post.userPic" class="circle userPic" alt="" max-width="100%" height="30px"><span class="userName">{{post.name}}</span></td>
+                                            <td><img :src="partyPic(post.party)" alt="" max-width="100%" height="30px" class="partyPic"><img :src="post.userPic" class="circle userPic" alt="" max-width="100%" height="30px"><span class="userName">{{(post.name.length<12)?post.name:post.name.substring(0,12) + '...'}}</span></td>
                                             <td>{{post.count}}</td>
                                             <td>{{post.totalLikes}}</td>
                                             <!-- <td><a :href="post.url" target="_blank">Post</a></td> -->
