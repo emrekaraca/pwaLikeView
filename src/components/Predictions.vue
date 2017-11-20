@@ -11,7 +11,7 @@
         </div>
         
         <div class="card-content">
-          <span class="card-title section-title">Raw Likes Distribution to Parties</span>
+          <span class="card-title section-title">Headcount-Predictions</span>
         </div>          
 
         <!-- Chart Container // Contains Loading-Spinner, which is replaced when the chart is generated -->
@@ -44,7 +44,7 @@
         
         
         <div class="chartCard">
-          <div id="rawchart"></div>
+          <div id="predictionschart"></div>
         </div>
 
         <div class="row">
@@ -80,7 +80,7 @@
             <label for="end">Until</label>        
           </div>        
           <div class="col s3 m2 l2 center-align">
-            <button :class="themeColor" class="btn btn-large waves-effect waves-light lighten-1 validate" @click="loadRawLikesData()">
+            <button :class="themeColor" class="btn btn-large waves-effect waves-light lighten-1 validate" @click="loadPredictionsData()">
               <i class="material-icons">loop</i>
             </button>
           </div>
@@ -424,17 +424,17 @@ export default {
       }
     },
     partyPic: (party) => require('./../assets/dk/' + party + '-small.png'),
-    loadRawLikesData: function () {
+    loadPredictionsData: function () {
       this.dataIsReloading = true
       let self = this
       let myInit = { mode: 'cors' }
-      let url = Config.apiUrl + 'api/getresult/' + 'dk-rawlikes' + '?start=' + this.start + '&end=' + this.end + '&pol=dk'
+      let url = Config.apiUrl + 'api/getresult/' + 'dk-predictions' + '?start=' + this.start + '&end=' + this.end + '&pol=dk'
       fetch(url, myInit)
         .then((response) => {
           return response.json()
         })
         .then(function (data) {
-          self.$store.commit('fetchRawLikesData', data)
+          self.$store.commit('fetchPredictionsData', data)
           self.loadData()
           self.dataIsReloading = false
         })
@@ -512,7 +512,7 @@ export default {
       this.hiddenParties = this.pollPartyNames.slice()
     },
     loadData: function () {
-      this.columns = this.$store.state.rawLikesData.map(x => {
+      this.columns = this.$store.state.predictionsData.map(x => {
         if (x[0].includes('x') || x[0].includes('poll')) {
           return x
         } else {
@@ -536,7 +536,7 @@ export default {
     drawChart: data => {
       console.log(data)
       chart = c3.generate({
-        bindto: '#rawchart',
+        bindto: '#predictionschart',
         size: {
           height: 350
         },

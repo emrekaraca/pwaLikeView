@@ -16,6 +16,15 @@
       "name": "Dashboard",
       "description": "The Dashboard offers a detailed week-by-week perspective on overall political activity on facebook."
     },
+    "predictions": {
+      "doNotChange": {
+        "fileName": "Predictions",
+        "link": "/predictions"
+      },
+      "show": true,
+      "name": "Predictions",
+      "description": "The Predictions view shows our Headcountdistribution distributed among parties over time on a week-to-week-basis."
+    },
     "trends": {
       "doNotChange": {
         "fileName": "Trends",

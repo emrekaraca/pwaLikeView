@@ -65,14 +65,14 @@ export default {
     },
     loadPredictionsData: function () {
       let self = this
-      // let myInit = { mode: 'cors' }
-      // fetch(Config.apiUrl + 'api/getresult/' + 'dk-predictions' + '?pol=dk', myInit)
-      // .then((response) => {
-        //     return response.json();
-      // })
-      // .then(function(data) {
-        //   self.$store.commit('fetchPredictionsData', data)
-      // })
+      let myInit = { mode: 'cors' }
+      fetch(Config.apiUrl + 'api/getresult/' + 'dk-predictions' + '?pol=dk&start=01-2017&end=12-2017', myInit)
+      .then((response) => {
+            return response.json();
+      })
+      .then(function(data) {
+          self.$store.commit('fetchPredictionsData', data)
+      })
       self.render = true
     }
   },
