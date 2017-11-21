@@ -6,18 +6,18 @@
           <ul id="nav-mobile" class="left hide-on-med-and-down">
             <li class="desktop-nav" :class="menuActive('Home')"><router-link to="/">Home</router-link></li>
             <template v-for="option in options">
-              <li class="desktop-nav" :class="menuActive(option.name)" v-if="option.show"><router-link :to=option.doNotChange.link>{{option.name}}</router-link></li>
+              <li class="desktop-nav" :class="menuActive(option.name)" v-if="option.show"><router-link :to="option.doNotChange.link">{{option.name}}</router-link></li>
             </template>
           </ul>
           <ul class="side-nav" id="mobile-demo">
             <li :class="menuActive('Home')"><router-link to="/">Home</router-link></li>
             <template v-for="option in options">
-              <li :class="menuActive(option.name)" v-if="option.show"><router-link :to=option.doNotChange.link>{{option.name}}</router-link></li>
+              <li :class="menuActive(option.name)" v-if="option.show"><router-link :to="option.doNotChange.link">{{option.name}}</router-link></li>
             </template>            
           </ul>
           <router-link v-if="showLogo" to="/" class="brand-logo right">
             <img class="edge" src="../assets/homePics/edge.png"/>
-            <span class="logo"><img :src=brandLogo /></span>
+            <span class="logo"><img :src="brandLogo" /></span>
           </router-link>
         </div>
       </nav>
