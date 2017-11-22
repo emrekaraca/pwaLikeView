@@ -5,14 +5,14 @@
           <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
           <ul id="nav-mobile" class="left hide-on-med-and-down">
             <li class="desktop-nav" :class="menuActive('Home')"><router-link to="/">Home</router-link></li>
-            <template v-for="option in options">
-              <li class="desktop-nav" :class="menuActive(option.name)" v-if="option.show"><router-link :to="option.doNotChange.link">{{option.name}}</router-link></li>
+            <template v-for="option in options" v-if="authenticated">
+              <li class="desktop-nav" :class="menuActive(option.name)" v-if="userAccess.includes(option.doNotChange.fileName)"><router-link :to="option.doNotChange.link">{{option.name}}</router-link></li>
             </template>
           </ul>
           <ul class="side-nav" id="mobile-demo">
             <li :class="menuActive('Home')"><router-link to="/">Home</router-link></li>
-            <template v-for="option in options">
-              <li :class="menuActive(option.name)" v-if="option.show"><router-link :to="option.doNotChange.link">{{option.name}}</router-link></li>
+            <template v-for="option in options" v-if="authenticated">
+              <li :class="menuActive(option.name)" v-if="userAccess.includes(option.doNotChange.fileName)"><router-link :to="option.doNotChange.link">{{option.name}}</router-link></li>
             </template>            
           </ul>
           <router-link v-if="showLogo" to="/" class="brand-logo right">
@@ -57,6 +57,7 @@
 import Config from './../interface_config.json'
 
 export default {
+  props: ['authenticated', 'userAccess'],
   data () {
     return {
       options: Config.activeModules,

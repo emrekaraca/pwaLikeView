@@ -9,9 +9,9 @@
       </div>
     </div> -->
 
-    <template v-for="option, key in options">
-      <a :href="'/#' + option.doNotChange.link">
-        <div v-if="option.show" class="col s12 m6 l4">
+    <template v-for="option, key in options" v-if="authenticated">
+      <router-link :to="option.doNotChange.link">
+        <div v-if="userAccess.includes(option.doNotChange.fileName)" class="col s12 m6 l4">
           <div class="card small grey lighten-4">
 
             <div class="card-image">
@@ -25,8 +25,22 @@
 
           </div>
         </div>
-      </a>
+      </router-link>
     </template>
+    <div class="col s12" v-if="!authenticated">
+      <div class="card small grey lighten-4">
+
+        <div class="card-image">
+          <span :class="themeColor + '-text'" class="card-title option-title text-darken-4">Login required</span>
+        </div>
+
+        <div class="card-content black-text">
+          <p>Please log in to see the content</p>
+        </div>
+
+      </div>
+    </div>
+
 
   </div>
 </template>
@@ -72,6 +86,7 @@
 import Config from './../interface_config.json'
 
 export default {
+  props: ['authenticated', 'userAccess'],
   data() {
     return {
       options: Config.activeModules,
