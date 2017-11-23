@@ -25,6 +25,8 @@
           :auth="auth"
           :authenticated="authenticated"
           :userAccess="userAccess"
+          :minStartDate="minStartDate"
+          :maxEndDate="maxEndDate"
           v-if="render">
 
         </router-view>
@@ -48,7 +50,6 @@ const { login, logout, authenticated, userAccess, authNotifier } = auth
 export default {
   data () {
     authNotifier.on('authChange', authState => {
-      console.log(authState)
       this.authenticated = authState.authenticated
       this.userAccess = authState.userAccess
     })
@@ -97,7 +98,7 @@ export default {
     loadRawLikesData: function (callback3) {
       let self = this
       let myInit = { mode: 'cors' }
-      fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikes' + '?&jobid=rawLikesNew&dummySetting=1&start=01-2017&end=12-2017&pol=dk', myInit)
+      fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikes' + '?&jobid=rawLikesNew&dummySetting=1&start=' + this.minStartDate + '&end=' + this.maxEndDate + '&pol=dk', myInit)
       .then((response) => {
           return response.json();
       })
@@ -117,6 +118,14 @@ export default {
           self.$store.commit('fetchPredictionsData', data)
       })
       self.render = true
+    }
+  },
+  computed: {
+    minStartDate: function () {
+      return '01-2017'
+    },
+    maxEndDate: function () {
+      return '06-2017'
     }
   },
   mounted () {

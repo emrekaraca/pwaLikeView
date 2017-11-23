@@ -356,6 +356,7 @@ import c3 from 'c3'
 let chart /* Defining chart in component scope, in order to be able to load new data after chart-generation */
 
 export default {
+  props: ['minStartDate', 'maxEndDate'],
   data () {
     return {
       selectedJob: '',

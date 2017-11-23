@@ -35,7 +35,6 @@ export default class AuthService {
 
         self.auth0.client.userInfo(authResult.accessToken, function (err, user) {
           if (user) {
-            console.log(authResult)
             // console.log('user1:', user)
             self.setSession(authResult, user['https://likeview.surge.sh/app_metadata'].components)
             router.replace('/')
