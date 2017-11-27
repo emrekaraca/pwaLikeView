@@ -1,10 +1,35 @@
 <template>
   <div class="row">
-    <app-header></app-header> 
+      <button
+        class="btn btn-floating btn-large btn-login z-depth-4"
+        v-if="!authenticated"
+        @click="login()">
+          <i class="material-icons loginIcon">account_circle</i>
+      </button>
+
+      <button
+        class="btn btn-floating btn-large btn-login z-depth-4"
+        v-if="authenticated"
+        @click="logout()">
+          <i class="material-icons loginIcon">power_settings_new</i>
+      </button>
+
+
+
+    
+    <app-header :authenticated="authenticated" :userAccess="userAccess"></app-header> 
     <div class="col s12">
       <transition name="fade">
         <app-loading v-if="!render"></app-loading>
-        <router-view v-if="render"></router-view>
+        <router-view 
+          :auth="auth"
+          :authenticated="authenticated"
+          :userAccess="userAccess"
+          :minStartDate="minStartDate"
+          :maxEndDate="maxEndDate"
+          v-if="render">
+
+        </router-view>
       </transition>
     </div>
   </div>
@@ -15,10 +40,26 @@ import Config from './interface_config.json'
 import Header from './components/Header.vue'
 import Loading from './components/Loading.vue'
 
+import AuthService from './auth/AuthService'
+
+const auth = new AuthService()
+
+const { login, logout, authenticated, userAccess, authNotifier } = auth
 
 export default {
   data () {
+    authNotifier.on('authChange', authState => {
+      this.authenticated = authState.authenticated
+      this.userAccess = authState.userAccess
+    })
+    // authNotifier.on('userChange', userState => {
+    //   console.log("user3:", userState)
+    //   this.user = userState
+    // })
     return {
+      auth,
+      authenticated,
+      userAccess,
       render: false
     }
   },
@@ -27,6 +68,8 @@ export default {
     'app-loading': Loading
   },
   methods: {
+    login,
+    logout,   
     loadVoteSwingData: function (callback1, callback2, callback3) {
       let self = this
       let myInit = { mode: 'cors' }
@@ -54,7 +97,7 @@ export default {
     loadRawLikesData: function (callback3) {
       let self = this
       let myInit = { mode: 'cors' }
-      fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikes' + '?&jobid=rawLikesNew&dummySetting=1&start=01-2017&end=12-2017&pol=dk', myInit)
+      fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikes' + '?&jobid=rawLikesNew&dummySetting=1&start=' + this.minStartDate + '&end=' + this.maxEndDate + '&pol=dk', myInit)
       .then((response) => {
           return response.json();
       })
@@ -74,6 +117,14 @@ export default {
           self.$store.commit('fetchPredictionsData', data)
       })
       self.render = true
+    }
+  },
+  computed: {
+    minStartDate: function () {
+      return '01-2017'
+    },
+    maxEndDate: function () {
+      return '06-2017'
     }
   },
   mounted () {
@@ -112,7 +163,26 @@ export default {
     padding: 0 5px!important
   }
 
+  .btn-login {
+    position: fixed!important;
+    bottom: 10px;
+    right: 10px;
+    z-index: 500!important;
+    background-color: rgb(100,144,224)!important;
+  }
   
+  .btn-login:focus {
+    background-color: rgb(100,144,224)!important;
+  }
+  
+  .btn-login:hover {
+    background-color: rgba(100,144,224, 0.7)!important;
+  }
+  
+  .loginIcon {
+    font-size: 2rem!important;
+  }
+
   @media only screen and (min-width: 601px)
   .container {
       width: 95%;
