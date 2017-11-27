@@ -6,13 +6,13 @@
           <ul id="nav-mobile" class="left hide-on-med-and-down">
             <li class="desktop-nav" :class="menuActive('Home')"><router-link to="/">Home</router-link></li>
             <template v-for="option in options" v-if="authenticated || !authenticationActive">
-              <li class="desktop-nav" :class="menuActive(option.name)" v-if="userAccess.includes(option.doNotChange.fileName)"><router-link :to="option.doNotChange.link">{{option.name}}</router-link></li>
+              <li class="desktop-nav" :class="menuActive(option.name)" v-if="availableOptions.includes(option.doNotChange.fileName)"><router-link :to="option.doNotChange.link">{{option.name}}</router-link></li>
             </template>
           </ul>
           <ul class="side-nav" id="mobile-demo">
             <li :class="menuActive('Home')"><router-link to="/">Home</router-link></li>
             <template v-for="option in options" v-if="authenticated || !authenticationActive">
-              <li :class="menuActive(option.name)" v-if="userAccess.includes(option.doNotChange.fileName)"><router-link :to="option.doNotChange.link">{{option.name}}</router-link></li>
+              <li :class="menuActive(option.name)" v-if="availableOptions.includes(option.doNotChange.fileName)"><router-link :to="option.doNotChange.link">{{option.name}}</router-link></li>
             </template>            
           </ul>
           <router-link v-if="showLogo" to="/" class="brand-logo right">
@@ -67,6 +67,19 @@ export default {
     }
   },
   computed: {
+    availableOptions: function () {
+      if (this.authenticationActive) {
+        return this.userAccess
+      } else {
+        let result = []
+        for (let option in this.options) {
+          if (this.options[option].show) {
+            result.push(this.options[option].doNotChange.fileName)
+          }
+        }
+        return result
+      }
+    },
     menuWidth: function () {
       if (window.innerWidth < 500) {
         return window.innerWidth

@@ -1,6 +1,6 @@
 {
   "apiUrl": "https://likeviewapi.herokuapp.com/",
-  "authenticationActive": true,
+  "authenticationActive": false,
   "homeDescription": ["This interface displays a number of data visualizations from AT-Election-Prediction-analyses. Click one of the options to see more."],
   "themeColor": "grey",
   "logo": {

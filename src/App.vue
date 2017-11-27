@@ -2,14 +2,14 @@
   <div class="row">
       <button
         class="btn btn-floating btn-large btn-login z-depth-4"
-        v-if="!authenticated"
+        v-if="!authenticated && authenticationActive"
         @click="login()">
           <i class="material-icons loginIcon">account_circle</i>
       </button>
 
       <button
         class="btn btn-floating btn-large btn-login z-depth-4"
-        v-if="authenticated"
+        v-if="authenticated && authenticationActive"
         @click="logout()">
           <i class="material-icons loginIcon">power_settings_new</i>
       </button>
@@ -57,6 +57,7 @@ export default {
     //   this.user = userState
     // })
     return {
+      authenticationActive: Config.authenticationActive,
       auth,
       authenticated,
       userAccess,

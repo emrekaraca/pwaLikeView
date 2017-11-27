@@ -11,7 +11,7 @@
 
     <template v-for="option, key in options" v-if="authenticated || !authenticationActive">
       <router-link :to="option.doNotChange.link">
-        <div v-if="userAccess.includes(option.doNotChange.fileName)" class="col s12 m6 l4">
+        <div v-if="availableOptions.includes(option.doNotChange.fileName)" class="col s12 m6 l4">
           <div class="card small grey lighten-4">
 
             <div class="card-image">
@@ -95,6 +95,21 @@ export default {
       themeColor: Config.themeColor
     }
   },
+  computed: {
+    availableOptions: function () {
+      if (this.authenticationActive) {
+        return this.userAccess
+      } else {
+        let result = []
+        for (let option in this.options) {
+          if (this.options[option].show) {
+            result.push(this.options[option].doNotChange.fileName)
+          }
+        }
+        return result
+      }
+    },
+  },  
   methods: {
     optionPic: (key) => require('./../assets/homePics/' + key + '.png'),
   }
