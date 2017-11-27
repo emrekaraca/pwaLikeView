@@ -9,7 +9,7 @@
       </div>
     </div> -->
 
-    <template v-for="option, key in options" v-if="authenticated">
+    <template v-for="option, key in options" v-if="authenticated || !authenticationActive">
       <router-link :to="option.doNotChange.link">
         <div v-if="userAccess.includes(option.doNotChange.fileName)" class="col s12 m6 l4">
           <div class="card small grey lighten-4">
@@ -27,7 +27,7 @@
         </div>
       </router-link>
     </template>
-    <div class="col s12" v-if="!authenticated">
+    <div class="col s12" v-if="!authenticated && authenticationActive">
       <div class="card small grey lighten-4">
 
         <div class="card-image">
@@ -90,6 +90,7 @@ export default {
   data() {
     return {
       options: Config.activeModules,
+      authenticationActive: Config.authenticationActive,
       homeDescription: Config.homeDescription,
       themeColor: Config.themeColor
     }

@@ -46,7 +46,6 @@ const auth = new AuthService()
 
 const { login, logout, authenticated, userAccess, authNotifier } = auth
 
-
 export default {
   data () {
     authNotifier.on('authChange', authState => {
