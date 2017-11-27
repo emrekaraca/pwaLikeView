@@ -3,7 +3,6 @@ import EventEmitter from 'EventEmitter'
 import router from './../router'
 
 export default class AuthService {
-
   authenticated = this.isAuthenticated()
   userAccess = this.hasAccess()
   authNotifier = new EventEmitter()
@@ -32,7 +31,6 @@ export default class AuthService {
     let self = this
     self.auth0.parseHash(function (err, authResult) {
       if (authResult && authResult.accessToken && authResult.idToken) {
-
         self.auth0.client.userInfo(authResult.accessToken, function (err, user) {
           if (user) {
             // console.log('user1:', user)

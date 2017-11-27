@@ -220,7 +220,7 @@
           height = +svg.attr("height");
 
         var formatNumber = d3.format(",.0f"),
-          format = function(d) { return formatNumber(d) + " Likes"; };
+          format = function (d) { return formatNumber(d) + " Likes"; };
 
         var color = d3.scaleOrdinal()
           .range(this.partyColors);
@@ -254,128 +254,128 @@
 
         link = link
           .data(voteSwings.links)
-          .enter().append("path")
-          .attr("d", d3.sankeyLinkHorizontal())
-          .attr("stroke-width", function(d) { return Math.max(1, d.width); })
-          .attr("id", function(d) { return "link-" + d.index})
-          .style('stroke', function(d) { return self.partyColors2[d.source.name]})
-          .attr("class", "greyClass")
-          .on("mouseover", function(d) {	
+          .enter().append('path')
+          .attr('d', d3.sankeyLinkHorizontal())
+          .attr('stroke-width', function (d) { return Math.max(1, d.width); })
+          .attr('id', function (d) { return 'link-' + d.index})
+          .style('stroke', function (d) { return self.partyColors2[d.source.name]})
+          .attr('class', 'greyClass')
+          .on('mouseover', function (d) {	
             console.log(d)	
             div.transition()		
               .duration(200)		
-              .style("opacity", .95);
+              .style('opacity', .95)
             div	.html(
               '<div class="tooltip-header"><div>' + d.source.name + '</div><i class="material-icons small">trending_flat</i> <div>' + d.target.name + '</div></div><div class="tooltip-value"><strong>' + d.value + '</strong> Likes</div></div>'
             )
           })
-          .on("mousemove", function(d) {
-            div.style("left", (d3.event.pageX - 100) + "px")
-              .style("top", (d3.event.pageY - 120) + "px");
+          .on('mousemove', function (d) {
+            div.style('left', (d3.event.pageX - 100) + 'px')
+              .style('top', (d3.event.pageY - 120) + 'px')
           })
-          .on("mouseout", function(d) {		
-            div.transition()		
-              .duration(500)		
-              .style("opacity", 0);	
+          .on('mouseout', function (d) {
+            div.transition()
+              .duration(500)
+              .style('opacity', 0)
           })
-          
-          
 
-        /*link.append("title")
-          .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + format(d.value); });*/
+        // link.append('title')
+        //   .text(function (d) { return d.source.name + ' → ' + d.target.name + '\n' + format(d.value); })
 
         node = node
           .data(voteSwings.nodes)
-          .enter().append("g")
+          .enter().append('g')
 
-
-        node.append("rect")
-          .attr("x", function(d) { return d.x0; })
-          .attr("y", function(d) { return d.y0; })
-          .attr("height", function(d) { return d.y1 - d.y0; })
-          .attr("width", function(d) { return d.x1 - d.x0; })
-          .attr("fill", function(d) { return color(d.name.replace(/ .*/, "")); })
-          .style("opacity", 0.7)
-          .style("cursor", 'pointer')
-          .on("click",highlight_node_links)
-          .on("mouseover", function(d) {	
+        node.append('rect')
+          .attr('x', function (d) { return d.x0 })
+          .attr('y', function (d) { return d.y0 })
+          .attr('height', function (d) { return d.y1 - d.y0 })
+          .attr('width', function (d) { return d.x1 - d.x0 })
+          .attr('fill', function (d) { return color(d.name.replace(/ .*/, '')) })
+          .style('opacity', 0.7)
+          .style('cursor', 'pointer')
+          .on('click',highlight_node_links)
+          .on('mouseover', function (d) {	
             console.log(d)	
             
-            div.transition()		
-              .duration(200)		
-              .style("opacity", 0.95);
-            div	.html(
+            div.transition()
+              .duration(200)
+              .style('opacity', 0.95)
+            div.html(
               '<div class="tooltip-header"><div>' + d.name + '</div></div><div class="tooltip-value"><strong>' + d.value + '</strong> Likes</div></div>'
             )
           })
-          .on("mousemove", function(d) {
-            div.style("left", (d3.event.pageX - 100) + "px")
-              .style("top", (d3.event.pageY - 120) + "px");
+          .on('mousemove', function (d) {
+            div.style('left', (d3.event.pageX - 100) + 'px')
+              .style('top', (d3.event.pageY - 120) + 'px')
           })
-          .on("mouseout", function(d) {		
-            div.transition()		
-              .duration(500)		
-              .style("opacity", 0);	
+          .on('mouseout', function (d) {
+            div.transition()
+              .duration(500)
+              .style('opacity', 0)
           })
           
 
         node.append('svg:image')
-          .attr('x', function(d) { return d.x0 - 28; })
-          .attr('y', function(d) { return (d.y1 + d.y0) / 2 -10; })
+          .attr('x', function (d) { return d.x0 - 28; })
+          .attr('y', function (d) { return (d.y1 + d.y0) / 2 -10; })
           .attr('dy', '0.35em')
           .attr('image-anchor', 'end')
-          .attr('xlink:href', function(d) {return 'https://www.b.dk/upload/tcarlsen/parties-history/img/' + self.getPartyPicName(d.name) + "_small.png"})          
-          // .attr("src", function(d) { return 'https://www.b.dk/upload/tcarlsen/parties-history/img/v_small.png' })
-          .filter(function(d) { return d.x0 < width / 2; })
-          .attr('x', function(d) { return d.x1 + 6; })
+          .attr('xlink:href', function (d) {return 'https://www.b.dk/upload/tcarlsen/parties-history/img/' + self.getPartyPicName(d.name) + '_small.png'})
+          // .attr("src", function (d) { return 'https://www.b.dk/upload/tcarlsen/parties-history/img/v_small.png' })
+          .filter(function (d) { return d.x0 < width / 2 })
+          .attr('x', function (d) { return d.x1 + 6 })
           .attr('image-anchor', 'start');       
 
         /*node.append('title')
-          .text(function(d) { return d.name + '\n' + format(d.value); });*/
+          .text(function (d) { return d.name + '\n' + format(d.value); });*/
 
-        function highlight_node_links(node,i){
+        function highlight_node_links (node,i) {
 
-          var remainingNodes=[],
-            nextNodes=[];
-
-          let stroke_opacity = 0;
-          let classChange = true;
-          if( d3.select(this).attr('data-clicked') == '1' ){
-          d3.select(this).attr('data-clicked','0');
-          stroke_opacity = 0.2;
-          classChange = true
-          }else{
-          d3.select(this).attr('data-clicked','1');
-          stroke_opacity = 0.7;
-          classChange = false
-          }
-
-          var traverse = [{
-                  linkType : 'sourceLinks',
-                  nodeType : 'target'
-                  },{
-                  linkType : 'targetLinks',
-                  nodeType : 'source'
-                  }];
-
-          traverse.forEach(function(step) {
-          node[step.linkType].forEach(function(link) {
-            console.log(link)
-            remainingNodes.push(link[step.nodeType])
-            highlight_link(link.index, stroke_opacity, classChange)
-          })
-
-          while (remainingNodes.length) {
+          var remainingNodes = [],
             nextNodes = []
-            remainingNodes.forEach(function(node) {
-              node[step.linkType].forEach(function(link) {
-                nextNodes.push(link[step.nodeType])
-                highlight_link(link.index, stroke_opacity, classChange)
-              })
-            })
-            remainingNodes = nextNodes
+
+          let stroke_opacity = 0
+          let classChange = true
+          if (d3.select(this).attr('data-clicked') === '1' ) {
+            d3.select(this).attr('data-clicked', '0')
+            stroke_opacity = 0.2
+            classChange = true
+          } else {
+            d3.select(this).attr('data-clicked', '1')
+            stroke_opacity = 0.7
+            classChange = false
           }
-          });
+
+          var traverse = [
+            {
+              linkType : 'sourceLinks',
+              nodeType : 'target'
+            },
+            {
+              linkType : 'targetLinks',
+              nodeType : 'source'
+            }
+          ]
+
+          traverse.forEach(function (step) {
+            node[step.linkType].forEach(function (link) {
+              console.log(link)
+              remainingNodes.push(link[step.nodeType])
+              highlight_link(link.index, stroke_opacity, classChange)
+            })
+
+            while (remainingNodes.length) {
+              nextNodes = []
+              remainingNodes.forEach(function (node) {
+                node[step.linkType].forEach(function (link) {
+                  nextNodes.push(link[step.nodeType])
+                  highlight_link(link.index, stroke_opacity, classChange)
+                })
+              })
+              remainingNodes = nextNodes
+            }
+          })
         }
         function highlight_link (id, opacity, classChange) {
           d3.select('#link-' + id).style('stroke-opacity', opacity)
@@ -413,7 +413,7 @@
         return this.partyNames.filter((i) => this.partyActive[i])
       },
       selectedColumn: function () {
-        let swing = {nodes: [], links: []}
+        let swing = { nodes: [], links: [] }
         for (let party1 in this.partyNames) {
           for (let party2 in this.partyNames) {
             let link = {
@@ -435,10 +435,10 @@
           }
         }
         for (let party in this.partyNames) {
-          swing.nodes.push({'name': this.partyNames[party]})
+          swing.nodes.push({ 'name': this.partyNames[party] })
         }
         for (let party in this.partyNames) {
-          swing.nodes.push({'name': this.partyNames[party]})
+          swing.nodes.push({ 'name': this.partyNames[party] })
         }
         return swing
       }
