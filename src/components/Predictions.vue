@@ -12,7 +12,9 @@
         
         <div class="card-content">
           <span class="card-title section-title">Headcount-Predictions</span>
-          <blockquote>Each Facebook-user is counted once towards the party which received the most (over-time-weighted) likes from that user.</blockquote>
+          <blockquote>
+            <p>Each Facebook-user is counted once towards the party which received at least 50% of that user's (over-time-weighted) likes. Each user has had at least 7 Likes.</p>
+          </blockquote>
         </div>          
 
         <!-- Chart Container // Contains Loading-Spinner, which is replaced when the chart is generated -->

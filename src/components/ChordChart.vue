@@ -43,7 +43,7 @@
 
 <script>
     import Config from './../interface_config.json'
-    import * as d3 from "d3";
+    import * as d3 from 'd3'
 
     export default {
         data () {

@@ -156,7 +156,7 @@
 </style>
 
 <script>
-import c3 from 'c3/node_modules/d3'
+// import * as d3 from 'c3/node_modules/d3'
 import Config from './../interface_config.json'
 import WaffleChart from './../scripts/waffle.js'
 
