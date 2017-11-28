@@ -730,7 +730,7 @@ export default {
           type: 'spline'
         },
         tooltip: {
-          grouped: false
+          grouped: true
         },
         transition: {
           duration: 500

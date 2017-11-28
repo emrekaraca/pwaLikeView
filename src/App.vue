@@ -110,7 +110,7 @@ export default {
     loadPredictionsData: function () {
       let self = this
       let myInit = { mode: 'cors' }
-      fetch(Config.apiUrl + 'api/getresult/' + 'dk-predictions' + '?pol=dk&start=01-2017&end=12-2017', myInit)
+      fetch(Config.apiUrl + 'api/getresult/' + 'dk-predictions' + '?jobid=stdModel_unweighted&pol=dk&start=01-2017&end=12-2017', myInit)
       .then((response) => {
             return response.json();
       })
@@ -125,7 +125,7 @@ export default {
       return '01-2017'
     },
     maxEndDate: function () {
-      return '06-2017'
+      return '12-2017'
     }
   },
   mounted () {
