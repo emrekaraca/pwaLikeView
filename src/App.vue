@@ -75,47 +75,47 @@ export default {
       let self = this
       let myInit = { mode: 'cors' }
       fetch(Config.apiUrl + 'api/getvoteswings', myInit)
-      .then((response) => {
-          return response.json();
-      })
-      .then(function(data) {
-        self.$store.commit('fetchVoteSwingData', data)
-        callback1(callback2, callback3)
-      })
+        .then((response) => {
+            return response.json()
+        })
+        .then(function(data) {
+          self.$store.commit('fetchVoteSwingData', data)
+          callback1(callback2, callback3)
+        })
     },
     loadRawLikesAbsoluteData: function (callback2, callback3) {
       let self = this
       let myInit = { mode: 'cors' }
       fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikesabsolute' + '?&jobid=rawLikesAbsolute&dummySetting=1&start=01-2017&end=12-2017', myInit)
-      .then((response) => {
-          return response.json();
-      })
-      .then(function(data) {
-        self.$store.commit('fetchRawLikesAbsoluteData', data)
-        callback2(callback3)
-      })
+        .then((response) => {
+          return response.json()
+        })
+        .then(function(data) {
+          self.$store.commit('fetchRawLikesAbsoluteData', data)
+          callback2(callback3)
+        })
     },
     loadRawLikesData: function (callback3) {
       let self = this
       let myInit = { mode: 'cors' }
       fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikes' + '?&jobid=rawLikesNew&dummySetting=1&start=' + this.minStartDate + '&end=' + this.maxEndDate + '&pol=dk', myInit)
-      .then((response) => {
-          return response.json();
-      })
-      .then(function(data) {
-        self.$store.commit('fetchRawLikesData', data)
-        callback3()
-      })
+        .then((response) => {
+            return response.json()
+        })
+        .then(function (data) {
+          self.$store.commit('fetchRawLikesData', data)
+          callback3()
+        })
     },
     loadPredictionsData: function () {
       let self = this
       let myInit = { mode: 'cors' }
       fetch(Config.apiUrl + 'api/getresult/' + 'dk-predictions' + '?jobid=stdModel_unweighted&pol=dk&start=01-2017&end=12-2017', myInit)
       .then((response) => {
-            return response.json();
+        return response.json()
       })
-      .then(function(data) {
-          self.$store.commit('fetchPredictionsData', data)
+      .then(function (data) {
+        self.$store.commit('fetchPredictionsData', data)
       })
       self.render = true
     }
@@ -132,8 +132,7 @@ export default {
     this.loadVoteSwingData(this.loadRawLikesAbsoluteData, this.loadRawLikesData, this.loadPredictionsData)
     // this.loadVoteSwingData()
     // this.loadRawLikesAbsoluteData()
-    
-  }  
+  }
 }
 </script>
 
