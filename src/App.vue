@@ -25,8 +25,8 @@
           :auth="auth"
           :authenticated="authenticated"
           :userAccess="userAccess"
-          :minStartDate="minStartDate"
-          :maxEndDate="maxEndDate"
+          :trueMin="trueMin"
+          :trueMax="trueMax"
           v-if="render">
 
         </router-view>
@@ -44,13 +44,15 @@ import AuthService from './auth/AuthService'
 
 const auth = new AuthService()
 
-const { login, logout, authenticated, userAccess, authNotifier } = auth
+const { login, logout, authenticated, userAccess, userMin, userMax, authNotifier } = auth
 
 export default {
   data () {
     authNotifier.on('authChange', authState => {
       this.authenticated = authState.authenticated
-      this.userAccess = authState.userAccess
+      this.userAccess = authState.userAccess,
+      this.userMin = authState.userMin,
+      this.userMax = authState.userMax
     })
     // authNotifier.on('userChange', userState => {
     //   console.log("user3:", userState)
@@ -61,7 +63,11 @@ export default {
       auth,
       authenticated,
       userAccess,
-      render: false
+      userMin,
+      userMax,
+      render: false,
+      defaultMin: Config.defaultMin,
+      defaultMax: Config.defaultMax
     }
   },
   components: {
@@ -86,7 +92,7 @@ export default {
     loadRawLikesAbsoluteData: function (callback2, callback3) {
       let self = this
       let myInit = { mode: 'cors' }
-      fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikesabsolute' + '?&jobid=rawLikesAbsolute&dummySetting=1&start=01-2017&end=12-2017', myInit)
+      fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikesabsolute' + '?&jobid=rawLikesAbsolute&dummySetting=1&start=' + this.trueMin + '&end=' + this.trueMax, myInit)
         .then((response) => {
           return response.json()
         })
@@ -98,7 +104,7 @@ export default {
     loadRawLikesData: function (callback3) {
       let self = this
       let myInit = { mode: 'cors' }
-      fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikes' + '?&jobid=rawLikesNew&dummySetting=1&start=' + this.minStartDate + '&end=' + this.maxEndDate + '&pol=dk', myInit)
+      fetch(Config.apiUrl + 'api/getresult/' + 'dk-rawlikes' + '?&jobid=rawLikesNew&dummySetting=1&start=' + this.trueMin + '&end=' + this.trueMax + '&pol=dk', myInit)
         .then((response) => {
             return response.json()
         })
@@ -110,7 +116,7 @@ export default {
     loadPredictionsData: function () {
       let self = this
       let myInit = { mode: 'cors' }
-      fetch(Config.apiUrl + 'api/getresult/' + 'dk-predictions' + '?jobid=stdModel_unweighted&pol=dk&start=01-2017&end=12-2017', myInit)
+      fetch(Config.apiUrl + 'api/getresult/' + 'dk-predictions' + '?jobid=stdModel_unweighted&pol=dk&start=' + this.trueMin + '&end=' + this.trueMax, myInit)
       .then((response) => {
         return response.json()
       })
@@ -121,15 +127,47 @@ export default {
     }
   },
   computed: {
-    minStartDate: function () {
-      return '01-2017'
+    trueMin: function () {
+      if (this.userMin < this.defaultMin || !this.userMin) {
+        return this.defaultMin
+      } else { 
+        return this.userMin
+      }
     },
-    maxEndDate: function () {
-      return '12-2017'
+    trueMax: function () {
+      if (this.userMax > this.defaultMax || !this.userMax) {
+        return this.defaultMax
+      } else {
+        return this.userMax
+      }
+    },
+    isCallback: function () {
+      if (this.$route.name === 'Callback') {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
+  watch: {
+    isCallback: function () {
+      this.render = false
+      if (this.authenticated || !this.authenticationActive) {
+        console.log("loading LOGIN")
+        this.loadVoteSwingData(this.loadRawLikesAbsoluteData, this.loadRawLikesData, this.loadPredictionsData)
+      } else {
+        this.render = true
+      }    
     }
   },
   mounted () {
-    this.loadVoteSwingData(this.loadRawLikesAbsoluteData, this.loadRawLikesData, this.loadPredictionsData)
+    console.log('MOUNTING!')
+    if (this.authenticated || !this.authenticationActive) {
+      console.log("loading MOUNT")
+      this.loadVoteSwingData(this.loadRawLikesAbsoluteData, this.loadRawLikesData, this.loadPredictionsData)
+    } else {
+      this.render = true
+    }
     // this.loadVoteSwingData()
     // this.loadRawLikesAbsoluteData()
   }

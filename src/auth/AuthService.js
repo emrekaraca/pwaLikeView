@@ -5,6 +5,8 @@ import router from './../router'
 export default class AuthService {
   authenticated = this.isAuthenticated()
   userAccess = this.hasAccess()
+  userMin = this.getMin()
+  userMax = this.getMax()
   authNotifier = new EventEmitter()
 
   constructor () {
@@ -17,6 +19,7 @@ export default class AuthService {
   auth0 = new auth0.WebAuth({
     domain: 'likeview.eu.auth0.com',
     clientID: 'OeJrwyt845PVN55aG347IlAH1YEOPLGV',
+    // redirectUri: 'http://localhost:8080/callback',
     redirectUri: 'https://likeview2.surge.sh/callback',
     audience: 'https://likeview.eu.auth0.com/userinfo',
     responseType: 'token id_token',
@@ -33,8 +36,8 @@ export default class AuthService {
       if (authResult && authResult.accessToken && authResult.idToken) {
         self.auth0.client.userInfo(authResult.accessToken, function (err, user) {
           if (user) {
-            // console.log('user1:', user)
-            self.setSession(authResult, user['https://likeview.surge.sh/app_metadata'].components)
+            console.log('user1:', user)
+            self.setSession(authResult, user['https://likeview.surge.sh/app_metadata'].components, user['https://likeview.surge.sh/app_metadata'].userMin, user['https://likeview.surge.sh/app_metadata'].userMax)
             router.replace('/')
           } else if (err) {
             router.replace('/')
@@ -48,7 +51,7 @@ export default class AuthService {
     })
   }
 
-  setSession (authResult, user) {
+  setSession (authResult, user, userMin, userMax) {
     // Set the time that the access token will expire at
     let expiresAt = JSON.stringify(
       authResult.expiresIn * 1000 + new Date().getTime()
@@ -57,7 +60,14 @@ export default class AuthService {
     localStorage.setItem('id_token', authResult.idToken)
     localStorage.setItem('expires_at', expiresAt)
     localStorage.setItem('userAccess', JSON.stringify(user))
-    this.authNotifier.emit('authChange', { authenticated: true, userAccess: user })
+    localStorage.setItem('userMin', JSON.stringify(userMin))
+    localStorage.setItem('userMax', JSON.stringify(userMax))
+    this.authNotifier.emit('authChange', { 
+      authenticated: true,
+      userAccess: user,
+      userMin: userMin,
+      userMax: userMax
+    })
     // console.log('user2:', user)
     // this.authNotifier.emit('userChange', user['https://likeview.surge.sh/app_metadata'].components)
   }
@@ -68,6 +78,8 @@ export default class AuthService {
     localStorage.removeItem('id_token')
     localStorage.removeItem('expires_at')
     localStorage.removeItem('userAccess')
+    localStorage.removeItem('userMin')
+    localStorage.removeItem('userMax')
     // localStorage.removeItem('userChange')
     this.userProfile = null
     this.authNotifier.emit('authChange', false)
@@ -84,9 +96,19 @@ export default class AuthService {
   }
 
   hasAccess () {
-    // Check whether the current time is past the
-    // access token's expiry time
     let userAccess = JSON.parse(localStorage.getItem('userAccess'))
     return userAccess
+  }
+
+  getMin () {
+    let userMin = JSON.parse(localStorage.getItem('userMin'))
+    return userMin
+  }
+
+  getMax () {
+    if (JSON.parse(localStorage.getItem('userMax')) !== undefined) {
+      let userMax = JSON.parse(localStorage.getItem('userMax'))
+      return userMax
+    }
   }
 }
