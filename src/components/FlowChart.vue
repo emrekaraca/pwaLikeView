@@ -41,28 +41,11 @@
       </div>
       <div class="col s0 m2"></div>
       <div class="col s12 m8">
-        <form action="#">
-          <p class="range-field">
-            <span>From {{getMonday(timePeriods[pickedDate1])}}</span>
-            <span v-if="!multiWeek"> <--> Until {{getSunday(timePeriods[pickedDate1])}}</span>
-            <span class="switch right">
-              <label>
-              Single-Week
-              <input type="checkbox" v-model="multiWeek">
-              <span class="lever"></span>
-              Multi-Week
-              </label>
-            </span>
-            
-            <input type="range" id="test5" min="0" v-bind:max="timePeriods.length-1" v-model="pickedDate1"/>
-          </p>
-        </form>        
-        <form action="#" v-if="multiWeek">
-          <p class="range-field">
-            Until {{getSunday(timePeriods[pickedDate2])}}
-            <input type="range" id="test5" min="0" v-bind:max="timePeriods.length-1" v-model="pickedDate2"/>
-          </p>
-        </form>              
+        <app-week-selector 
+            :timePeriods="timePeriods"
+            @pickedDate1="newPickedDate1"
+            @pickedDate2="newPickedDate2">
+        </app-week-selector>
       </div>
     </div>
   </div>
@@ -114,9 +97,13 @@
 
 <script>
   import Config from './../interface_config.json'
+  import WeekSelector from './WeekSelector.vue'
   let chart
 
   export default {
+    components: {
+      'app-week-selector': WeekSelector
+    },
     data () {
       return {
         columns: [],
@@ -126,7 +113,6 @@
         selectedParty: 'A',
         pickedDate1: 0,
         pickedDate2: 0,
-        multiWeek: false,
         colors: {
           A: 'rgba(227, 47, 59, 0.6)',
           AA: 'rgba(90, 255, 90, 0.6)',
@@ -144,15 +130,15 @@
       }
     },
     methods: {
+      newPickedDate1: function (value) {
+        this.pickedDate1 = value
+        console.log("NEW DATE 1", value)
+      },
+      newPickedDate2: function (value) {
+        this.pickedDate2 = value
+        console.log("NEW DATE 2", value)
+      },      
       partyPic: (party) => require('./../assets/dk/' + party + '-small.png'),
-      getMonday: function (date) {
-        let monday = new Date(new Date(date).setDate(new Date(date).getDate() - 6))
-        return monday.getDate() + '.' + parseInt(monday.getMonth() + 1) + '.' + monday.getFullYear()
-      },
-      getSunday: function (date) {
-        let sunday = new Date(date)
-        return sunday.getDate() + '.' + parseInt(sunday.getMonth() + 1) + '.' + sunday.getFullYear()
-      },
       partyColor: function (party) {
         return "background-color: " + this.colors[party]
       },
@@ -198,9 +184,6 @@
         this.drawChart()
       },
       pickedDate1: function () {
-        if (!this.multiWeek) {
-          this.pickedDate2 = this.pickedDate1
-        }
         this.drawChart()
       },
       pickedDate2: function () {

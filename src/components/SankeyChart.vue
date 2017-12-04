@@ -39,28 +39,6 @@
               @pickedDate1="newPickedDate1"
               @pickedDate2="newPickedDate2">
             </app-week-selector>
-<!--            <form action="#">
-              <p class="range-field">
-                <span>From {{getMonday(timePeriods[pickedDate1])}}</span>
-                <span v-if="!multiWeek"> <--> <!--Until {{getSunday(timePeriods[pickedDate1])}}</span>
-                <span class="switch right">
-                  <label>
-                  Single-Week
-                  <input type="checkbox" v-model="multiWeek">
-                  <span class="lever"></span>
-                  Multi-Week
-                  </label>
-                </span>
-                
-                <input type="range" id="test5" min="0" v-bind:max="timePeriods.length-1" v-model="pickedDate1"/>
-              </p>
-            </form>
-            <form action="#" v-if="multiWeek">
-              <p class="range-field">
-                <span>Until {{getSunday(timePeriods[pickedDate2])}}</span>
-                <input type="range" id="test5" min="0" v-bind:max="timePeriods.length-1" v-model="pickedDate2"/>
-              </p>
-            </form>        -->
           </div>
         </div>
       </div>  
@@ -153,7 +131,6 @@
         timePeriods: [],
         pickedDate1: 0,
         pickedDate2: 0,
-        multiWeek: false,  
         containerWidth: 0,
         partyColors: [
           'rgba(227, 47, 59, 1)',
@@ -191,14 +168,6 @@
         this.pickedDate2 = value
         console.log("NEW DATE 2", value)
       },
-      getMonday: function (date) {
-        let monday = new Date(new Date(date).setDate(new Date(date).getDate()-6))
-        return monday.getDate() + '.' + parseInt(monday.getMonth()+1) + '.' + monday.getFullYear()
-      },
-      getSunday: function (date) {
-        let sunday = new Date(date)
-        return sunday.getDate() + '.' + parseInt(sunday.getMonth()+1) + '.' + sunday.getFullYear()
-      },
       toggleParty: function (party) {
         this.partyActive[party] = !this.partyActive[party]
       },
@@ -218,8 +187,6 @@
         let data = self.$store.state.voteSwingData.map(x=>x.slice(0, x.length))
         self.loading = false
         self.timePeriods = data[0].slice(1, data[0].length)
-        self.pickedDate1 = self.timePeriods.length-1
-        self.pickedDate2 = self.timePeriods.length-1
         self.columns = data.slice(1, data.length)
         if ($('.sankeyChartContainer').width() > 900) {
           self.containerWidth = 900
@@ -413,9 +380,6 @@
         this.drawChart()
       },
       pickedDate1: function () {
-        if (!this.multiWeek) {
-          this.pickedDate2 = this.pickedDate1
-        }
         this.drawChart()
       },
       pickedDate2: function () {
