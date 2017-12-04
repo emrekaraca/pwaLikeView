@@ -34,10 +34,15 @@
           </div>
           <div class="col s1 m2"></div>
           <div class="col s10 m8">
-            <form action="#">
+            <app-week-selector 
+              :timePeriods="timePeriods"
+              @pickedDate1="newPickedDate1"
+              @pickedDate2="newPickedDate2">
+            </app-week-selector>
+<!--            <form action="#">
               <p class="range-field">
                 <span>From {{getMonday(timePeriods[pickedDate1])}}</span>
-                <span v-if="!multiWeek"> <--> Until {{getSunday(timePeriods[pickedDate1])}}</span>
+                <span v-if="!multiWeek"> <--> <!--Until {{getSunday(timePeriods[pickedDate1])}}</span>
                 <span class="switch right">
                   <label>
                   Single-Week
@@ -55,7 +60,7 @@
                 <span>Until {{getSunday(timePeriods[pickedDate2])}}</span>
                 <input type="range" id="test5" min="0" v-bind:max="timePeriods.length-1" v-model="pickedDate2"/>
               </p>
-            </form>        
+            </form>        -->
           </div>
         </div>
       </div>  
@@ -129,11 +134,15 @@
 <script>
   import Config from './../interface_config.json'
   import * as d3 from 'd3'
+  import WeekSelector from './WeekSelector.vue'
   d3.sankey = require("d3-sankey").sankey
   d3.sankeyLinkHorizontal = require("d3-sankey").sankeyLinkHorizontal
   //var d3 = Object.assign({}, require("d3"), require("d3-sankey"));
 
   export default {
+    components: {
+      'app-week-selector': WeekSelector
+    },
     data () {
       return {
         columns: [],
@@ -174,6 +183,14 @@
       }
     },
     methods: {
+      newPickedDate1: function (value) {
+        this.pickedDate1 = value
+        console.log("NEW DATE 1", value)
+      },
+      newPickedDate2: function (value) {
+        this.pickedDate2 = value
+        console.log("NEW DATE 2", value)
+      },
       getMonday: function (date) {
         let monday = new Date(new Date(date).setDate(new Date(date).getDate()-6))
         return monday.getDate() + '.' + parseInt(monday.getMonth()+1) + '.' + monday.getFullYear()
