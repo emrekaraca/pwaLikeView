@@ -36,9 +36,10 @@
         </transition>
       </div>
       <div class="col s0 m1"></div>
-      <div v-for="party in partyNames" class="col s2 m1 center-align">
-        <button v-bind:class="partyButtonClasses[party]" class="btn btn-floating" @click="selectedParty = party"><img style="transform: translateY(8px)" :src="partyPic(party)" max-width="100%" height="25px" /></button>
-      </div>
+      <app-party-selector 
+        :partyNames="partyNames"
+        @selectedParty="newSelectedParty">
+      </app-party-selector>
       <div class="col s0 m2"></div>
       <div class="col s12 m8">
         <app-week-selector 
@@ -98,11 +99,13 @@
 <script>
   import Config from './../interface_config.json'
   import WeekSelector from './WeekSelector.vue'
+  import PartySelector from './PartySelector.vue'
   let chart
 
   export default {
     components: {
-      'app-week-selector': WeekSelector
+      'app-week-selector': WeekSelector,
+      'app-party-selector': PartySelector
     },
     data () {
       return {
@@ -130,6 +133,10 @@
       }
     },
     methods: {
+      newSelectedParty: function (value) {
+        this.selectedParty = value
+        console.log("NEW Party", value)
+      },
       newPickedDate1: function (value) {
         this.pickedDate1 = value
         console.log("NEW DATE 1", value)
@@ -180,15 +187,15 @@
     updated () {
     },
     watch: {
-      selectedParty: function () {
-        this.drawChart()
-      },
-      pickedDate1: function () {
-        this.drawChart()
-      },
-      pickedDate2: function () {
-        this.drawChart()
-      }
+      // selectedParty: function () {
+      //   this.drawChart()
+      // },
+      // pickedDate1: function () {
+      //   this.drawChart()
+      // },
+      // pickedDate2: function () {
+      //   this.drawChart()
+      // }
     },
     computed: {
       voterSwing: function () {
@@ -220,17 +227,6 @@
         return others
 
       },
-      partyButtonClasses: function () {
-        let classes = {};
-        for (let party in this.partyNames) {
-          if (this.partyNames[party] === this.selectedParty) {
-            classes[this.partyNames[party]] = this.themeColor + ' lighten-1'
-          } else {
-            classes[this.partyNames[party]] = 'grey lighten-4'
-          }
-        }
-        return classes
-      },    
       otherParties: function () {
         return this.partyNames.filter((party) => party !== this.selectedParty)
       },  

@@ -100,7 +100,7 @@
         loading: true,
         partyNames: ['A', 'AA', 'B', 'C', 'F', 'I', 'NB', 'O', 'OE', 'V'],
         timePeriods: [],
-        selectedParty: 'A',
+        selectedParty: '',
         pickedDate1: 0,
         pickedDate2: 0,
         themeColor: Config.themeColor
