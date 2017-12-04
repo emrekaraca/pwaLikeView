@@ -33,9 +33,10 @@
 
         <div class="row">
           <div class="col s0 m1"></div>
-          <div v-for="party in partyNames" class="col s2 m1 center-align">
-            <button v-bind:class="partyButtonClasses[party]" class="btn btn-floating" @click="selectedParty = party"><img style="transform: translateY(8px)" :src="partyPic(party)" max-width="100%" height="25px" /></button>
-          </div>
+          <app-party-selector 
+            :partyNames="partyNames"
+            @selectedParty="newSelectedParty">
+          </app-party-selector>
         </div>
 
         <div class="row">
@@ -84,11 +85,13 @@
 <script>
   import Config from './../interface_config.json'
   import WeekSelector from './WeekSelector.vue'
+  import PartySelector from './PartySelector.vue'
   import c3 from 'c3'
   let chart, chart2
   export default {
     components: {
-      'app-week-selector': WeekSelector
+      'app-week-selector': WeekSelector,
+      'app-party-selector': PartySelector
     },
     data () {
       return {
@@ -104,6 +107,10 @@
       }
     },
     methods: {
+      newSelectedParty: function (value) {
+        this.selectedParty = value
+        console.log("NEW Party", value)
+      },
       newPickedDate1: function (value) {
         this.pickedDate1 = value
         console.log("NEW DATE 1", value)
@@ -112,7 +119,6 @@
         this.pickedDate2 = value
         console.log("NEW DATE 2", value)
       },      
-      partyPic: (party) => require('./../assets/dk/' + party + '-small.png'),
       loadData: function() {
         let self = this
         let data = self.$store.state.voteSwingData.map(x => x.slice(0, x.length))
@@ -189,17 +195,6 @@
       }
     },
     computed: {
-      partyButtonClasses: function () {
-        let classes = {}
-        for (let party in this.partyNames) {
-          if (this.partyNames[party] === this.selectedParty) {
-            classes[this.partyNames[party]] = this.themeColor + ' lighten-1'
-          } else {
-            classes[this.partyNames[party]] = 'grey lighten-4'
-          }
-        }
-        return classes
-      },      
       selectedColumn: function() {
         let self = this
         return this.columns
