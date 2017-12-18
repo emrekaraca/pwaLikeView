@@ -9,6 +9,59 @@
       </div>
     </div> -->
 
+    <div class="col s12 l4" >
+    <!-- <div class="col s12" v-if="!authenticated && authenticationActive"> -->
+      <div class="card small grey lighten-4">
+        <div class="card-content black-text">
+          <span class="big-logo"><img :src="bigLogo" alt=""></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col s12 l4" >
+    <!-- <div class="col s12" v-if="!authenticated && authenticationActive"> -->
+      <div class="card small grey lighten-4">
+
+        <div class="card-content black-text">
+          <span class="card-title">Welcome to Likeview</span>
+          <p>Likeview is an experimental tool for the analysis of the social media performance of the Danish political parties.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- <div class="col s4" v-if="true"> -->
+    <div class="col s12 l4" v-if="!authenticated && authenticationActive">
+      <div class="card small grey lighten-4">
+        <div class="card-content black-text">
+          <span class="card-title">Login / Sign Up</span>
+          <p>Please login or create a free account by clicking on the login button.</p>
+        </div>
+      <button
+        class="btn btn-large btn-login2 z-depth-4"
+        @click="login()">
+          <span>Login</span>
+      </button>
+      </div>
+    </div>
+    
+    <!-- <div class="col s4" v-else> -->
+    <div class="col s12 l4" v-if="authenticated && authenticationActive">
+      <div class="card small grey lighten-4">
+        <div class="card-content black-text">
+          <span class="card-title">Welcome {{userEmail}}!</span>
+          <p>You are authorized to see data leading up until {{userMax}}.</p>
+
+        </div>
+      <button
+        class="btn btn-large btn-login2 z-depth-4"
+        @click="logout()">
+          <i class="material-icons loginIcon">power_settings_new</i>
+      </button>
+      </div>
+    </div>
+    
+
     <template v-for="option, key in options" v-if="authenticated || !authenticationActive">
       <router-link :to="option.doNotChange.link">
         <div v-if="availableOptions.includes(option.doNotChange.fileName)" class="col s12 m6 l4">
@@ -27,20 +80,6 @@
         </div>
       </router-link>
     </template>
-    <div class="col s12" v-if="!authenticated && authenticationActive">
-      <div class="card small grey lighten-4">
-
-        <div class="card-image">
-          <span :class="themeColor + '-text'" class="card-title option-title text-darken-4">Login required</span>
-        </div>
-
-        <div class="card-content black-text">
-          <p>Please log in to see the content</p>
-        </div>
-
-      </div>
-    </div>
-
 
   </div>
 </template>
@@ -79,14 +118,33 @@
   .card:hover {
       box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.3);        
   }
+
+  .btn-login2 {
+    position: absolute!important;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 400!important;
+    background-color: rgb(100,144,224)!important;
+    width: 200px;
+  }
+
+  .big-logo {
+    position: absolute!important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
   
 </style>
 
 <script>
 import Config from './../interface_config.json'
 
+
 export default {
-  props: ['authenticated', 'userAccess'],
+  props: ['authenticated', 'userAccess', 'logout', 'login', 'userEmail', 'userMax'],
   data() {
     return {
       options: Config.activeModules,
@@ -109,6 +167,9 @@ export default {
         return result
       }
     },
+    bigLogo: function () {
+      return require('../assets/logo/logo-big.png')
+    }    
   },  
   methods: {
     optionPic: (key) => require('./../assets/homePics/' + key + '.png'),

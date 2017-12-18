@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './../components/Home.vue'
+import About from './../components/About.vue'
 import Callback from './../components/Callback.vue'
 import Config from './../interface_config.json'
 
@@ -11,6 +12,11 @@ let routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About
   },
   {
     path: '/callback',
@@ -35,5 +41,5 @@ export default new Router({
   mode: 'history',
   scrollBehavior (to, from, savedPosition) {
     return { x: 0, y: 0 }
-  }  
+  }
 })

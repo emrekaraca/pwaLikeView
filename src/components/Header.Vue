@@ -4,27 +4,57 @@
         <div :class="themeColor" class="nav-wrapper ligthen-2">
           <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
           <ul id="nav-mobile" class="left hide-on-med-and-down">
-            <li class="desktop-nav" :class="menuActive('Home')"><router-link to="/">Home</router-link></li>
+            <li class="logo desktop-nav" :class="menuActive('Home')"><router-link to="/"><img :src="brandLogo" /></router-link></li>
+            <!-- <li class="desktop-nav" :class="menuActive('Home')"><router-link to="/">Home</router-link></li> -->
             <template v-for="option in options" v-if="authenticated || !authenticationActive">
               <li class="desktop-nav" :class="menuActive(option.name)" v-if="availableOptions.includes(option.doNotChange.fileName)"><router-link :to="option.doNotChange.link">{{option.name}}</router-link></li>
             </template>
+            <li class="logo desktop-nav" :class="menuActive('About')"><router-link to="/about">About</router-link></li>
           </ul>
           <ul class="side-nav" id="mobile-demo">
             <li :class="menuActive('Home')"><router-link to="/">Home</router-link></li>
             <template v-for="option in options" v-if="authenticated || !authenticationActive">
               <li :class="menuActive(option.name)" v-if="availableOptions.includes(option.doNotChange.fileName)"><router-link :to="option.doNotChange.link">{{option.name}}</router-link></li>
             </template>            
+            <li :class="menuActive('About')"><router-link to="/about">About</router-link></li>
           </ul>
-          <router-link v-if="showLogo" to="/" class="brand-logo right">
+          <div class="brand-logo right hide-on-small-only">
             <img class="edge" src="../assets/homePics/edge.png"/>
-            <span class="logo"><img :src="brandLogo" /></span>
-          </router-link>
+            <a href="https://ogtal.dk" target="blank"><span class="logo orglogo"><img :src="orgLogo1" /></span></a>
+            <a href="http://nxtconsulting.dk/" target="blank"><span class="logo orglogo"><img :src="orgLogo2" /></span></a>
+          </div>
+          <div class="brand-logo right hide-on-med-and-up valign-wrapper">
+            <img class="edge" src="../assets/homePics/edge.png"/>
+            <a href="https://ogtal.dk" target="blank"><span class="logo"><img class="logo smalllogo" :src="orgLogo1" /></span></a>
+            <a href="http://nxtconsulting.dk/" target="blank"><span class="logo"><img class="logo smalllogo" :src="orgLogo2" /></span></a>
+          </div>
         </div>
       </nav>
     </div>
 </template>
 
 <style media="screen">
+
+  a {
+    max-height: 64px
+  }
+
+  .logo {
+    height: 64px;
+    padding: 0px
+  }
+
+  .orglogo {
+    padding: 0px 12px
+  }
+
+  .smalllogo {
+    width: 70px;
+    height: auto!important;
+    padding: 2px;
+    
+  }
+
 
   .nav-extended .nav-wrapper {
     overflow: hidden;
@@ -50,6 +80,9 @@
     height: 90%;
   }
 
+  .header {
+    margin-bottom: 10px
+  }
 
 </style>
 
@@ -90,6 +123,15 @@ export default {
     logoFileName: () => Config.logo.fileName,
     brandLogo: function () {
       return require('../assets/logo/' + this.logoFileName)
+    },
+    orgLogo1: function () {
+      return require('../assets/logo/analyse.png')
+    },
+    orgLogo2: function () {
+      return require('../assets/logo/nxt.png')
+    },
+    orgLogo3: function () {
+      return require('../assets/logo/analyse2.png')
     }
   },
   mounted () {

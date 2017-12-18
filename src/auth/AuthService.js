@@ -5,6 +5,7 @@ import router from './../router'
 export default class AuthService {
   authenticated = this.isAuthenticated()
   userAccess = this.hasAccess()
+  userEmail = this.getEmail()
   userMin = this.getMin()
   userMax = this.getMax()
   authNotifier = new EventEmitter()
@@ -20,10 +21,10 @@ export default class AuthService {
     domain: 'likeview.eu.auth0.com',
     clientID: 'OeJrwyt845PVN55aG347IlAH1YEOPLGV',
     // redirectUri: 'http://localhost:8080/callback',
-    redirectUri: 'https://likeview2.surge.sh/callback',
+    redirectUri: 'https://likeview.surge.sh/callback',
     audience: 'https://likeview.eu.auth0.com/userinfo',
     responseType: 'token id_token',
-    scope: 'openid app_metadata'
+    scope: 'openid email app_metadata'
   })
 
   login () {
@@ -36,22 +37,19 @@ export default class AuthService {
       if (authResult && authResult.accessToken && authResult.idToken) {
         self.auth0.client.userInfo(authResult.accessToken, function (err, user) {
           if (user) {
-            console.log('user1:', user)
-            self.setSession(authResult, user['https://likeview.surge.sh/app_metadata'].components, user['https://likeview.surge.sh/app_metadata'].userMin, user['https://likeview.surge.sh/app_metadata'].userMax)
+            self.setSession(authResult, user['https://likeview.surge.sh/app_metadata'].components, user['https://likeview.surge.sh/app_metadata'].userMin, user['https://likeview.surge.sh/app_metadata'].userMax, user.email)
             router.replace('/')
           } else if (err) {
             router.replace('/')
-            console.log(err)
           }
         })
       } else if (err) {
         router.replace('/')
-        console.log(err)
       }
     })
   }
 
-  setSession (authResult, user, userMin, userMax) {
+  setSession (authResult, user, userMin, userMax, userEmail) {
     // Set the time that the access token will expire at
     let expiresAt = JSON.stringify(
       authResult.expiresIn * 1000 + new Date().getTime()
@@ -62,11 +60,13 @@ export default class AuthService {
     localStorage.setItem('userAccess', JSON.stringify(user))
     localStorage.setItem('userMin', JSON.stringify(userMin))
     localStorage.setItem('userMax', JSON.stringify(userMax))
-    this.authNotifier.emit('authChange', { 
+    localStorage.setItem('userEmail', JSON.stringify(userEmail))
+    this.authNotifier.emit('authChange', {
       authenticated: true,
       userAccess: user,
       userMin: userMin,
-      userMax: userMax
+      userMax: userMax,
+      userEmail: userEmail
     })
     // console.log('user2:', user)
     // this.authNotifier.emit('userChange', user['https://likeview.surge.sh/app_metadata'].components)
@@ -80,6 +80,7 @@ export default class AuthService {
     localStorage.removeItem('userAccess')
     localStorage.removeItem('userMin')
     localStorage.removeItem('userMax')
+    localStorage.removeItem('userEmail')
     // localStorage.removeItem('userChange')
     this.userProfile = null
     this.authNotifier.emit('authChange', false)
@@ -98,6 +99,11 @@ export default class AuthService {
   hasAccess () {
     let userAccess = JSON.parse(localStorage.getItem('userAccess'))
     return userAccess
+  }
+
+  getEmail () {
+    let userEmail = JSON.parse(localStorage.getItem('userEmail'))
+    return userEmail
   }
 
   getMin () {

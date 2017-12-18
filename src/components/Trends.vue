@@ -72,11 +72,11 @@
 
           <!-- Time Period Selector // defines for which time period data is loaded in the graph -->
           <div class="col s6 m3 l3 center-align">
-            <input placeholder="MM-YYYY" id="start" type="text" class="validate center-align" v-model="start" pattern="\d\d-\d\d\d\d">
+            <input placeholder="MM-YYYY" id="start" type="text" class="validate center-align" v-model="defaultMin" pattern="\d\d-\d\d\d\d">
             <label for="start">From</label>        
           </div>        
           <div class="col s6 m3 l3 center-align">
-            <input placeholder="MM-YYYY" id="end" type="text" class="validate center-align" v-model="end" pattern="\d\d-\d\d\d\d">
+            <input placeholder="MM-YYYY" id="end" type="text" class="validate center-align" v-model="defaultMax" pattern="\d\d-\d\d\d\d">
             <label for="end">Until</label>        
           </div>        
           <div class="col s3 m2 l2 center-align">
@@ -356,7 +356,7 @@ import c3 from 'c3'
 let chart /* Defining chart in component scope, in order to be able to load new data after chart-generation */
 
 export default {
-  props: ['minStartDate', 'maxEndDate'],
+  props: ['userMin', 'userMax'],
   data () {
     return {
       selectedJob: '',
@@ -368,8 +368,8 @@ export default {
       pollsLoaded: false,
       initialLoading: true,
       dataIsReloading: false,
-      start: '01-2017',
-      end: '12-2017',
+      defaultMin: Config.defaultMin,
+      defaultMax: Config.defaultMax,
       showingPredictions: true,
       showingPolls: true,
       showElec1: true,
@@ -427,9 +427,11 @@ export default {
     partyPic: (party) => require('./../assets/dk/' + party + '-small.png'),
     loadRawLikesData: function () {
       this.dataIsReloading = true
+      this.defaultMin = this.trueMin
+      this.defaultMax = this.trueMax
       let self = this
       let myInit = { mode: 'cors' }
-      let url = Config.apiUrl + 'api/getresult/' + 'dk-rawlikes' + '?start=' + this.start + '&end=' + this.end + '&pol=dk'
+      let url = Config.apiUrl + 'api/getresult/' + 'dk-rawlikes' + '?start=' + this.trueMin + '&end=' + this.trueMax + '&pol=dk'
       fetch(url, myInit)
         .then((response) => {
           return response.json()
@@ -790,6 +792,8 @@ export default {
   },
   mounted () {
     this.loadData()
+    this.defaultMin = this.trueMin
+    this.defaultMax = this.trueMax
   },
   computed: {
     paragraphs: function () {
@@ -852,7 +856,22 @@ export default {
       } else {
         return ['2013', '2017']
       }
-    }
+    },
+    trueMin: function () {
+      if (this.userMin < this.defaultMin || !this.userMin) {
+        return this.defaultMin
+      } else { 
+        return this.userMin
+      }
+    },
+    trueMax: function () {
+      if (this.userMax > this.defaultMax || !this.userMax) {
+        return this.defaultMax
+      } else {
+        return this.userMax
+      }
+    },
+    
   }
 }
 </script>

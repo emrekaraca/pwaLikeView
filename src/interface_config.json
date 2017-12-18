@@ -1,6 +1,6 @@
 {
   "apiUrl": "https://likeviewapi.herokuapp.com/",
-  "authenticationActive": false,
+  "authenticationActive": true,
   "defaultMin": "01-2017",
   "defaultMax": "99-9999",
   "homeDescription": ["This interface displays a number of data visualizations from AT-Election-Prediction-analyses. Click one of the options to see more."],

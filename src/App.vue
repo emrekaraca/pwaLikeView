@@ -25,8 +25,11 @@
           :auth="auth"
           :authenticated="authenticated"
           :userAccess="userAccess"
-          :trueMin="trueMin"
-          :trueMax="trueMax"
+          :userEmail="userEmail"
+          :login="login"
+          :logout="logout"
+          :userMin="userMin"
+          :userMax="userMax"
           v-if="render">
 
         </router-view>
@@ -44,7 +47,7 @@ import AuthService from './auth/AuthService'
 
 const auth = new AuthService()
 
-const { login, logout, authenticated, userAccess, userMin, userMax, authNotifier } = auth
+const { login, logout, authenticated, userAccess, userMin, userMax, userEmail, authNotifier } = auth
 
 export default {
   data () {
@@ -53,6 +56,7 @@ export default {
       this.userAccess = authState.userAccess,
       this.userMin = authState.userMin,
       this.userMax = authState.userMax
+      this.userEmail = authState.userEmail
     })
     // authNotifier.on('userChange', userState => {
     //   console.log("user3:", userState)
@@ -65,6 +69,7 @@ export default {
       userAccess,
       userMin,
       userMax,
+      userEmail,
       render: false,
       defaultMin: Config.defaultMin,
       defaultMax: Config.defaultMax
@@ -153,7 +158,6 @@ export default {
     isCallback: function () {
       this.render = false
       if (this.authenticated || !this.authenticationActive) {
-        console.log("loading LOGIN")
         this.loadVoteSwingData(this.loadRawLikesAbsoluteData, this.loadRawLikesData, this.loadPredictionsData)
       } else {
         this.render = true
@@ -161,9 +165,7 @@ export default {
     }
   },
   mounted () {
-    console.log('MOUNTING!')
     if (this.authenticated || !this.authenticationActive) {
-      console.log("loading MOUNT")
       this.loadVoteSwingData(this.loadRawLikesAbsoluteData, this.loadRawLikesData, this.loadPredictionsData)
     } else {
       this.render = true

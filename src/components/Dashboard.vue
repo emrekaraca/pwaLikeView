@@ -235,7 +235,8 @@
 
   .pageBtn {
     position: absolute!important;
-    right: 10%;
+    right: 6%;
+    top: 100px;
   }
 
   .pageBtnBack {
@@ -383,8 +384,8 @@
           return this.postsParty
         }
       },
-      data: function () { return this.$store.state.rawLikesData.filter(arr => !arr[0].includes('_') && !arr[0].includes('x')).map(x => x.slice(0, x.length)) },
-      absoluteData: function () { return this.$store.state.rawLikesAbsoluteData.filter(arr => !arr[0].includes('x') && !arr[0].includes('totalLikes')).map(x => x.slice(0, x.length)) },
+      data: function () { return this.$store.state.rawLikesData.filter(arr => !arr[0].includes('_') && !arr[0].includes('x')).map(x => x.slice(0, x.length - 1)) },
+      absoluteData: function () { return this.$store.state.rawLikesAbsoluteData.filter(arr => !arr[0].includes('x') && !arr[0].includes('totalLikes')).map(x => x.slice(0, x.length - 1)) },
       totalLikes: function () {
         let result = ['totalLikes']
         for (let party in this.absoluteData) {
@@ -399,7 +400,7 @@
         }
         return result
       },    
-      timePeriods: function () {return this.$store.state.rawLikesData.filter(arr => arr[0].includes('x1')).map(x => x.slice(0, x.length))[0]},
+      timePeriods: function () {return this.$store.state.rawLikesData.filter(arr => arr[0].includes('x1')).map(x => x.slice(0, x.length - 1))[0]},
       previousWeek: function () {return this.timePeriods[this.timePeriods.length-2]},
       totalLikesLastTwoWeeks: function () {
         if (this.totalLikes) {
